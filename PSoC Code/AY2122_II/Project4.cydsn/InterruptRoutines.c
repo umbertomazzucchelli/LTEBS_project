@@ -34,6 +34,10 @@ CY_ISR(Custom_ISR_RX)
             //flag_stop = 0;
             break;
         
+        case 't':
+            sprintf(message, "HR/RR sensor");
+            UART_PutString(message);
+        
         case 's':
         case 'S':
             status=HOLD;
@@ -43,10 +47,11 @@ CY_ISR(Custom_ISR_RX)
             break;
     }
 }
-/*
+
 CY_ISR(Custom_ISR_read)
 {
     Timer_read_ReadStatusRegister();
+    /*
     if(status==SAMPLE && dataReady==0)
     {
         error = I2C_Peripheral_ReadRegister(LIS3DH_DEVICE_ADDRESS,LIS3DH_OUT_X_L,&dataLSB);
@@ -59,9 +64,10 @@ CY_ISR(Custom_ISR_read)
         error = I2C_Peripheral_ReadRegister(LIS3DH_DEVICE_ADDRESS,LIS3DH_OUT_Z_H,&dataMSB);
         if (error == NO_ERROR) zData = (dataLSB | (dataMSB<<8)) >> 6;
         dataReady=1 ;
-    }    
+    }   
+    */
 }
-*/
+
 CY_ISR(Custom_ISR_LED)
 {
     Timer_LED_ReadStatusRegister();

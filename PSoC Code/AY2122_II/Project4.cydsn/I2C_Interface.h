@@ -94,7 +94,7 @@
     
     void setReg(uint8_t setReg,uint8_t setAddress);
     void readReg(uint8_t readReg,uint8_t readAddress);
-    void deviceStart();
+    void printHeader();
    
     extern char message[50];
     

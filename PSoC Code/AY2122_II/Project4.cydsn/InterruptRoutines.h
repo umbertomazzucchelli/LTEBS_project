@@ -23,7 +23,7 @@
     
     //CY_ISR_PROTO(Custom_ISR_TIMER);
     CY_ISR_PROTO(Custom_ISR_RX);
-    //CY_ISR_PROTO(Custom_ISR_read);
+    CY_ISR_PROTO(Custom_ISR_read);
     CY_ISR_PROTO(Custom_ISR_LED);
     
    
