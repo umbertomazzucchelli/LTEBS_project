@@ -1,4 +1,4 @@
-ARM GAS  C:\Users\umber\AppData\Local\Temp\ccXVyJ7c.s 			page 1
+ARM GAS  C:\Users\umber\AppData\Local\Temp\cc1GsGOU.s 			page 1
 
 
    1              		.syntax unified
@@ -58,7 +58,7 @@ ARM GAS  C:\Users\umber\AppData\Local\Temp\ccXVyJ7c.s 			page 1
   28:Generated_Source\PSoC5/PWM_LED.c ****     #error PWM_v3_30 detected with a constant 0 for the enable or \
   29:Generated_Source\PSoC5/PWM_LED.c ****          constant 1 for reset. This will prevent the component from operating.
   30:Generated_Source\PSoC5/PWM_LED.c **** #endif /* PWM_LED_PWMUDB_genblk1_ctrlreg__REMOVED */
-ARM GAS  C:\Users\umber\AppData\Local\Temp\ccXVyJ7c.s 			page 2
+ARM GAS  C:\Users\umber\AppData\Local\Temp\cc1GsGOU.s 			page 2
 
 
   31:Generated_Source\PSoC5/PWM_LED.c **** 
@@ -118,7 +118,7 @@ ARM GAS  C:\Users\umber\AppData\Local\Temp\ccXVyJ7c.s 			page 1
   85:Generated_Source\PSoC5/PWM_LED.c **** {
   86:Generated_Source\PSoC5/PWM_LED.c ****     #if (PWM_LED_UsingFixedFunction || PWM_LED_UseControl)
   87:Generated_Source\PSoC5/PWM_LED.c ****         uint8 ctrl;
-ARM GAS  C:\Users\umber\AppData\Local\Temp\ccXVyJ7c.s 			page 3
+ARM GAS  C:\Users\umber\AppData\Local\Temp\cc1GsGOU.s 			page 3
 
 
   88:Generated_Source\PSoC5/PWM_LED.c ****     #endif /* (PWM_LED_UsingFixedFunction || PWM_LED_UseControl) */
@@ -178,7 +178,7 @@ ARM GAS  C:\Users\umber\AppData\Local\Temp\ccXVyJ7c.s 			page 1
  142:Generated_Source\PSoC5/PWM_LED.c ****             PWM_LED_WriteCompare2(PWM_LED_INIT_COMPARE_VALUE2);
  143:Generated_Source\PSoC5/PWM_LED.c ****         #endif /* (PWM_LED_UseOneCompareMode) */
  144:Generated_Source\PSoC5/PWM_LED.c **** 
-ARM GAS  C:\Users\umber\AppData\Local\Temp\ccXVyJ7c.s 			page 4
+ARM GAS  C:\Users\umber\AppData\Local\Temp\cc1GsGOU.s 			page 4
 
 
  145:Generated_Source\PSoC5/PWM_LED.c ****         #if (PWM_LED_KillModeMinTime)
@@ -238,7 +238,7 @@ ARM GAS  C:\Users\umber\AppData\Local\Temp\ccXVyJ7c.s 			page 1
  199:Generated_Source\PSoC5/PWM_LED.c **** void PWM_LED_Enable(void) 
  200:Generated_Source\PSoC5/PWM_LED.c **** {
   28              		.loc 1 200 0
-ARM GAS  C:\Users\umber\AppData\Local\Temp\ccXVyJ7c.s 			page 5
+ARM GAS  C:\Users\umber\AppData\Local\Temp\cc1GsGOU.s 			page 5
 
 
   29              		.cfi_startproc
@@ -263,7 +263,7 @@ ARM GAS  C:\Users\umber\AppData\Local\Temp\ccXVyJ7c.s 			page 1
   39              	.L3:
   40              		.align	2
   41              	.L2:
-  42 000c 7B640040 		.word	1073767547
+  42 000c 7C640040 		.word	1073767548
   43              		.cfi_endproc
   44              	.LFE2:
   45              		.size	PWM_LED_Enable, .-PWM_LED_Enable
@@ -298,7 +298,7 @@ ARM GAS  C:\Users\umber\AppData\Local\Temp\ccXVyJ7c.s 			page 1
  230:Generated_Source\PSoC5/PWM_LED.c **** *  has no effect on the operation of the PWM
  231:Generated_Source\PSoC5/PWM_LED.c **** *
  232:Generated_Source\PSoC5/PWM_LED.c **** *******************************************************************************/
-ARM GAS  C:\Users\umber\AppData\Local\Temp\ccXVyJ7c.s 			page 6
+ARM GAS  C:\Users\umber\AppData\Local\Temp\cc1GsGOU.s 			page 6
 
 
  233:Generated_Source\PSoC5/PWM_LED.c **** void PWM_LED_Stop(void) 
@@ -319,7 +319,7 @@ ARM GAS  C:\Users\umber\AppData\Local\Temp\ccXVyJ7c.s 			page 1
   65              	.L6:
   66              		.align	2
   67              	.L5:
-  68 000c 7B640040 		.word	1073767547
+  68 000c 7C640040 		.word	1073767548
   69              		.cfi_endproc
   70              	.LFE3:
   71              		.size	PWM_LED_Stop, .-PWM_LED_Stop
@@ -358,7 +358,7 @@ ARM GAS  C:\Users\umber\AppData\Local\Temp\ccXVyJ7c.s 			page 1
  261:Generated_Source\PSoC5/PWM_LED.c ****         *
  262:Generated_Source\PSoC5/PWM_LED.c ****         * Return:
  263:Generated_Source\PSoC5/PWM_LED.c ****         *  None
-ARM GAS  C:\Users\umber\AppData\Local\Temp\ccXVyJ7c.s 			page 7
+ARM GAS  C:\Users\umber\AppData\Local\Temp\cc1GsGOU.s 			page 7
 
 
  264:Generated_Source\PSoC5/PWM_LED.c ****         *
@@ -418,7 +418,7 @@ ARM GAS  C:\Users\umber\AppData\Local\Temp\ccXVyJ7c.s 			page 1
  318:Generated_Source\PSoC5/PWM_LED.c ****         * Parameters:
  319:Generated_Source\PSoC5/PWM_LED.c ****         *  comparemode:  The new compare mode for the PWM output. Use the compare types
  320:Generated_Source\PSoC5/PWM_LED.c ****         *                defined in the H file as input arguments.
-ARM GAS  C:\Users\umber\AppData\Local\Temp\ccXVyJ7c.s 			page 8
+ARM GAS  C:\Users\umber\AppData\Local\Temp\cc1GsGOU.s 			page 8
 
 
  321:Generated_Source\PSoC5/PWM_LED.c ****         *
@@ -478,7 +478,7 @@ ARM GAS  C:\Users\umber\AppData\Local\Temp\ccXVyJ7c.s 			page 1
  375:Generated_Source\PSoC5/PWM_LED.c ****     #endif /*PWM_LED_CompareMode2SW */
  376:Generated_Source\PSoC5/PWM_LED.c **** 
  377:Generated_Source\PSoC5/PWM_LED.c **** #endif /* UseOneCompareMode */
-ARM GAS  C:\Users\umber\AppData\Local\Temp\ccXVyJ7c.s 			page 9
+ARM GAS  C:\Users\umber\AppData\Local\Temp\cc1GsGOU.s 			page 9
 
 
  378:Generated_Source\PSoC5/PWM_LED.c **** 
@@ -523,7 +523,7 @@ ARM GAS  C:\Users\umber\AppData\Local\Temp\ccXVyJ7c.s 			page 1
   90              	.L9:
   91 0006 00BF     		.align	2
   92              	.L8:
-  93 0008 0B640040 		.word	1073767435
+  93 0008 0C640040 		.word	1073767436
   94              		.cfi_endproc
   95              	.LFE4:
   96              		.size	PWM_LED_WriteCounter, .-PWM_LED_WriteCounter
@@ -538,7 +538,7 @@ ARM GAS  C:\Users\umber\AppData\Local\Temp\ccXVyJ7c.s 			page 1
  407:Generated_Source\PSoC5/PWM_LED.c ****     }
  408:Generated_Source\PSoC5/PWM_LED.c **** 
  409:Generated_Source\PSoC5/PWM_LED.c **** 
-ARM GAS  C:\Users\umber\AppData\Local\Temp\ccXVyJ7c.s 			page 10
+ARM GAS  C:\Users\umber\AppData\Local\Temp\cc1GsGOU.s 			page 10
 
 
  410:Generated_Source\PSoC5/PWM_LED.c ****     /*******************************************************************************
@@ -582,8 +582,8 @@ ARM GAS  C:\Users\umber\AppData\Local\Temp\ccXVyJ7c.s 			page 1
  118              	.L12:
  119 000a 00BF     		.align	2
  120              	.L11:
- 121 000c 1B640040 		.word	1073767451
- 122 0010 5B640040 		.word	1073767515
+ 121 000c 1C640040 		.word	1073767452
+ 122 0010 5C640040 		.word	1073767516
  123              		.cfi_endproc
  124              	.LFE5:
  125              		.size	PWM_LED_ReadCounter, .-PWM_LED_ReadCounter
@@ -598,7 +598,7 @@ ARM GAS  C:\Users\umber\AppData\Local\Temp\ccXVyJ7c.s 			page 1
  435:Generated_Source\PSoC5/PWM_LED.c **** 
  436:Generated_Source\PSoC5/PWM_LED.c ****     #if (PWM_LED_UseStatus)
  437:Generated_Source\PSoC5/PWM_LED.c **** 
-ARM GAS  C:\Users\umber\AppData\Local\Temp\ccXVyJ7c.s 			page 11
+ARM GAS  C:\Users\umber\AppData\Local\Temp\cc1GsGOU.s 			page 11
 
 
  438:Generated_Source\PSoC5/PWM_LED.c **** 
@@ -658,7 +658,7 @@ ARM GAS  C:\Users\umber\AppData\Local\Temp\ccXVyJ7c.s 			page 1
  486:Generated_Source\PSoC5/PWM_LED.c ****     #else
  487:Generated_Source\PSoC5/PWM_LED.c ****         CY_SET_REG8(PWM_LED_PERIOD_LSB_PTR, period);
  140              		.loc 1 487 0
-ARM GAS  C:\Users\umber\AppData\Local\Temp\ccXVyJ7c.s 			page 12
+ARM GAS  C:\Users\umber\AppData\Local\Temp\cc1GsGOU.s 			page 12
 
 
  141 0000 014B     		ldr	r3, .L14
@@ -667,7 +667,7 @@ ARM GAS  C:\Users\umber\AppData\Local\Temp\ccXVyJ7c.s 			page 1
  144              	.L15:
  145 0006 00BF     		.align	2
  146              	.L14:
- 147 0008 4B640040 		.word	1073767499
+ 147 0008 4C640040 		.word	1073767500
  148              		.cfi_endproc
  149              	.LFE7:
  150              		.size	PWM_LED_WritePeriod, .-PWM_LED_WritePeriod
@@ -718,7 +718,7 @@ ARM GAS  C:\Users\umber\AppData\Local\Temp\ccXVyJ7c.s 			page 1
  164              	.LVL2:
  519:Generated_Source\PSoC5/PWM_LED.c ****         #if(PWM_LED_UsingFixedFunction)
  520:Generated_Source\PSoC5/PWM_LED.c ****             CY_SET_REG16(PWM_LED_COMPARE1_LSB_PTR, (uint16)compare);
-ARM GAS  C:\Users\umber\AppData\Local\Temp\ccXVyJ7c.s 			page 13
+ARM GAS  C:\Users\umber\AppData\Local\Temp\cc1GsGOU.s 			page 13
 
 
  521:Generated_Source\PSoC5/PWM_LED.c ****         #else
@@ -730,7 +730,7 @@ ARM GAS  C:\Users\umber\AppData\Local\Temp\ccXVyJ7c.s 			page 1
  169              	.L18:
  170 0006 00BF     		.align	2
  171              	.L17:
- 172 0008 2B640040 		.word	1073767467
+ 172 0008 2C640040 		.word	1073767468
  173              		.cfi_endproc
  174              	.LFE8:
  175              		.size	PWM_LED_WriteCompare, .-PWM_LED_WriteCompare
@@ -778,7 +778,7 @@ ARM GAS  C:\Users\umber\AppData\Local\Temp\ccXVyJ7c.s 			page 1
  556:Generated_Source\PSoC5/PWM_LED.c ****                                         
  557:Generated_Source\PSoC5/PWM_LED.c ****     {
  558:Generated_Source\PSoC5/PWM_LED.c ****         #if(PWM_LED_UsingFixedFunction)
-ARM GAS  C:\Users\umber\AppData\Local\Temp\ccXVyJ7c.s 			page 14
+ARM GAS  C:\Users\umber\AppData\Local\Temp\cc1GsGOU.s 			page 14
 
 
  559:Generated_Source\PSoC5/PWM_LED.c ****             CY_SET_REG16(PWM_LED_COMPARE1_LSB_PTR, (uint16)compare);
@@ -838,7 +838,7 @@ ARM GAS  C:\Users\umber\AppData\Local\Temp\ccXVyJ7c.s 			page 1
  613:Generated_Source\PSoC5/PWM_LED.c ****     {
  614:Generated_Source\PSoC5/PWM_LED.c ****         /* If using the Dead Band 1-255 mode then just write the register */
  615:Generated_Source\PSoC5/PWM_LED.c ****         #if(!PWM_LED_DeadBand2_4)
-ARM GAS  C:\Users\umber\AppData\Local\Temp\ccXVyJ7c.s 			page 15
+ARM GAS  C:\Users\umber\AppData\Local\Temp\cc1GsGOU.s 			page 15
 
 
  616:Generated_Source\PSoC5/PWM_LED.c ****             CY_SET_REG8(PWM_LED_DEADBAND_COUNT_PTR, deadtime);
@@ -898,7 +898,7 @@ ARM GAS  C:\Users\umber\AppData\Local\Temp\ccXVyJ7c.s 			page 1
  670:Generated_Source\PSoC5/PWM_LED.c ****     * Function Name: PWM_LED_SetInterruptMode
  671:Generated_Source\PSoC5/PWM_LED.c ****     ********************************************************************************
  672:Generated_Source\PSoC5/PWM_LED.c ****     *
-ARM GAS  C:\Users\umber\AppData\Local\Temp\ccXVyJ7c.s 			page 16
+ARM GAS  C:\Users\umber\AppData\Local\Temp\cc1GsGOU.s 			page 16
 
 
  673:Generated_Source\PSoC5/PWM_LED.c ****     * Summary:
@@ -928,7 +928,7 @@ ARM GAS  C:\Users\umber\AppData\Local\Temp\ccXVyJ7c.s 			page 1
  194              	.L21:
  195 0006 00BF     		.align	2
  196              	.L20:
- 197 0008 8B640040 		.word	1073767563
+ 197 0008 8C640040 		.word	1073767564
  198              		.cfi_endproc
  199              	.LFE9:
  200              		.size	PWM_LED_SetInterruptMode, .-PWM_LED_SetInterruptMode
@@ -958,7 +958,7 @@ ARM GAS  C:\Users\umber\AppData\Local\Temp\ccXVyJ7c.s 			page 1
  702:Generated_Source\PSoC5/PWM_LED.c ****     *  [7:6] : Unused(0)
  703:Generated_Source\PSoC5/PWM_LED.c ****     *  [5]   : Kill event output
  704:Generated_Source\PSoC5/PWM_LED.c ****     *  [4]   : FIFO not empty
-ARM GAS  C:\Users\umber\AppData\Local\Temp\ccXVyJ7c.s 			page 17
+ARM GAS  C:\Users\umber\AppData\Local\Temp\cc1GsGOU.s 			page 17
 
 
  705:Generated_Source\PSoC5/PWM_LED.c ****     *  [3]   : FIFO full
@@ -984,7 +984,7 @@ ARM GAS  C:\Users\umber\AppData\Local\Temp\ccXVyJ7c.s 			page 1
  219              	.L24:
  220 0006 00BF     		.align	2
  221              	.L23:
- 222 0008 6B640040 		.word	1073767531
+ 222 0008 6C640040 		.word	1073767532
  223              		.cfi_endproc
  224              	.LFE10:
  225              		.size	PWM_LED_ReadStatusRegister, .-PWM_LED_ReadStatusRegister
@@ -1018,7 +1018,7 @@ ARM GAS  C:\Users\umber\AppData\Local\Temp\ccXVyJ7c.s 			page 1
  734:Generated_Source\PSoC5/PWM_LED.c ****     *  uint8 : Current control register value
  735:Generated_Source\PSoC5/PWM_LED.c ****     *
  736:Generated_Source\PSoC5/PWM_LED.c ****     *******************************************************************************/
-ARM GAS  C:\Users\umber\AppData\Local\Temp\ccXVyJ7c.s 			page 18
+ARM GAS  C:\Users\umber\AppData\Local\Temp\cc1GsGOU.s 			page 18
 
 
  737:Generated_Source\PSoC5/PWM_LED.c ****     uint8 PWM_LED_ReadControlRegister(void) 
@@ -1042,7 +1042,7 @@ ARM GAS  C:\Users\umber\AppData\Local\Temp\ccXVyJ7c.s 			page 1
  245              	.L27:
  246 0006 00BF     		.align	2
  247              	.L26:
- 248 0008 7B640040 		.word	1073767547
+ 248 0008 7C640040 		.word	1073767548
  249              		.cfi_endproc
  250              	.LFE11:
  251              		.size	PWM_LED_ReadControlRegister, .-PWM_LED_ReadControlRegister
@@ -1078,7 +1078,7 @@ ARM GAS  C:\Users\umber\AppData\Local\Temp\ccXVyJ7c.s 			page 1
  765:Generated_Source\PSoC5/PWM_LED.c ****     void PWM_LED_WriteControlRegister(uint8 control) 
  766:Generated_Source\PSoC5/PWM_LED.c ****     {
  260              		.loc 1 766 0
-ARM GAS  C:\Users\umber\AppData\Local\Temp\ccXVyJ7c.s 			page 19
+ARM GAS  C:\Users\umber\AppData\Local\Temp\cc1GsGOU.s 			page 19
 
 
  261              		.cfi_startproc
@@ -1094,7 +1094,7 @@ ARM GAS  C:\Users\umber\AppData\Local\Temp\ccXVyJ7c.s 			page 1
  270              	.L30:
  271 0006 00BF     		.align	2
  272              	.L29:
- 273 0008 7B640040 		.word	1073767547
+ 273 0008 7C640040 		.word	1073767548
  274              		.cfi_endproc
  275              	.LFE12:
  276              		.size	PWM_LED_WriteControlRegister, .-PWM_LED_WriteControlRegister
@@ -1138,7 +1138,7 @@ ARM GAS  C:\Users\umber\AppData\Local\Temp\ccXVyJ7c.s 			page 1
  792:Generated_Source\PSoC5/PWM_LED.c ****         return (CY_GET_REG8(PWM_LED_CAPTURE_LSB_PTR));
  290              		.loc 1 792 0
  291 0000 014B     		ldr	r3, .L32
-ARM GAS  C:\Users\umber\AppData\Local\Temp\ccXVyJ7c.s 			page 20
+ARM GAS  C:\Users\umber\AppData\Local\Temp\cc1GsGOU.s 			page 20
 
 
  292 0002 1878     		ldrb	r0, [r3]	@ zero_extendqisi2
@@ -1148,7 +1148,7 @@ ARM GAS  C:\Users\umber\AppData\Local\Temp\ccXVyJ7c.s 			page 1
  295              	.L33:
  296 0006 00BF     		.align	2
  297              	.L32:
- 298 0008 5B640040 		.word	1073767515
+ 298 0008 5C640040 		.word	1073767516
  299              		.cfi_endproc
  300              	.LFE13:
  301              		.size	PWM_LED_ReadCapture, .-PWM_LED_ReadCapture
@@ -1198,7 +1198,7 @@ ARM GAS  C:\Users\umber\AppData\Local\Temp\ccXVyJ7c.s 			page 1
  340              		.type	PWM_LED_Init, %function
  341              	PWM_LED_Init:
  342              	.LFB1:
-ARM GAS  C:\Users\umber\AppData\Local\Temp\ccXVyJ7c.s 			page 21
+ARM GAS  C:\Users\umber\AppData\Local\Temp\cc1GsGOU.s 			page 21
 
 
   85:Generated_Source\PSoC5/PWM_LED.c ****     #if (PWM_LED_UsingFixedFunction || PWM_LED_UseControl)
@@ -1258,7 +1258,7 @@ ARM GAS  C:\Users\umber\AppData\Local\Temp\ccXVyJ7c.s 			page 1
  387 003c 2370     		strb	r3, [r4]
  172:Generated_Source\PSoC5/PWM_LED.c **** 
  388              		.loc 1 172 0
-ARM GAS  C:\Users\umber\AppData\Local\Temp\ccXVyJ7c.s 			page 22
+ARM GAS  C:\Users\umber\AppData\Local\Temp\cc1GsGOU.s 			page 22
 
 
  389 003e FFF7FEFF 		bl	CyExitCriticalSection
@@ -1271,8 +1271,8 @@ ARM GAS  C:\Users\umber\AppData\Local\Temp\ccXVyJ7c.s 			page 1
  395              	.L41:
  396              		.align	2
  397              	.L40:
- 398 0048 7B640040 		.word	1073767547
- 399 004c 9B640040 		.word	1073767579
+ 398 0048 7C640040 		.word	1073767548
+ 399 004c 9C640040 		.word	1073767580
  400              		.cfi_endproc
  401              	.LFE1:
  402              		.size	PWM_LED_Init, .-PWM_LED_Init
@@ -1318,7 +1318,7 @@ ARM GAS  C:\Users\umber\AppData\Local\Temp\ccXVyJ7c.s 			page 1
  437              	.L45:
  438 0018 00000000 		.word	.LANCHOR0
  439              		.cfi_endproc
-ARM GAS  C:\Users\umber\AppData\Local\Temp\ccXVyJ7c.s 			page 23
+ARM GAS  C:\Users\umber\AppData\Local\Temp\cc1GsGOU.s 			page 23
 
 
  440              	.LFE0:
@@ -1374,11 +1374,11 @@ ARM GAS  C:\Users\umber\AppData\Local\Temp\ccXVyJ7c.s 			page 1
  460              	.L49:
  461 0006 00BF     		.align	2
  462              	.L48:
- 463 0008 2B640040 		.word	1073767467
+ 463 0008 2C640040 		.word	1073767468
  464              		.cfi_endproc
  465              	.LFE14:
  466              		.size	PWM_LED_ReadCompare, .-PWM_LED_ReadCompare
-ARM GAS  C:\Users\umber\AppData\Local\Temp\ccXVyJ7c.s 			page 24
+ARM GAS  C:\Users\umber\AppData\Local\Temp\cc1GsGOU.s 			page 24
 
 
  467              		.section	.text.PWM_LED_ReadPeriod,"ax",%progbits
@@ -1438,7 +1438,7 @@ ARM GAS  C:\Users\umber\AppData\Local\Temp\ccXVyJ7c.s 			page 1
  870:Generated_Source\PSoC5/PWM_LED.c **** /*******************************************************************************
  871:Generated_Source\PSoC5/PWM_LED.c **** * Function Name: PWM_LED_ReadPeriod
  872:Generated_Source\PSoC5/PWM_LED.c **** ********************************************************************************
-ARM GAS  C:\Users\umber\AppData\Local\Temp\ccXVyJ7c.s 			page 25
+ARM GAS  C:\Users\umber\AppData\Local\Temp\cc1GsGOU.s 			page 25
 
 
  873:Generated_Source\PSoC5/PWM_LED.c **** *
@@ -1473,7 +1473,7 @@ ARM GAS  C:\Users\umber\AppData\Local\Temp\ccXVyJ7c.s 			page 1
  485              	.L52:
  486 0006 00BF     		.align	2
  487              	.L51:
- 488 0008 4B640040 		.word	1073767499
+ 488 0008 4C640040 		.word	1073767500
  489              		.cfi_endproc
  490              	.LFE15:
  491              		.size	PWM_LED_ReadPeriod, .-PWM_LED_ReadPeriod
@@ -1495,28 +1495,28 @@ ARM GAS  C:\Users\umber\AppData\Local\Temp\ccXVyJ7c.s 			page 1
  507 0006 00000000 		.4byte	.Ldebug_abbrev0
  508 000a 04       		.byte	0x4
  509 000b 01       		.uleb128 0x1
- 510 000c 0E010000 		.4byte	.LASF41
+ 510 000c BE000000 		.4byte	.LASF41
  511 0010 0C       		.byte	0xc
- 512 0011 D5020000 		.4byte	.LASF42
-ARM GAS  C:\Users\umber\AppData\Local\Temp\ccXVyJ7c.s 			page 26
+ 512 0011 85020000 		.4byte	.LASF42
+ARM GAS  C:\Users\umber\AppData\Local\Temp\cc1GsGOU.s 			page 26
 
 
- 513 0015 66000000 		.4byte	.LASF43
+ 513 0015 A6020000 		.4byte	.LASF43
  514 0019 00000000 		.4byte	.Ldebug_ranges0+0
  515 001d 00000000 		.4byte	0
  516 0021 00000000 		.4byte	.Ldebug_line0
  517 0025 02       		.uleb128 0x2
  518 0026 01       		.byte	0x1
  519 0027 06       		.byte	0x6
- 520 0028 42030000 		.4byte	.LASF0
+ 520 0028 9B030000 		.4byte	.LASF0
  521 002c 02       		.uleb128 0x2
  522 002d 01       		.byte	0x1
  523 002e 08       		.byte	0x8
- 524 002f 00010000 		.4byte	.LASF1
+ 524 002f B0000000 		.4byte	.LASF1
  525 0033 02       		.uleb128 0x2
  526 0034 02       		.byte	0x2
  527 0035 05       		.byte	0x5
- 528 0036 F6020000 		.4byte	.LASF2
+ 528 0036 4F030000 		.4byte	.LASF2
  529 003a 02       		.uleb128 0x2
  530 003b 02       		.byte	0x2
  531 003c 07       		.byte	0x7
@@ -1524,19 +1524,19 @@ ARM GAS  C:\Users\umber\AppData\Local\Temp\ccXVyJ7c.s 			page 1
  533 0041 02       		.uleb128 0x2
  534 0042 04       		.byte	0x4
  535 0043 05       		.byte	0x5
- 536 0044 1A030000 		.4byte	.LASF4
+ 536 0044 73030000 		.4byte	.LASF4
  537 0048 02       		.uleb128 0x2
  538 0049 04       		.byte	0x4
  539 004a 07       		.byte	0x7
- 540 004b BD010000 		.4byte	.LASF5
+ 540 004b 6D010000 		.4byte	.LASF5
  541 004f 02       		.uleb128 0x2
  542 0050 08       		.byte	0x8
  543 0051 05       		.byte	0x5
- 544 0052 B9020000 		.4byte	.LASF6
+ 544 0052 69020000 		.4byte	.LASF6
  545 0056 02       		.uleb128 0x2
  546 0057 08       		.byte	0x8
  547 0058 07       		.byte	0x7
- 548 0059 E9000000 		.4byte	.LASF7
+ 548 0059 99000000 		.4byte	.LASF7
  549 005d 03       		.uleb128 0x3
  550 005e 04       		.byte	0x4
  551 005f 05       		.byte	0x5
@@ -1544,21 +1544,21 @@ ARM GAS  C:\Users\umber\AppData\Local\Temp\ccXVyJ7c.s 			page 1
  553 0064 02       		.uleb128 0x2
  554 0065 04       		.byte	0x4
  555 0066 07       		.byte	0x7
- 556 0067 48020000 		.4byte	.LASF8
+ 556 0067 F8010000 		.4byte	.LASF8
  557 006b 04       		.uleb128 0x4
- 558 006c CF010000 		.4byte	.LASF12
+ 558 006c 7F010000 		.4byte	.LASF12
  559 0070 02       		.byte	0x2
  560 0071 E901     		.2byte	0x1e9
  561 0073 2C000000 		.4byte	0x2c
  562 0077 02       		.uleb128 0x2
  563 0078 04       		.byte	0x4
  564 0079 04       		.byte	0x4
- 565 007a DB000000 		.4byte	.LASF9
+ 565 007a 8B000000 		.4byte	.LASF9
  566 007e 02       		.uleb128 0x2
  567 007f 08       		.byte	0x8
  568 0080 04       		.byte	0x4
- 569 0081 FD010000 		.4byte	.LASF10
-ARM GAS  C:\Users\umber\AppData\Local\Temp\ccXVyJ7c.s 			page 27
+ 569 0081 AD010000 		.4byte	.LASF10
+ARM GAS  C:\Users\umber\AppData\Local\Temp\cc1GsGOU.s 			page 27
 
 
  570 0085 02       		.uleb128 0x2
@@ -1566,7 +1566,7 @@ ARM GAS  C:\Users\umber\AppData\Local\Temp\ccXVyJ7c.s 			page 1
  572 0087 08       		.byte	0x8
  573 0088 1C000000 		.4byte	.LASF11
  574 008c 04       		.uleb128 0x4
- 575 008d A9010000 		.4byte	.LASF13
+ 575 008d 59010000 		.4byte	.LASF13
  576 0091 02       		.byte	0x2
  577 0092 9302     		.2byte	0x293
  578 0094 98000000 		.4byte	0x98
@@ -1575,13 +1575,13 @@ ARM GAS  C:\Users\umber\AppData\Local\Temp\ccXVyJ7c.s 			page 1
  581 009d 02       		.uleb128 0x2
  582 009e 08       		.byte	0x8
  583 009f 04       		.byte	0x4
- 584 00a0 36030000 		.4byte	.LASF14
+ 584 00a0 8F030000 		.4byte	.LASF14
  585 00a4 02       		.uleb128 0x2
  586 00a5 04       		.byte	0x4
  587 00a6 07       		.byte	0x7
- 588 00a7 B0020000 		.4byte	.LASF15
+ 588 00a7 60020000 		.4byte	.LASF15
  589 00ab 06       		.uleb128 0x6
- 590 00ac AE010000 		.4byte	.LASF16
+ 590 00ac 5E010000 		.4byte	.LASF16
  591 00b0 01       		.byte	0x1
  592 00b1 C7       		.byte	0xc7
  593 00b2 00000000 		.4byte	.LFB2
@@ -1589,7 +1589,7 @@ ARM GAS  C:\Users\umber\AppData\Local\Temp\ccXVyJ7c.s 			page 1
  595 00ba 01       		.uleb128 0x1
  596 00bb 9C       		.byte	0x9c
  597 00bc 06       		.uleb128 0x6
- 598 00bd 8F020000 		.4byte	.LASF17
+ 598 00bd 3F020000 		.4byte	.LASF17
  599 00c1 01       		.byte	0x1
  600 00c2 E9       		.byte	0xe9
  601 00c3 00000000 		.4byte	.LFB3
@@ -1597,7 +1597,7 @@ ARM GAS  C:\Users\umber\AppData\Local\Temp\ccXVyJ7c.s 			page 1
  603 00cb 01       		.uleb128 0x1
  604 00cc 9C       		.byte	0x9c
  605 00cd 07       		.uleb128 0x7
- 606 00ce B6000000 		.4byte	.LASF18
+ 606 00ce 66000000 		.4byte	.LASF18
  607 00d2 01       		.byte	0x1
  608 00d3 9301     		.2byte	0x193
  609 00d5 00000000 		.4byte	.LFB4
@@ -1606,7 +1606,7 @@ ARM GAS  C:\Users\umber\AppData\Local\Temp\ccXVyJ7c.s 			page 1
  612 00de 9C       		.byte	0x9c
  613 00df F2000000 		.4byte	0xf2
  614 00e3 08       		.uleb128 0x8
- 615 00e4 E1000000 		.4byte	.LASF20
+ 615 00e4 91000000 		.4byte	.LASF20
  616 00e8 01       		.byte	0x1
  617 00e9 9301     		.2byte	0x193
  618 00eb 6B000000 		.4byte	0x6b
@@ -1614,11 +1614,11 @@ ARM GAS  C:\Users\umber\AppData\Local\Temp\ccXVyJ7c.s 			page 1
  620 00f0 50       		.byte	0x50
  621 00f1 00       		.byte	0
  622 00f2 09       		.uleb128 0x9
- 623 00f3 9C020000 		.4byte	.LASF26
+ 623 00f3 4C020000 		.4byte	.LASF26
  624 00f7 01       		.byte	0x1
  625 00f8 A901     		.2byte	0x1a9
  626 00fa 6B000000 		.4byte	0x6b
-ARM GAS  C:\Users\umber\AppData\Local\Temp\ccXVyJ7c.s 			page 28
+ARM GAS  C:\Users\umber\AppData\Local\Temp\cc1GsGOU.s 			page 28
 
 
  627 00fe 00000000 		.4byte	.LFB5
@@ -1626,7 +1626,7 @@ ARM GAS  C:\Users\umber\AppData\Local\Temp\ccXVyJ7c.s 			page 1
  629 0106 01       		.uleb128 0x1
  630 0107 9C       		.byte	0x9c
  631 0108 07       		.uleb128 0x7
- 632 0109 04020000 		.4byte	.LASF19
+ 632 0109 B4010000 		.4byte	.LASF19
  633 010d 01       		.byte	0x1
  634 010e E201     		.2byte	0x1e2
  635 0110 00000000 		.4byte	.LFB7
@@ -1643,7 +1643,7 @@ ARM GAS  C:\Users\umber\AppData\Local\Temp\ccXVyJ7c.s 			page 1
  646 012b 50       		.byte	0x50
  647 012c 00       		.byte	0
  648 012d 07       		.uleb128 0x7
- 649 012e 00030000 		.4byte	.LASF22
+ 649 012e 59030000 		.4byte	.LASF22
  650 0132 01       		.byte	0x1
  651 0133 0402     		.2byte	0x204
  652 0135 00000000 		.4byte	.LFB8
@@ -1652,7 +1652,7 @@ ARM GAS  C:\Users\umber\AppData\Local\Temp\ccXVyJ7c.s 			page 1
  655 013e 9C       		.byte	0x9c
  656 013f 52010000 		.4byte	0x152
  657 0143 08       		.uleb128 0x8
- 658 0144 4E030000 		.4byte	.LASF23
+ 658 0144 A7030000 		.4byte	.LASF23
  659 0148 01       		.byte	0x1
  660 0149 0402     		.2byte	0x204
  661 014b 6B000000 		.4byte	0x6b
@@ -1660,7 +1660,7 @@ ARM GAS  C:\Users\umber\AppData\Local\Temp\ccXVyJ7c.s 			page 1
  663 0150 50       		.byte	0x50
  664 0151 00       		.byte	0
  665 0152 07       		.uleb128 0x7
- 666 0153 18020000 		.4byte	.LASF24
+ 666 0153 C8010000 		.4byte	.LASF24
  667 0157 01       		.byte	0x1
  668 0158 AC02     		.2byte	0x2ac
  669 015a 00000000 		.4byte	.LFB9
@@ -1669,7 +1669,7 @@ ARM GAS  C:\Users\umber\AppData\Local\Temp\ccXVyJ7c.s 			page 1
  672 0163 9C       		.byte	0x9c
  673 0164 77010000 		.4byte	0x177
  674 0168 08       		.uleb128 0x8
- 675 0169 C7020000 		.4byte	.LASF25
+ 675 0169 77020000 		.4byte	.LASF25
  676 016d 01       		.byte	0x1
  677 016e AC02     		.2byte	0x2ac
  678 0170 6B000000 		.4byte	0x6b
@@ -1677,8 +1677,8 @@ ARM GAS  C:\Users\umber\AppData\Local\Temp\ccXVyJ7c.s 			page 1
  680 0175 50       		.byte	0x50
  681 0176 00       		.byte	0
  682 0177 09       		.uleb128 0x9
- 683 0178 6A030000 		.4byte	.LASF27
-ARM GAS  C:\Users\umber\AppData\Local\Temp\ccXVyJ7c.s 			page 29
+ 683 0178 C3030000 		.4byte	.LASF27
+ARM GAS  C:\Users\umber\AppData\Local\Temp\cc1GsGOU.s 			page 29
 
 
  684 017c 01       		.byte	0x1
@@ -1699,7 +1699,7 @@ ARM GAS  C:\Users\umber\AppData\Local\Temp\ccXVyJ7c.s 			page 1
  699 01a2 9C       		.byte	0x9c
  700 01a3 B6010000 		.4byte	0x1b6
  701 01a7 0B       		.uleb128 0xb
- 702 01a8 6B020000 		.4byte	.LASF33
+ 702 01a8 1B020000 		.4byte	.LASF33
  703 01ac 01       		.byte	0x1
  704 01ad E302     		.2byte	0x2e3
  705 01af 6B000000 		.4byte	0x6b
@@ -1707,7 +1707,7 @@ ARM GAS  C:\Users\umber\AppData\Local\Temp\ccXVyJ7c.s 			page 1
  707 01b4 50       		.byte	0x50
  708 01b5 00       		.byte	0
  709 01b6 07       		.uleb128 0x7
- 710 01b7 72020000 		.4byte	.LASF28
+ 710 01b7 22020000 		.4byte	.LASF28
  711 01bb 01       		.byte	0x1
  712 01bc FD02     		.2byte	0x2fd
  713 01be 00000000 		.4byte	.LFB12
@@ -1716,7 +1716,7 @@ ARM GAS  C:\Users\umber\AppData\Local\Temp\ccXVyJ7c.s 			page 1
  716 01c7 9C       		.byte	0x9c
  717 01c8 DB010000 		.4byte	0x1db
  718 01cc 08       		.uleb128 0x8
- 719 01cd D5010000 		.4byte	.LASF29
+ 719 01cd 85010000 		.4byte	.LASF29
  720 01d1 01       		.byte	0x1
  721 01d2 FD02     		.2byte	0x2fd
  722 01d4 6B000000 		.4byte	0x6b
@@ -1733,12 +1733,12 @@ ARM GAS  C:\Users\umber\AppData\Local\Temp\ccXVyJ7c.s 			page 1
  733 01ef 01       		.uleb128 0x1
  734 01f0 9C       		.byte	0x9c
  735 01f1 07       		.uleb128 0x7
- 736 01f2 EB010000 		.4byte	.LASF31
+ 736 01f2 9B010000 		.4byte	.LASF31
  737 01f6 01       		.byte	0x1
  738 01f7 C501     		.2byte	0x1c5
  739 01f9 00000000 		.4byte	.LFB6
  740 01fd 14000000 		.4byte	.LFE6-.LFB6
-ARM GAS  C:\Users\umber\AppData\Local\Temp\ccXVyJ7c.s 			page 30
+ARM GAS  C:\Users\umber\AppData\Local\Temp\cc1GsGOU.s 			page 30
 
 
  741 0201 01       		.uleb128 0x1
@@ -1752,7 +1752,7 @@ ARM GAS  C:\Users\umber\AppData\Local\Temp\ccXVyJ7c.s 			page 1
  749 0215 77010000 		.4byte	0x177
  750 0219 00       		.byte	0
  751 021a 0D       		.uleb128 0xd
- 752 021b 9C010000 		.4byte	.LASF32
+ 752 021b 4C010000 		.4byte	.LASF32
  753 021f 01       		.byte	0x1
  754 0220 54       		.byte	0x54
  755 0221 00000000 		.4byte	.LFB1
@@ -1761,7 +1761,7 @@ ARM GAS  C:\Users\umber\AppData\Local\Temp\ccXVyJ7c.s 			page 1
  758 022a 9C       		.byte	0x9c
  759 022b B8020000 		.4byte	0x2b8
  760 022f 0E       		.uleb128 0xe
- 761 0230 15030000 		.4byte	.LASF34
+ 761 0230 6E030000 		.4byte	.LASF34
  762 0234 01       		.byte	0x1
  763 0235 57       		.byte	0x57
  764 0236 6B000000 		.4byte	0x6b
@@ -1798,7 +1798,7 @@ ARM GAS  C:\Users\umber\AppData\Local\Temp\ccXVyJ7c.s 			page 1
  795 0276 2C000000 		.4byte	.LVL12
  796 027a 2D010000 		.4byte	0x12d
  797 027e 89020000 		.4byte	0x289
-ARM GAS  C:\Users\umber\AppData\Local\Temp\ccXVyJ7c.s 			page 31
+ARM GAS  C:\Users\umber\AppData\Local\Temp\cc1GsGOU.s 			page 31
 
 
  798 0282 10       		.uleb128 0x10
@@ -1829,7 +1829,7 @@ ARM GAS  C:\Users\umber\AppData\Local\Temp\ccXVyJ7c.s 			page 1
  823 02b3 F1010000 		.4byte	0x1f1
  824 02b7 00       		.byte	0
  825 02b8 0D       		.uleb128 0xd
- 826 02b9 DD010000 		.4byte	.LASF36
+ 826 02b9 8D010000 		.4byte	.LASF36
  827 02bd 01       		.byte	0x1
  828 02be 37       		.byte	0x37
  829 02bf 00000000 		.4byte	.LFB0
@@ -1845,7 +1845,7 @@ ARM GAS  C:\Users\umber\AppData\Local\Temp\ccXVyJ7c.s 			page 1
  839 02db AB000000 		.4byte	0xab
  840 02df 00       		.byte	0
  841 02e0 09       		.uleb128 0x9
- 842 02e1 56030000 		.4byte	.LASF37
+ 842 02e1 AF030000 		.4byte	.LASF37
  843 02e5 01       		.byte	0x1
  844 02e6 3003     		.2byte	0x330
  845 02e8 6B000000 		.4byte	0x6b
@@ -1854,11 +1854,11 @@ ARM GAS  C:\Users\umber\AppData\Local\Temp\ccXVyJ7c.s 			page 1
  848 02f4 01       		.uleb128 0x1
  849 02f5 9C       		.byte	0x9c
  850 02f6 09       		.uleb128 0x9
- 851 02f7 23030000 		.4byte	.LASF38
+ 851 02f7 7C030000 		.4byte	.LASF38
  852 02fb 01       		.byte	0x1
  853 02fc 7403     		.2byte	0x374
  854 02fe 6B000000 		.4byte	0x6b
-ARM GAS  C:\Users\umber\AppData\Local\Temp\ccXVyJ7c.s 			page 32
+ARM GAS  C:\Users\umber\AppData\Local\Temp\cc1GsGOU.s 			page 32
 
 
  855 0302 00000000 		.4byte	.LFB15
@@ -1866,7 +1866,7 @@ ARM GAS  C:\Users\umber\AppData\Local\Temp\ccXVyJ7c.s 			page 1
  857 030a 01       		.uleb128 0x1
  858 030b 9C       		.byte	0x9c
  859 030c 11       		.uleb128 0x11
- 860 030d CB000000 		.4byte	.LASF45
+ 860 030d 7B000000 		.4byte	.LASF45
  861 0311 01       		.byte	0x1
  862 0312 20       		.byte	0x20
  863 0313 6B000000 		.4byte	0x6b
@@ -1874,13 +1874,13 @@ ARM GAS  C:\Users\umber\AppData\Local\Temp\ccXVyJ7c.s 			page 1
  865 0318 03       		.byte	0x3
  866 0319 00000000 		.4byte	PWM_LED_initVar
  867 031d 12       		.uleb128 0x12
- 868 031e 31020000 		.4byte	.LASF39
- 869 0322 31020000 		.4byte	.LASF39
+ 868 031e E1010000 		.4byte	.LASF39
+ 869 0322 E1010000 		.4byte	.LASF39
  870 0326 03       		.byte	0x3
  871 0327 7D       		.byte	0x7d
  872 0328 12       		.uleb128 0x12
- 873 0329 55020000 		.4byte	.LASF40
- 874 032d 55020000 		.4byte	.LASF40
+ 873 0329 05020000 		.4byte	.LASF40
+ 874 032d 05020000 		.4byte	.LASF40
  875 0331 03       		.byte	0x3
  876 0332 7E       		.byte	0x7e
  877 0333 00       		.byte	0
@@ -1918,7 +1918,7 @@ ARM GAS  C:\Users\umber\AppData\Local\Temp\ccXVyJ7c.s 			page 1
  909 001d 00       		.byte	0
  910 001e 03       		.uleb128 0x3
  911 001f 24       		.uleb128 0x24
-ARM GAS  C:\Users\umber\AppData\Local\Temp\ccXVyJ7c.s 			page 33
+ARM GAS  C:\Users\umber\AppData\Local\Temp\cc1GsGOU.s 			page 33
 
 
  912 0020 00       		.byte	0
@@ -1978,7 +1978,7 @@ ARM GAS  C:\Users\umber\AppData\Local\Temp\ccXVyJ7c.s 			page 1
  966 0057 01       		.byte	0x1
  967 0058 3F       		.uleb128 0x3f
  968 0059 19       		.uleb128 0x19
-ARM GAS  C:\Users\umber\AppData\Local\Temp\ccXVyJ7c.s 			page 34
+ARM GAS  C:\Users\umber\AppData\Local\Temp\cc1GsGOU.s 			page 34
 
 
  969 005a 03       		.uleb128 0x3
@@ -2038,7 +2038,7 @@ ARM GAS  C:\Users\umber\AppData\Local\Temp\ccXVyJ7c.s 			page 1
  1023 0091 40       		.uleb128 0x40
  1024 0092 18       		.uleb128 0x18
  1025 0093 9742     		.uleb128 0x2117
-ARM GAS  C:\Users\umber\AppData\Local\Temp\ccXVyJ7c.s 			page 35
+ARM GAS  C:\Users\umber\AppData\Local\Temp\cc1GsGOU.s 			page 35
 
 
  1026 0095 19       		.uleb128 0x19
@@ -2098,7 +2098,7 @@ ARM GAS  C:\Users\umber\AppData\Local\Temp\ccXVyJ7c.s 			page 1
  1080 00ce 0D       		.uleb128 0xd
  1081 00cf 2E       		.uleb128 0x2e
  1082 00d0 01       		.byte	0x1
-ARM GAS  C:\Users\umber\AppData\Local\Temp\ccXVyJ7c.s 			page 36
+ARM GAS  C:\Users\umber\AppData\Local\Temp\cc1GsGOU.s 			page 36
 
 
  1083 00d1 3F       		.uleb128 0x3f
@@ -2158,7 +2158,7 @@ ARM GAS  C:\Users\umber\AppData\Local\Temp\ccXVyJ7c.s 			page 1
  1137 010d 18       		.uleb128 0x18
  1138 010e 00       		.byte	0
  1139 010f 00       		.byte	0
-ARM GAS  C:\Users\umber\AppData\Local\Temp\ccXVyJ7c.s 			page 37
+ARM GAS  C:\Users\umber\AppData\Local\Temp\cc1GsGOU.s 			page 37
 
 
  1140 0110 11       		.uleb128 0x11
@@ -2218,7 +2218,7 @@ ARM GAS  C:\Users\umber\AppData\Local\Temp\ccXVyJ7c.s 			page 1
  1194 0006 00000000 		.4byte	.Ldebug_info0
  1195 000a 04       		.byte	0x4
  1196 000b 00       		.byte	0
-ARM GAS  C:\Users\umber\AppData\Local\Temp\ccXVyJ7c.s 			page 38
+ARM GAS  C:\Users\umber\AppData\Local\Temp\cc1GsGOU.s 			page 38
 
 
  1197 000c 0000     		.2byte	0
@@ -2278,7 +2278,7 @@ ARM GAS  C:\Users\umber\AppData\Local\Temp\ccXVyJ7c.s 			page 1
  1251 0040 00000000 		.4byte	.LFB11
  1252 0044 0C000000 		.4byte	.LFE11
  1253 0048 00000000 		.4byte	.LFB12
-ARM GAS  C:\Users\umber\AppData\Local\Temp\ccXVyJ7c.s 			page 39
+ARM GAS  C:\Users\umber\AppData\Local\Temp\cc1GsGOU.s 			page 39
 
 
  1254 004c 0C000000 		.4byte	.LFE12
@@ -2333,225 +2333,235 @@ ARM GAS  C:\Users\umber\AppData\Local\Temp\ccXVyJ7c.s 			page 1
  1283      7369676E 
  1283      65642069 
  1283      6E7400
- 1284              	.LASF43:
- 1285 0066 433A5C55 		.ascii	"C:\\Users\\umber\\Downloads\\AY2122_II_Project-4\\P"
- 1285      73657273 
- 1285      5C756D62 
- 1285      65725C44 
-ARM GAS  C:\Users\umber\AppData\Local\Temp\ccXVyJ7c.s 			page 40
+ 1284              	.LASF18:
+ 1285 0066 50574D5F 		.ascii	"PWM_LED_WriteCounter\000"
+ 1285      4C45445F 
+ 1285      57726974 
+ 1285      65436F75 
+ARM GAS  C:\Users\umber\AppData\Local\Temp\cc1GsGOU.s 			page 40
 
 
- 1285      6F776E6C 
- 1286 0094 536F4320 		.ascii	"SoC Code\\AY2122_II\\Project4.cydsn\000"
- 1286      436F6465 
- 1286      5C415932 
- 1286      3132325F 
- 1286      49495C50 
- 1287              	.LASF18:
- 1288 00b6 50574D5F 		.ascii	"PWM_LED_WriteCounter\000"
- 1288      4C45445F 
- 1288      57726974 
- 1288      65436F75 
- 1288      6E746572 
- 1289              	.LASF45:
- 1290 00cb 50574D5F 		.ascii	"PWM_LED_initVar\000"
- 1290      4C45445F 
- 1290      696E6974 
- 1290      56617200 
- 1291              	.LASF9:
- 1292 00db 666C6F61 		.ascii	"float\000"
- 1292      7400
- 1293              	.LASF20:
- 1294 00e1 636F756E 		.ascii	"counter\000"
- 1294      74657200 
- 1295              	.LASF7:
- 1296 00e9 6C6F6E67 		.ascii	"long long unsigned int\000"
- 1296      206C6F6E 
- 1296      6720756E 
- 1296      7369676E 
- 1296      65642069 
- 1297              	.LASF1:
- 1298 0100 756E7369 		.ascii	"unsigned char\000"
- 1298      676E6564 
- 1298      20636861 
- 1298      7200
- 1299              	.LASF41:
- 1300 010e 474E5520 		.ascii	"GNU C11 5.4.1 20160609 (release) [ARM/embedded-5-br"
- 1300      43313120 
- 1300      352E342E 
- 1300      31203230 
- 1300      31363036 
- 1301 0141 616E6368 		.ascii	"anch revision 237715] -mcpu=cortex-m3 -mthumb -g -O"
- 1301      20726576 
- 1301      6973696F 
- 1301      6E203233 
- 1301      37373135 
- 1302 0174 67202D66 		.ascii	"g -ffunction-sections -ffat-lto-objects\000"
- 1302      66756E63 
- 1302      74696F6E 
- 1302      2D736563 
- 1302      74696F6E 
- 1303              	.LASF32:
- 1304 019c 50574D5F 		.ascii	"PWM_LED_Init\000"
- 1304      4C45445F 
- 1304      496E6974 
- 1304      00
- 1305              	.LASF13:
- 1306 01a9 72656738 		.ascii	"reg8\000"
-ARM GAS  C:\Users\umber\AppData\Local\Temp\ccXVyJ7c.s 			page 41
+ 1285      6E746572 
+ 1286              	.LASF45:
+ 1287 007b 50574D5F 		.ascii	"PWM_LED_initVar\000"
+ 1287      4C45445F 
+ 1287      696E6974 
+ 1287      56617200 
+ 1288              	.LASF9:
+ 1289 008b 666C6F61 		.ascii	"float\000"
+ 1289      7400
+ 1290              	.LASF20:
+ 1291 0091 636F756E 		.ascii	"counter\000"
+ 1291      74657200 
+ 1292              	.LASF7:
+ 1293 0099 6C6F6E67 		.ascii	"long long unsigned int\000"
+ 1293      206C6F6E 
+ 1293      6720756E 
+ 1293      7369676E 
+ 1293      65642069 
+ 1294              	.LASF1:
+ 1295 00b0 756E7369 		.ascii	"unsigned char\000"
+ 1295      676E6564 
+ 1295      20636861 
+ 1295      7200
+ 1296              	.LASF41:
+ 1297 00be 474E5520 		.ascii	"GNU C11 5.4.1 20160609 (release) [ARM/embedded-5-br"
+ 1297      43313120 
+ 1297      352E342E 
+ 1297      31203230 
+ 1297      31363036 
+ 1298 00f1 616E6368 		.ascii	"anch revision 237715] -mcpu=cortex-m3 -mthumb -g -O"
+ 1298      20726576 
+ 1298      6973696F 
+ 1298      6E203233 
+ 1298      37373135 
+ 1299 0124 67202D66 		.ascii	"g -ffunction-sections -ffat-lto-objects\000"
+ 1299      66756E63 
+ 1299      74696F6E 
+ 1299      2D736563 
+ 1299      74696F6E 
+ 1300              	.LASF32:
+ 1301 014c 50574D5F 		.ascii	"PWM_LED_Init\000"
+ 1301      4C45445F 
+ 1301      496E6974 
+ 1301      00
+ 1302              	.LASF13:
+ 1303 0159 72656738 		.ascii	"reg8\000"
+ 1303      00
+ 1304              	.LASF16:
+ 1305 015e 50574D5F 		.ascii	"PWM_LED_Enable\000"
+ 1305      4C45445F 
+ 1305      456E6162 
+ 1305      6C6500
+ 1306              	.LASF5:
+ 1307 016d 6C6F6E67 		.ascii	"long unsigned int\000"
+ 1307      20756E73 
+ 1307      69676E65 
+ 1307      6420696E 
+ARM GAS  C:\Users\umber\AppData\Local\Temp\cc1GsGOU.s 			page 41
 
 
- 1306      00
- 1307              	.LASF16:
- 1308 01ae 50574D5F 		.ascii	"PWM_LED_Enable\000"
- 1308      4C45445F 
- 1308      456E6162 
- 1308      6C6500
- 1309              	.LASF5:
- 1310 01bd 6C6F6E67 		.ascii	"long unsigned int\000"
- 1310      20756E73 
- 1310      69676E65 
- 1310      6420696E 
- 1310      7400
- 1311              	.LASF12:
- 1312 01cf 75696E74 		.ascii	"uint8\000"
- 1312      3800
- 1313              	.LASF29:
- 1314 01d5 636F6E74 		.ascii	"control\000"
- 1314      726F6C00 
- 1315              	.LASF36:
- 1316 01dd 50574D5F 		.ascii	"PWM_LED_Start\000"
- 1316      4C45445F 
- 1316      53746172 
- 1316      7400
- 1317              	.LASF31:
- 1318 01eb 50574D5F 		.ascii	"PWM_LED_ClearFIFO\000"
- 1318      4C45445F 
- 1318      436C6561 
- 1318      72464946 
- 1318      4F00
- 1319              	.LASF10:
- 1320 01fd 646F7562 		.ascii	"double\000"
- 1320      6C6500
- 1321              	.LASF19:
- 1322 0204 50574D5F 		.ascii	"PWM_LED_WritePeriod\000"
- 1322      4C45445F 
- 1322      57726974 
- 1322      65506572 
- 1322      696F6400 
- 1323              	.LASF24:
- 1324 0218 50574D5F 		.ascii	"PWM_LED_SetInterruptMode\000"
- 1324      4C45445F 
- 1324      53657449 
- 1324      6E746572 
- 1324      72757074 
- 1325              	.LASF39:
- 1326 0231 4379456E 		.ascii	"CyEnterCriticalSection\000"
- 1326      74657243 
- 1326      72697469 
- 1326      63616C53 
- 1326      65637469 
- 1327              	.LASF8:
- 1328 0248 756E7369 		.ascii	"unsigned int\000"
- 1328      676E6564 
- 1328      20696E74 
- 1328      00
- 1329              	.LASF40:
- 1330 0255 43794578 		.ascii	"CyExitCriticalSection\000"
-ARM GAS  C:\Users\umber\AppData\Local\Temp\ccXVyJ7c.s 			page 42
+ 1307      7400
+ 1308              	.LASF12:
+ 1309 017f 75696E74 		.ascii	"uint8\000"
+ 1309      3800
+ 1310              	.LASF29:
+ 1311 0185 636F6E74 		.ascii	"control\000"
+ 1311      726F6C00 
+ 1312              	.LASF36:
+ 1313 018d 50574D5F 		.ascii	"PWM_LED_Start\000"
+ 1313      4C45445F 
+ 1313      53746172 
+ 1313      7400
+ 1314              	.LASF31:
+ 1315 019b 50574D5F 		.ascii	"PWM_LED_ClearFIFO\000"
+ 1315      4C45445F 
+ 1315      436C6561 
+ 1315      72464946 
+ 1315      4F00
+ 1316              	.LASF10:
+ 1317 01ad 646F7562 		.ascii	"double\000"
+ 1317      6C6500
+ 1318              	.LASF19:
+ 1319 01b4 50574D5F 		.ascii	"PWM_LED_WritePeriod\000"
+ 1319      4C45445F 
+ 1319      57726974 
+ 1319      65506572 
+ 1319      696F6400 
+ 1320              	.LASF24:
+ 1321 01c8 50574D5F 		.ascii	"PWM_LED_SetInterruptMode\000"
+ 1321      4C45445F 
+ 1321      53657449 
+ 1321      6E746572 
+ 1321      72757074 
+ 1322              	.LASF39:
+ 1323 01e1 4379456E 		.ascii	"CyEnterCriticalSection\000"
+ 1323      74657243 
+ 1323      72697469 
+ 1323      63616C53 
+ 1323      65637469 
+ 1324              	.LASF8:
+ 1325 01f8 756E7369 		.ascii	"unsigned int\000"
+ 1325      676E6564 
+ 1325      20696E74 
+ 1325      00
+ 1326              	.LASF40:
+ 1327 0205 43794578 		.ascii	"CyExitCriticalSection\000"
+ 1327      69744372 
+ 1327      69746963 
+ 1327      616C5365 
+ 1327      6374696F 
+ 1328              	.LASF33:
+ 1329 021b 72657375 		.ascii	"result\000"
+ 1329      6C7400
+ 1330              	.LASF28:
+ 1331 0222 50574D5F 		.ascii	"PWM_LED_WriteControlRegister\000"
+ 1331      4C45445F 
+ 1331      57726974 
+ARM GAS  C:\Users\umber\AppData\Local\Temp\cc1GsGOU.s 			page 42
 
 
- 1330      69744372 
- 1330      69746963 
- 1330      616C5365 
- 1330      6374696F 
- 1331              	.LASF33:
- 1332 026b 72657375 		.ascii	"result\000"
- 1332      6C7400
- 1333              	.LASF28:
- 1334 0272 50574D5F 		.ascii	"PWM_LED_WriteControlRegister\000"
- 1334      4C45445F 
- 1334      57726974 
- 1334      65436F6E 
- 1334      74726F6C 
- 1335              	.LASF17:
- 1336 028f 50574D5F 		.ascii	"PWM_LED_Stop\000"
- 1336      4C45445F 
- 1336      53746F70 
- 1336      00
- 1337              	.LASF26:
- 1338 029c 50574D5F 		.ascii	"PWM_LED_ReadCounter\000"
- 1338      4C45445F 
- 1338      52656164 
- 1338      436F756E 
- 1338      74657200 
- 1339              	.LASF15:
- 1340 02b0 73697A65 		.ascii	"sizetype\000"
- 1340      74797065 
- 1340      00
- 1341              	.LASF6:
- 1342 02b9 6C6F6E67 		.ascii	"long long int\000"
- 1342      206C6F6E 
- 1342      6720696E 
- 1342      7400
- 1343              	.LASF25:
- 1344 02c7 696E7465 		.ascii	"interruptMode\000"
- 1344      72727570 
- 1344      744D6F64 
- 1344      6500
- 1345              	.LASF42:
- 1346 02d5 47656E65 		.ascii	"Generated_Source\\PSoC5\\PWM_LED.c\000"
- 1346      72617465 
- 1346      645F536F 
- 1346      75726365 
- 1346      5C50536F 
- 1347              	.LASF2:
- 1348 02f6 73686F72 		.ascii	"short int\000"
- 1348      7420696E 
- 1348      7400
- 1349              	.LASF22:
- 1350 0300 50574D5F 		.ascii	"PWM_LED_WriteCompare\000"
- 1350      4C45445F 
- 1350      57726974 
- 1350      65436F6D 
- 1350      70617265 
- 1351              	.LASF34:
- 1352 0315 6374726C 		.ascii	"ctrl\000"
- 1352      00
-ARM GAS  C:\Users\umber\AppData\Local\Temp\ccXVyJ7c.s 			page 43
+ 1331      65436F6E 
+ 1331      74726F6C 
+ 1332              	.LASF17:
+ 1333 023f 50574D5F 		.ascii	"PWM_LED_Stop\000"
+ 1333      4C45445F 
+ 1333      53746F70 
+ 1333      00
+ 1334              	.LASF26:
+ 1335 024c 50574D5F 		.ascii	"PWM_LED_ReadCounter\000"
+ 1335      4C45445F 
+ 1335      52656164 
+ 1335      436F756E 
+ 1335      74657200 
+ 1336              	.LASF15:
+ 1337 0260 73697A65 		.ascii	"sizetype\000"
+ 1337      74797065 
+ 1337      00
+ 1338              	.LASF6:
+ 1339 0269 6C6F6E67 		.ascii	"long long int\000"
+ 1339      206C6F6E 
+ 1339      6720696E 
+ 1339      7400
+ 1340              	.LASF25:
+ 1341 0277 696E7465 		.ascii	"interruptMode\000"
+ 1341      72727570 
+ 1341      744D6F64 
+ 1341      6500
+ 1342              	.LASF42:
+ 1343 0285 47656E65 		.ascii	"Generated_Source\\PSoC5\\PWM_LED.c\000"
+ 1343      72617465 
+ 1343      645F536F 
+ 1343      75726365 
+ 1343      5C50536F 
+ 1344              	.LASF43:
+ 1345 02a6 443A5C44 		.ascii	"D:\\Download\\AY2122_II_Project-4-ffbb298e331a02583"
+ 1345      6F776E6C 
+ 1345      6F61645C 
+ 1345      41593231 
+ 1345      32325F49 
+ 1346 02d7 30373439 		.ascii	"0749630a0214264f461f654\\AY2122_II_Project-4-ffbb29"
+ 1346      36333061 
+ 1346      30323134 
+ 1346      32363466 
+ 1346      34363166 
+ 1347 0309 38653333 		.ascii	"8e331a025830749630a0214264f461f654\\PSoC Code\\AY21"
+ 1347      31613032 
+ 1347      35383330 
+ 1347      37343936 
+ 1347      33306130 
+ 1348 033a 32325F49 		.ascii	"22_II\\Project4.cydsn\000"
+ 1348      495C5072 
+ 1348      6F6A6563 
+ 1348      74342E63 
+ 1348      7964736E 
+ 1349              	.LASF2:
+ 1350 034f 73686F72 		.ascii	"short int\000"
+ 1350      7420696E 
+ARM GAS  C:\Users\umber\AppData\Local\Temp\cc1GsGOU.s 			page 43
 
 
- 1353              	.LASF4:
- 1354 031a 6C6F6E67 		.ascii	"long int\000"
- 1354      20696E74 
+ 1350      7400
+ 1351              	.LASF22:
+ 1352 0359 50574D5F 		.ascii	"PWM_LED_WriteCompare\000"
+ 1352      4C45445F 
+ 1352      57726974 
+ 1352      65436F6D 
+ 1352      70617265 
+ 1353              	.LASF34:
+ 1354 036e 6374726C 		.ascii	"ctrl\000"
  1354      00
- 1355              	.LASF38:
- 1356 0323 50574D5F 		.ascii	"PWM_LED_ReadPeriod\000"
- 1356      4C45445F 
- 1356      52656164 
- 1356      50657269 
- 1356      6F6400
- 1357              	.LASF14:
- 1358 0336 6C6F6E67 		.ascii	"long double\000"
- 1358      20646F75 
- 1358      626C6500 
- 1359              	.LASF0:
- 1360 0342 7369676E 		.ascii	"signed char\000"
- 1360      65642063 
- 1360      68617200 
- 1361              	.LASF23:
- 1362 034e 636F6D70 		.ascii	"compare\000"
- 1362      61726500 
- 1363              	.LASF37:
- 1364 0356 50574D5F 		.ascii	"PWM_LED_ReadCompare\000"
- 1364      4C45445F 
- 1364      52656164 
- 1364      436F6D70 
+ 1355              	.LASF4:
+ 1356 0373 6C6F6E67 		.ascii	"long int\000"
+ 1356      20696E74 
+ 1356      00
+ 1357              	.LASF38:
+ 1358 037c 50574D5F 		.ascii	"PWM_LED_ReadPeriod\000"
+ 1358      4C45445F 
+ 1358      52656164 
+ 1358      50657269 
+ 1358      6F6400
+ 1359              	.LASF14:
+ 1360 038f 6C6F6E67 		.ascii	"long double\000"
+ 1360      20646F75 
+ 1360      626C6500 
+ 1361              	.LASF0:
+ 1362 039b 7369676E 		.ascii	"signed char\000"
+ 1362      65642063 
+ 1362      68617200 
+ 1363              	.LASF23:
+ 1364 03a7 636F6D70 		.ascii	"compare\000"
  1364      61726500 
- 1365              	.LASF27:
- 1366 036a 50574D5F 		.ascii	"PWM_LED_ReadStatusRegister\000"
+ 1365              	.LASF37:
+ 1366 03af 50574D5F 		.ascii	"PWM_LED_ReadCompare\000"
  1366      4C45445F 
  1366      52656164 
- 1366      53746174 
- 1366      75735265 
- 1367              		.ident	"GCC: (GNU Tools for ARM Embedded Processors) 5.4.1 20160609 (release) [ARM/embedded-5-bran
+ 1366      436F6D70 
+ 1366      61726500 
+ 1367              	.LASF27:
+ 1368 03c3 50574D5F 		.ascii	"PWM_LED_ReadStatusRegister\000"
+ 1368      4C45445F 
+ 1368      52656164 
+ 1368      53746174 
+ 1368      75735265 
+ 1369              		.ident	"GCC: (GNU Tools for ARM Embedded Processors) 5.4.1 20160609 (release) [ARM/embedded-5-bran

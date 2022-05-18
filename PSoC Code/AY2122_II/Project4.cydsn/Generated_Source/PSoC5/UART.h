@@ -350,7 +350,7 @@ extern uint8 UART_initVar;
 
 /* UART shifts max 8 bits, Mark/Space functionality working if 9 selected */
 #define UART_NUMBER_OF_DATA_BITS    ((8u > 8u) ? 8u : 8u)
-#define UART_NUMBER_OF_STOP_BITS    (2u)
+#define UART_NUMBER_OF_STOP_BITS    (1u)
 
 #if (UART_RXHW_ADDRESS_ENABLED)
     #define UART_RX_ADDRESS_MODE    (0u)
@@ -359,7 +359,7 @@ extern uint8 UART_initVar;
 #endif /* (UART_RXHW_ADDRESS_ENABLED) */
 
 #define UART_INIT_RX_INTERRUPTS_MASK \
-                                  (uint8)((1 << UART_RX_STS_FIFO_NOTEMPTY_SHIFT) \
+                                  (uint8)((0 << UART_RX_STS_FIFO_NOTEMPTY_SHIFT) \
                                         | (0 << UART_RX_STS_MRKSPC_SHIFT) \
                                         | (0 << UART_RX_STS_ADDR_MATCH_SHIFT) \
                                         | (0 << UART_RX_STS_PAR_ERROR_SHIFT) \

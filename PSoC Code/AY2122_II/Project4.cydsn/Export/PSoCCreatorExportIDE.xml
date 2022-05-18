@@ -25,7 +25,7 @@
       <Tool Name="postbuild" Command="" Options="" />
     </Toolchain>
   </Toolchains>
-  <Project Name="Project4" Path="C:\Users\umber\Downloads\AY2122_II_Project-4\PSoC Code\AY2122_II\Project4.cydsn" Version="6.10" Type="Normal">
+  <Project Name="Project4" Path="D:\Download\AY2122_II_Project-4-ffbb298e331a025830749630a0214264f461f654\AY2122_II_Project-4-ffbb298e331a025830749630a0214264f461f654\PSoC Code\AY2122_II\Project4.cydsn" Version="6.10" Type="Normal">
     <CMSIS_SVD_File>Project4.svd</CMSIS_SVD_File>
     <Datasheet />
     <LinkerFiles>
@@ -34,20 +34,18 @@
       <LinkerFile Toolchain="ARM IAR Generic">.\Generated_Source\PSoC5\Cm3Iar.icf</LinkerFile>
     </LinkerFiles>
     <Folders>
-      <Folder BuildType="STRICT" Path="C:\Users\umber\Downloads\AY2122_II_Project-4\PSoC Code\AY2122_II\Project4.cydsn">
-        <Files Root="C:\Users\umber\Downloads\AY2122_II_Project-4\PSoC Code\AY2122_II\Project4.cydsn">
+      <Folder BuildType="STRICT" Path="D:\Download\AY2122_II_Project-4-ffbb298e331a025830749630a0214264f461f654\AY2122_II_Project-4-ffbb298e331a025830749630a0214264f461f654\PSoC Code\AY2122_II\Project4.cydsn">
+        <Files Root="D:\Download\AY2122_II_Project-4-ffbb298e331a025830749630a0214264f461f654\AY2122_II_Project-4-ffbb298e331a025830749630a0214264f461f654\PSoC Code\AY2122_II\Project4.cydsn">
           <File BuildType="BUILD" Toolchain="">main.c</File>
           <File BuildType="BUILD" Toolchain="">I2C_Interface.c</File>
-          <File BuildType="BUILD" Toolchain="">InterruptRoutines.c</File>
           <File BuildType="BUILD" Toolchain="">cyapicallbacks.h</File>
           <File BuildType="BUILD" Toolchain="">I2C_Interface.h</File>
           <File BuildType="BUILD" Toolchain="">LIS3DH.h</File>
           <File BuildType="BUILD" Toolchain="">ErrorCodes.h</File>
-          <File BuildType="BUILD" Toolchain="">InterruptRoutines.h</File>
         </Files>
       </Folder>
-      <Folder BuildType="STRICT" Path="C:\Users\umber\Downloads\AY2122_II_Project-4\PSoC Code\AY2122_II\Project4.cydsn\Generated_Source\PSoC5">
-        <Files Root="C:\Users\umber\Downloads\AY2122_II_Project-4\PSoC Code\AY2122_II\Project4.cydsn">
+      <Folder BuildType="STRICT" Path="D:\Download\AY2122_II_Project-4-ffbb298e331a025830749630a0214264f461f654\AY2122_II_Project-4-ffbb298e331a025830749630a0214264f461f654\PSoC Code\AY2122_II\Project4.cydsn\Generated_Source\PSoC5">
+        <Files Root="D:\Download\AY2122_II_Project-4-ffbb298e331a025830749630a0214264f461f654\AY2122_II_Project-4-ffbb298e331a025830749630a0214264f461f654\PSoC Code\AY2122_II\Project4.cydsn">
           <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\cyfitter_cfg.h</File>
           <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\cyfitter_cfg.c</File>
           <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\cymetadata.c</File>
@@ -74,6 +72,11 @@
           <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\Timer_LED.c</File>
           <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\Timer_LED.h</File>
           <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\Timer_LED_PM.c</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\PWM_LED.c</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\PWM_LED.h</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\PWM_LED_PM.c</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\isr.c</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\isr.h</File>
           <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\I2C_Master.c</File>
           <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\I2C_Master.h</File>
           <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\I2C_Master_BOOT.c</File>
@@ -136,63 +139,52 @@
           <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\Pin_INT_aliases.h</File>
           <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\Pin_INT.c</File>
           <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\Pin_INT.h</File>
-          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\clock_read.c</File>
-          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\clock_read.h</File>
-          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\Timer_read.c</File>
-          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\Timer_read.h</File>
-          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\Timer_read_PM.c</File>
-          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\isr_read.c</File>
-          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\isr_read.h</File>
-          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\isr_RX.c</File>
-          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\isr_RX.h</File>
-          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\isr_LED.c</File>
-          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\isr_LED.h</File>
         </Files>
       </Folder>
-      <Folder BuildType="STRICT" Path="C:\Users\umber\Downloads\AY2122_II_Project-4\PSoC Code\AY2122_II\Project4.cydsn\Export\ARM_GCC_Generic">
-        <Files Root="C:\Users\umber\Downloads\AY2122_II_Project-4\PSoC Code\AY2122_II\Project4.cydsn">
+      <Folder BuildType="STRICT" Path="D:\Download\AY2122_II_Project-4-ffbb298e331a025830749630a0214264f461f654\AY2122_II_Project-4-ffbb298e331a025830749630a0214264f461f654\PSoC Code\AY2122_II\Project4.cydsn\Export\ARM_GCC_Generic">
+        <Files Root="D:\Download\AY2122_II_Project-4-ffbb298e331a025830749630a0214264f461f654\AY2122_II_Project-4-ffbb298e331a025830749630a0214264f461f654\PSoC Code\AY2122_II\Project4.cydsn">
           <File BuildType="BUILD" Toolchain="ARM GCC Generic">.\Export\ARM_GCC_Generic\CyComponentLibrary.a</File>
         </Files>
       </Folder>
-      <Folder BuildType="STRICT" Path="C:\Users\umber\Downloads\AY2122_II_Project-4\PSoC Code\AY2122_II\Project4.cydsn\Export\ARM_MDK_Generic">
-        <Files Root="C:\Users\umber\Downloads\AY2122_II_Project-4\PSoC Code\AY2122_II\Project4.cydsn">
+      <Folder BuildType="STRICT" Path="D:\Download\AY2122_II_Project-4-ffbb298e331a025830749630a0214264f461f654\AY2122_II_Project-4-ffbb298e331a025830749630a0214264f461f654\PSoC Code\AY2122_II\Project4.cydsn\Export\ARM_MDK_Generic">
+        <Files Root="D:\Download\AY2122_II_Project-4-ffbb298e331a025830749630a0214264f461f654\AY2122_II_Project-4-ffbb298e331a025830749630a0214264f461f654\PSoC Code\AY2122_II\Project4.cydsn">
           <File BuildType="BUILD" Toolchain="ARM MDK Generic">.\Export\ARM_MDK_Generic\CyComponentLibrary.a</File>
         </Files>
       </Folder>
-      <Folder BuildType="STRICT" Path="C:\Users\umber\Downloads\AY2122_II_Project-4\PSoC Code\AY2122_II\Project4.cydsn\Export\ARM_IAR_Generic">
-        <Files Root="C:\Users\umber\Downloads\AY2122_II_Project-4\PSoC Code\AY2122_II\Project4.cydsn">
+      <Folder BuildType="STRICT" Path="D:\Download\AY2122_II_Project-4-ffbb298e331a025830749630a0214264f461f654\AY2122_II_Project-4-ffbb298e331a025830749630a0214264f461f654\PSoC Code\AY2122_II\Project4.cydsn\Export\ARM_IAR_Generic">
+        <Files Root="D:\Download\AY2122_II_Project-4-ffbb298e331a025830749630a0214264f461f654\AY2122_II_Project-4-ffbb298e331a025830749630a0214264f461f654\PSoC Code\AY2122_II\Project4.cydsn">
           <File BuildType="BUILD" Toolchain="ARM IAR Generic">.\Export\ARM_IAR_Generic\CyComponentLibrary.a</File>
         </Files>
       </Folder>
       <Folder BuildType="EXCLUDE" Path=".\codegentemp">
-        <Files Root="C:\Users\umber\Downloads\AY2122_II_Project-4\PSoC Code\AY2122_II\Project4.cydsn" />
+        <Files Root="D:\Download\AY2122_II_Project-4-ffbb298e331a025830749630a0214264f461f654\AY2122_II_Project-4-ffbb298e331a025830749630a0214264f461f654\PSoC Code\AY2122_II\Project4.cydsn" />
       </Folder>
       <Folder BuildType="EXCLUDE" Path=".\ARM_GCC_441">
-        <Files Root="C:\Users\umber\Downloads\AY2122_II_Project-4\PSoC Code\AY2122_II\Project4.cydsn" />
+        <Files Root="D:\Download\AY2122_II_Project-4-ffbb298e331a025830749630a0214264f461f654\AY2122_II_Project-4-ffbb298e331a025830749630a0214264f461f654\PSoC Code\AY2122_II\Project4.cydsn" />
       </Folder>
       <Folder BuildType="EXCLUDE" Path=".\ARM_GCC_473">
-        <Files Root="C:\Users\umber\Downloads\AY2122_II_Project-4\PSoC Code\AY2122_II\Project4.cydsn" />
+        <Files Root="D:\Download\AY2122_II_Project-4-ffbb298e331a025830749630a0214264f461f654\AY2122_II_Project-4-ffbb298e331a025830749630a0214264f461f654\PSoC Code\AY2122_II\Project4.cydsn" />
       </Folder>
       <Folder BuildType="EXCLUDE" Path=".\DP8051_Keil_952">
-        <Files Root="C:\Users\umber\Downloads\AY2122_II_Project-4\PSoC Code\AY2122_II\Project4.cydsn" />
+        <Files Root="D:\Download\AY2122_II_Project-4-ffbb298e331a025830749630a0214264f461f654\AY2122_II_Project-4-ffbb298e331a025830749630a0214264f461f654\PSoC Code\AY2122_II\Project4.cydsn" />
       </Folder>
       <Folder BuildType="EXCLUDE" Path=".\DP8051">
-        <Files Root="C:\Users\umber\Downloads\AY2122_II_Project-4\PSoC Code\AY2122_II\Project4.cydsn" />
+        <Files Root="D:\Download\AY2122_II_Project-4-ffbb298e331a025830749630a0214264f461f654\AY2122_II_Project-4-ffbb298e331a025830749630a0214264f461f654\PSoC Code\AY2122_II\Project4.cydsn" />
       </Folder>
       <Folder BuildType="EXCLUDE" Path=".\CortexM0">
-        <Files Root="C:\Users\umber\Downloads\AY2122_II_Project-4\PSoC Code\AY2122_II\Project4.cydsn" />
+        <Files Root="D:\Download\AY2122_II_Project-4-ffbb298e331a025830749630a0214264f461f654\AY2122_II_Project-4-ffbb298e331a025830749630a0214264f461f654\PSoC Code\AY2122_II\Project4.cydsn" />
       </Folder>
       <Folder BuildType="EXCLUDE" Path=".\CortexM0p">
-        <Files Root="C:\Users\umber\Downloads\AY2122_II_Project-4\PSoC Code\AY2122_II\Project4.cydsn" />
+        <Files Root="D:\Download\AY2122_II_Project-4-ffbb298e331a025830749630a0214264f461f654\AY2122_II_Project-4-ffbb298e331a025830749630a0214264f461f654\PSoC Code\AY2122_II\Project4.cydsn" />
       </Folder>
       <Folder BuildType="EXCLUDE" Path=".\CortexM3">
-        <Files Root="C:\Users\umber\Downloads\AY2122_II_Project-4\PSoC Code\AY2122_II\Project4.cydsn" />
+        <Files Root="D:\Download\AY2122_II_Project-4-ffbb298e331a025830749630a0214264f461f654\AY2122_II_Project-4-ffbb298e331a025830749630a0214264f461f654\PSoC Code\AY2122_II\Project4.cydsn" />
       </Folder>
       <Folder BuildType="EXCLUDE" Path=".\CortexM4">
-        <Files Root="C:\Users\umber\Downloads\AY2122_II_Project-4\PSoC Code\AY2122_II\Project4.cydsn" />
+        <Files Root="D:\Download\AY2122_II_Project-4-ffbb298e331a025830749630a0214264f461f654\AY2122_II_Project-4-ffbb298e331a025830749630a0214264f461f654\PSoC Code\AY2122_II\Project4.cydsn" />
       </Folder>
       <Folder BuildType="EXCLUDE" Path=".\CortexM7">
-        <Files Root="C:\Users\umber\Downloads\AY2122_II_Project-4\PSoC Code\AY2122_II\Project4.cydsn" />
+        <Files Root="D:\Download\AY2122_II_Project-4-ffbb298e331a025830749630a0214264f461f654\AY2122_II_Project-4-ffbb298e331a025830749630a0214264f461f654\PSoC Code\AY2122_II\Project4.cydsn" />
       </Folder>
     </Folders>
   </Project>

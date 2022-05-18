@@ -13,7 +13,7 @@
 <v>Output</v>
 </TreeKeys>
 <TreeStates>
-<CyGuid_2a325b3b-c96a-4e9f-b7a0-2c44ecb5f237 type_name="CyDesigner.Common.Base.Controls.CyTreeViewState" version="1" SelectedNodeId="">
+<CyGuid_2a325b3b-c96a-4e9f-b7a0-2c44ecb5f237 type_name="CyDesigner.Common.Base.Controls.CyTreeViewState" version="1" SelectedNodeId="AY2122_II\Project4\Header Files\LIS3DH.h">
 <ExpandedNodeIds>
 <v>AY2122_II</v>
 <v>AY2122_II\Project4</v>
@@ -32,11 +32,9 @@
 <v>AY2122_II\Project4\Header Files\cyapicallbacks.h</v>
 <v>AY2122_II\Project4\Header Files\ErrorCodes.h</v>
 <v>AY2122_II\Project4\Header Files\I2C_Interface.h</v>
-<v>AY2122_II\Project4\Header Files\InterruptRoutines.h</v>
 <v>AY2122_II\Project4\Header Files\LIS3DH.h</v>
 <v>AY2122_II\Project4\Source Files</v>
 <v>AY2122_II\Project4\Source Files\I2C_Interface.c</v>
-<v>AY2122_II\Project4\Source Files\InterruptRoutines.c</v>
 <v>AY2122_II\Project4\Source Files\main.c</v>
 <v>AY2122_II\Project4\Generated_Source\PSoC5</v>
 </ExpandedNodeIds>
@@ -58,11 +56,9 @@
 <v>AY2122_II\Project4\Header Files\cyapicallbacks.h</v>
 <v>AY2122_II\Project4\Header Files\ErrorCodes.h</v>
 <v>AY2122_II\Project4\Header Files\I2C_Interface.h</v>
-<v>AY2122_II\Project4\Header Files\InterruptRoutines.h</v>
 <v>AY2122_II\Project4\Header Files\LIS3DH.h</v>
 <v>AY2122_II\Project4\Source Files</v>
 <v>AY2122_II\Project4\Source Files\I2C_Interface.c</v>
-<v>AY2122_II\Project4\Source Files\InterruptRoutines.c</v>
 <v>AY2122_II\Project4\Source Files\main.c</v>
 <v>AY2122_II\Project4\Generated_Source</v>
 </VisibleNodeIds>
@@ -89,7 +85,6 @@
 <v>AY2122_II\Project4\CortexM3\ARM_GCC_541</v>
 <v>AY2122_II\Project4\CortexM3\ARM_GCC_541\Debug</v>
 <v>AY2122_II\Project4\CortexM3\ARM_GCC_541\Debug\Listing Files</v>
-<v>AY2122_II\Project4\CortexM3\ARM_GCC_541\Debug\Listing Files\clock_read.lst</v>
 <v>AY2122_II\Project4\CortexM3\ARM_GCC_541\Debug\Listing Files\Cm3Start.lst</v>
 <v>AY2122_II\Project4\CortexM3\ARM_GCC_541\Debug\Listing Files\cy_em_eeprom.lst</v>
 <v>AY2122_II\Project4\CortexM3\ARM_GCC_541\Debug\Listing Files\CyBootAsmGnu.lst</v>
@@ -108,20 +103,17 @@
 <v>AY2122_II\Project4\CortexM3\ARM_GCC_541\Debug\Listing Files\I2C_Master_MASTER.lst</v>
 <v>AY2122_II\Project4\CortexM3\ARM_GCC_541\Debug\Listing Files\I2C_Master_PM.lst</v>
 <v>AY2122_II\Project4\CortexM3\ARM_GCC_541\Debug\Listing Files\I2C_Master_SLAVE.lst</v>
-<v>AY2122_II\Project4\CortexM3\ARM_GCC_541\Debug\Listing Files\InterruptRoutines.lst</v>
-<v>AY2122_II\Project4\CortexM3\ARM_GCC_541\Debug\Listing Files\isr_LED.lst</v>
-<v>AY2122_II\Project4\CortexM3\ARM_GCC_541\Debug\Listing Files\isr_read.lst</v>
-<v>AY2122_II\Project4\CortexM3\ARM_GCC_541\Debug\Listing Files\isr_RX.lst</v>
+<v>AY2122_II\Project4\CortexM3\ARM_GCC_541\Debug\Listing Files\isr.lst</v>
 <v>AY2122_II\Project4\CortexM3\ARM_GCC_541\Debug\Listing Files\main.lst</v>
 <v>AY2122_II\Project4\CortexM3\ARM_GCC_541\Debug\Listing Files\Pin_INT.lst</v>
 <v>AY2122_II\Project4\CortexM3\ARM_GCC_541\Debug\Listing Files\Pin_LED.lst</v>
+<v>AY2122_II\Project4\CortexM3\ARM_GCC_541\Debug\Listing Files\PWM_LED.lst</v>
+<v>AY2122_II\Project4\CortexM3\ARM_GCC_541\Debug\Listing Files\PWM_LED_PM.lst</v>
 <v>AY2122_II\Project4\CortexM3\ARM_GCC_541\Debug\Listing Files\SCL.lst</v>
 <v>AY2122_II\Project4\CortexM3\ARM_GCC_541\Debug\Listing Files\SDA.lst</v>
 <v>AY2122_II\Project4\CortexM3\ARM_GCC_541\Debug\Listing Files\timer_clock.lst</v>
 <v>AY2122_II\Project4\CortexM3\ARM_GCC_541\Debug\Listing Files\Timer_LED.lst</v>
 <v>AY2122_II\Project4\CortexM3\ARM_GCC_541\Debug\Listing Files\Timer_LED_PM.lst</v>
-<v>AY2122_II\Project4\CortexM3\ARM_GCC_541\Debug\Listing Files\Timer_read.lst</v>
-<v>AY2122_II\Project4\CortexM3\ARM_GCC_541\Debug\Listing Files\Timer_read_PM.lst</v>
 <v>AY2122_II\Project4\CortexM3\ARM_GCC_541\Debug\Listing Files\UART.lst</v>
 <v>AY2122_II\Project4\CortexM3\ARM_GCC_541\Debug\Listing Files\UART_BOOT.lst</v>
 <v>AY2122_II\Project4\CortexM3\ARM_GCC_541\Debug\Listing Files\UART_BT.lst</v>
@@ -146,7 +138,6 @@
 <v>AY2122_II\Project4\CortexM3\ARM_GCC_541</v>
 <v>AY2122_II\Project4\CortexM3\ARM_GCC_541\Debug</v>
 <v>AY2122_II\Project4\CortexM3\ARM_GCC_541\Debug\Listing Files</v>
-<v>AY2122_II\Project4\CortexM3\ARM_GCC_541\Debug\Listing Files\clock_read.lst</v>
 <v>AY2122_II\Project4\CortexM3\ARM_GCC_541\Debug\Listing Files\Cm3Start.lst</v>
 <v>AY2122_II\Project4\CortexM3\ARM_GCC_541\Debug\Listing Files\cy_em_eeprom.lst</v>
 <v>AY2122_II\Project4\CortexM3\ARM_GCC_541\Debug\Listing Files\CyBootAsmGnu.lst</v>
@@ -165,20 +156,17 @@
 <v>AY2122_II\Project4\CortexM3\ARM_GCC_541\Debug\Listing Files\I2C_Master_MASTER.lst</v>
 <v>AY2122_II\Project4\CortexM3\ARM_GCC_541\Debug\Listing Files\I2C_Master_PM.lst</v>
 <v>AY2122_II\Project4\CortexM3\ARM_GCC_541\Debug\Listing Files\I2C_Master_SLAVE.lst</v>
-<v>AY2122_II\Project4\CortexM3\ARM_GCC_541\Debug\Listing Files\InterruptRoutines.lst</v>
-<v>AY2122_II\Project4\CortexM3\ARM_GCC_541\Debug\Listing Files\isr_LED.lst</v>
-<v>AY2122_II\Project4\CortexM3\ARM_GCC_541\Debug\Listing Files\isr_read.lst</v>
-<v>AY2122_II\Project4\CortexM3\ARM_GCC_541\Debug\Listing Files\isr_RX.lst</v>
+<v>AY2122_II\Project4\CortexM3\ARM_GCC_541\Debug\Listing Files\isr.lst</v>
 <v>AY2122_II\Project4\CortexM3\ARM_GCC_541\Debug\Listing Files\main.lst</v>
 <v>AY2122_II\Project4\CortexM3\ARM_GCC_541\Debug\Listing Files\Pin_INT.lst</v>
 <v>AY2122_II\Project4\CortexM3\ARM_GCC_541\Debug\Listing Files\Pin_LED.lst</v>
+<v>AY2122_II\Project4\CortexM3\ARM_GCC_541\Debug\Listing Files\PWM_LED.lst</v>
+<v>AY2122_II\Project4\CortexM3\ARM_GCC_541\Debug\Listing Files\PWM_LED_PM.lst</v>
 <v>AY2122_II\Project4\CortexM3\ARM_GCC_541\Debug\Listing Files\SCL.lst</v>
 <v>AY2122_II\Project4\CortexM3\ARM_GCC_541\Debug\Listing Files\SDA.lst</v>
 <v>AY2122_II\Project4\CortexM3\ARM_GCC_541\Debug\Listing Files\timer_clock.lst</v>
 <v>AY2122_II\Project4\CortexM3\ARM_GCC_541\Debug\Listing Files\Timer_LED.lst</v>
 <v>AY2122_II\Project4\CortexM3\ARM_GCC_541\Debug\Listing Files\Timer_LED_PM.lst</v>
-<v>AY2122_II\Project4\CortexM3\ARM_GCC_541\Debug\Listing Files\Timer_read.lst</v>
-<v>AY2122_II\Project4\CortexM3\ARM_GCC_541\Debug\Listing Files\Timer_read_PM.lst</v>
 <v>AY2122_II\Project4\CortexM3\ARM_GCC_541\Debug\Listing Files\UART.lst</v>
 <v>AY2122_II\Project4\CortexM3\ARM_GCC_541\Debug\Listing Files\UART_BOOT.lst</v>
 <v>AY2122_II\Project4\CortexM3\ARM_GCC_541\Debug\Listing Files\UART_BT.lst</v>
@@ -210,20 +198,17 @@
 <v>AY2122_II\Project4\CY8C58LP Family Datasheet</v>
 <v>AY2122_II\Project4\System Reference Guides</v>
 <v>AY2122_II\Project4\System Reference Guides\cy_boot_v6_10</v>
-<v>AY2122_II\Project4\cy_clock_v2_20</v>
-<v>AY2122_II\Project4\cy_clock_v2_20\cy_clock_v2_20.pdf</v>
-<v>AY2122_II\Project4\cy_isr_v1_71</v>
-<v>AY2122_II\Project4\cy_isr_v1_71\cy_isr_v1_71.pdf</v>
+<v>AY2122_II\Project4\cy_clock_v2_20.pdf</v>
+<v>AY2122_II\Project4\cy_isr_v1_71.pdf</v>
 <v>AY2122_II\Project4\cy_pins_v2_20</v>
 <v>AY2122_II\Project4\cy_pins_v2_20\cy_pins_v2_20.pdf</v>
 <v>AY2122_II\Project4\I2C_v3_50.pdf</v>
 <v>AY2122_II\Project4\KIT-059_v1_0_A.pdf</v>
-<v>AY2122_II\Project4\Timer_v2_80</v>
-<v>AY2122_II\Project4\Timer_v2_80\Timer_v2_80.pdf</v>
+<v>AY2122_II\Project4\PWM_v3_30.pdf</v>
+<v>AY2122_II\Project4\Timer_v2_80.pdf</v>
 <v>AY2122_II\Project4\UART_v2_50</v>
 <v>AY2122_II\Project4\UART_v2_50\UART_v2_50.pdf</v>
-<v>AY2122_II\Project4\ZeroTerminal</v>
-<v>AY2122_II\Project4\ZeroTerminal\ZeroTerminal.pdf</v>
+<v>AY2122_II\Project4\ZeroTerminal.pdf</v>
 </ExpandedNodeIds>
 <VisibleNodeIds>
 <v>AY2122_II</v>
@@ -232,20 +217,17 @@
 <v>AY2122_II\Project4\CY8C58LP Family Datasheet</v>
 <v>AY2122_II\Project4\System Reference Guides</v>
 <v>AY2122_II\Project4\System Reference Guides\cy_boot_v6_10</v>
-<v>AY2122_II\Project4\cy_clock_v2_20</v>
-<v>AY2122_II\Project4\cy_clock_v2_20\cy_clock_v2_20.pdf</v>
-<v>AY2122_II\Project4\cy_isr_v1_71</v>
-<v>AY2122_II\Project4\cy_isr_v1_71\cy_isr_v1_71.pdf</v>
+<v>AY2122_II\Project4\cy_clock_v2_20.pdf</v>
+<v>AY2122_II\Project4\cy_isr_v1_71.pdf</v>
 <v>AY2122_II\Project4\cy_pins_v2_20</v>
 <v>AY2122_II\Project4\cy_pins_v2_20\cy_pins_v2_20.pdf</v>
 <v>AY2122_II\Project4\I2C_v3_50.pdf</v>
 <v>AY2122_II\Project4\KIT-059_v1_0_A.pdf</v>
-<v>AY2122_II\Project4\Timer_v2_80</v>
-<v>AY2122_II\Project4\Timer_v2_80\Timer_v2_80.pdf</v>
+<v>AY2122_II\Project4\PWM_v3_30.pdf</v>
+<v>AY2122_II\Project4\Timer_v2_80.pdf</v>
 <v>AY2122_II\Project4\UART_v2_50</v>
 <v>AY2122_II\Project4\UART_v2_50\UART_v2_50.pdf</v>
-<v>AY2122_II\Project4\ZeroTerminal</v>
-<v>AY2122_II\Project4\ZeroTerminal\ZeroTerminal.pdf</v>
+<v>AY2122_II\Project4\ZeroTerminal.pdf</v>
 </VisibleNodeIds>
 </CyGuid_2a325b3b-c96a-4e9f-b7a0-2c44ecb5f237>
 </TreeStatesV2>
@@ -262,10 +244,10 @@
 <CyGuid_5f2be1a5-0687-4501-bb8c-cf21cb8211bf type_name="CyDesigner.Common.ProjMgmt.GUI.CyBookmarkData" version="1">
 <indicators>
 <CyGuid_67999771-01c6-4f62-90b3-2054bb36a318 type_name="CyDesigner.Framework.CyBookmark" version="1">
-<CyGuid_a1027fc4-3497-43a6-85d7-b91ffa0029b7 type_name="CyDesigner.Framework.CySerializableMarginIndicator" version="1" LineNumber="26" DocumentName=".\Project4.cydsn\main.c" />
+<CyGuid_a1027fc4-3497-43a6-85d7-b91ffa0029b7 type_name="CyDesigner.Framework.CySerializableMarginIndicator" version="1" LineNumber="24" DocumentName=".\Project4.cydsn\main.c" />
 </CyGuid_67999771-01c6-4f62-90b3-2054bb36a318>
 <CyGuid_67999771-01c6-4f62-90b3-2054bb36a318 type_name="CyDesigner.Framework.CyBookmark" version="1">
-<CyGuid_a1027fc4-3497-43a6-85d7-b91ffa0029b7 type_name="CyDesigner.Framework.CySerializableMarginIndicator" version="1" LineNumber="29" DocumentName=".\Project4.cydsn\main.c" />
+<CyGuid_a1027fc4-3497-43a6-85d7-b91ffa0029b7 type_name="CyDesigner.Framework.CySerializableMarginIndicator" version="1" LineNumber="25" DocumentName=".\Project4.cydsn\main.c" />
 </CyGuid_67999771-01c6-4f62-90b3-2054bb36a318>
 </indicators>
 </CyGuid_5f2be1a5-0687-4501-bb8c-cf21cb8211bf>
@@ -275,11 +257,9 @@
 <Unloaded />
 <OpenDocs>
 <name v=".\Project4.cydsn\main.c" />
+<name v=".\Project4.cydsn\I2C_Interface.h" />
 <name v=".\Project4.cydsn\I2C_Interface.c" />
-<name v=".\Project4.cydsn\InterruptRoutines.c" />
-<name v=".\Project4.cydsn\InterruptRoutines.h" />
-<name v=".\Project4.cydsn\TopDesign\TopDesign.cysch" />
-<name v=".\Project4.cydsn\Project4.cydwr" />
+<name v=".\Project4.cydsn\LIS3DH.h" />
 </OpenDocs>
 <OpenDocsLayout><![CDATA[<?xml version="1.0"?><!--
 
@@ -287,7 +267,7 @@
   Copyright (c) 2001-2016 Actipro Software LLC.  All rights reserved.
   http://www.actiprosoftware.com
 
---><DocumentLayout Version="1.0"><LayoutData><TabbedMdiRootContainer Orientation="Horizontal"><TabbedMdiContainer Size="2079, 1081" SelectedTabbedMdiWindow="5ccbf128-df60-4440-adde-cd3740396b84"><DocumentWindow Key="C:\Users\umber\Downloads\AY2122_II_Project-4\PSoC Code\AY2122_II\Project4.cydsn\main.c" Guid="5ccbf128-df60-4440-adde-cd3740396b84" /><DocumentWindow Key="C:\Users\umber\Downloads\AY2122_II_Project-4\PSoC Code\AY2122_II\Project4.cydsn\I2C_Interface.c" Guid="d9a91cc8-5ffd-49e0-b79c-bcafe54ffb29" /><DocumentWindow Key="C:\Users\umber\Downloads\AY2122_II_Project-4\PSoC Code\AY2122_II\Project4.cydsn\InterruptRoutines.c" Guid="d7accacf-2c93-4c93-bd36-940080dc4f77" /><DocumentWindow Key="C:\Users\umber\Downloads\AY2122_II_Project-4\PSoC Code\AY2122_II\Project4.cydsn\InterruptRoutines.h" Guid="3f990484-c52b-430c-8316-b3bb134b673a" /><DocumentWindow Key="C:\Users\umber\Downloads\AY2122_II_Project-4\PSoC Code\AY2122_II\Project4.cydsn\TopDesign\TopDesign.cysch" Guid="c84f694e-ebf8-44b1-8d5c-dc3c54fe4457" /><DocumentWindow Key="C:\Users\umber\Downloads\AY2122_II_Project-4\PSoC Code\AY2122_II\Project4.cydsn\Project4.cydwr" Guid="9c5503f5-25e4-4a26-bf9a-ae463751a8a5" /></TabbedMdiContainer></TabbedMdiRootContainer><FloatingContainers /></LayoutData></DocumentLayout>]]></OpenDocsLayout>
+--><DocumentLayout Version="1.0"><LayoutData><TabbedMdiRootContainer Orientation="Horizontal"><TabbedMdiContainer Size="2039, 1089" SelectedTabbedMdiWindow="97bbdae2-4425-4b6c-a919-c69dcafdbf17"><ToolWindow Key="Start Page:bd4649ab-da6b-4d04-a663-c722b8bf99db:Start Page" Guid="8ab056a0-50af-48b3-9a46-63a501067250" /><DocumentWindow Key="D:\Download\AY2122_II_Project-4-ffbb298e331a025830749630a0214264f461f654\AY2122_II_Project-4-ffbb298e331a025830749630a0214264f461f654\PSoC Code\AY2122_II\Project4.cydsn\main.c" Guid="97bbdae2-4425-4b6c-a919-c69dcafdbf17" /><DocumentWindow Key="D:\Download\AY2122_II_Project-4-ffbb298e331a025830749630a0214264f461f654\AY2122_II_Project-4-ffbb298e331a025830749630a0214264f461f654\PSoC Code\AY2122_II\Project4.cydsn\I2C_Interface.h" Guid="df64c8c0-eecb-43a3-9f24-a84efd0c3f78" /><DocumentWindow Key="D:\Download\AY2122_II_Project-4-ffbb298e331a025830749630a0214264f461f654\AY2122_II_Project-4-ffbb298e331a025830749630a0214264f461f654\PSoC Code\AY2122_II\Project4.cydsn\I2C_Interface.c" Guid="39cacaa3-15d8-4c5c-8ea8-bbe4af07c7d7" /><DocumentWindow Key="D:\Download\AY2122_II_Project-4-ffbb298e331a025830749630a0214264f461f654\AY2122_II_Project-4-ffbb298e331a025830749630a0214264f461f654\PSoC Code\AY2122_II\Project4.cydsn\LIS3DH.h" Guid="1378685e-e3ea-4d3c-ad8d-4769cb3d975b" /></TabbedMdiContainer></TabbedMdiRootContainer><FloatingContainers /></LayoutData></DocumentLayout>]]></OpenDocsLayout>
 <config v="" />
 <AutoUpdate v="true" />
 </CyGuid_843a90a4-0c4b-4e44-991d-05e7fb117a21>

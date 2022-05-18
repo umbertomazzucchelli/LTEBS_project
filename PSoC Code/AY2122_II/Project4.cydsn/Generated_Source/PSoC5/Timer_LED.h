@@ -168,7 +168,7 @@ void Timer_LED_Wakeup(void)        ;
 *    Initialial Parameter Constants
 ***************************************/
 
-#define Timer_LED_INIT_PERIOD             499u
+#define Timer_LED_INIT_PERIOD             249u
 #define Timer_LED_INIT_CAPTURE_MODE       ((uint8)((uint8)1u << Timer_LED_CTRL_CAP_MODE_SHIFT))
 #define Timer_LED_INIT_TRIGGER_MODE       ((uint8)((uint8)0u << Timer_LED_CTRL_TRIG_MODE_SHIFT))
 #if (Timer_LED_UsingFixedFunction)

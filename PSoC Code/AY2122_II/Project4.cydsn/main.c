@@ -13,158 +13,159 @@
 #include "project.h"
 #include "I2C_Interface.h"
 #include "LIS3DH.h"
-#include "InterruptRoutines.h"
 
 // Set this to 1 to send byte data for the Bridge Control Panel
 // Otherwise set it to 0 to send temperature data as int16_t
 #define USE_BRIDGECONTROLPANEL  0
-uint8_t ovrnStatus = 0;
+uint8_t ovrnReady;
 uint8_t emptyBit;
 uint8_t reg;
 ErrorCode error;
 
-uint8_t regSetting;
-uint8_t regStatus;
-
 char message[50] = {'\0'};
-char deviceStatus;
-char oldDeviceStatus=0;
-char problem;
-
-float xAcc, yAcc, zAcc;
-//Data buffer
-uint8_t XData[2]; 
-uint8_t YData[2]; 
-uint8_t ZData[2]; 
-//Output  data
-int16 outZ;
-int16 outY;
-int16 outX;
-int count;
-
-int16 regCount = 192;
-uint8_t data[192];
-uint8_t fifoFull;
-int16 xData[32];
-int16 yData[32];
-int16 zData[32];
-
-uint8_t fifo_status;
 
 int main(void)
 {
     CyGlobalIntEnable; /* Enable global interrupts. */
-    
+
+    /* Place your initialization/startup code here (e.g. MyInst_Start()) */
     I2C_Peripheral_Start();
     UART_BT_Start();
     UART_Start();
-    //Timer_read_Start();
-    Timer_LED_Start();
-    isr_LED_StartEx(Custom_ISR_LED);
-    //isr_read_Start();
-    isr_RX_StartEx(Custom_ISR_RX);
     
-    deviceStart();
+    CyDelay(5); //"The boot procedure is complete about 5 ms after device power-up."
+    
+    printHeader();
+    
+    /******************************************/
+    /*            I2C Reading                 */
+    /******************************************/
+          
+    /*      I2C Master Read - WHOAMI Register       */
+    uint8_t whoami_reg=0x00;
+    readReg(whoami_reg,LIS3DH_WHO_AM_I_REG_ADDR);
     
     
-   
+    /*      I2C Master Read - STATUS Register       */
+    UART_PutString("\r\nStatus reg \r\n");
+    uint8_t status_reg=0x00;
+    readReg(status_reg,LIS3DH_STATUS_REG);
 
+    
+    /*      I2C Master Read - CTRL Register 1       */
+    UART_PutString("\r\nCTRL reg1 \r\n");
+    uint8_t control_reg=0x00;
+    readReg(control_reg, LIS3DH_CTRL_REG1);
+
+    /*      I2C Master Read - CTRL Register 3      */
+    UART_PutString("\r\nCTRL reg3 \r\n");
+    uint8_t control_reg_3=0x00;
+    readReg(control_reg_3, LIS3DH_CTRL_REG3);
+    
+    /*      I2C Master Read - CTRL Register 5       */
+    UART_PutString("\r\nCTRL reg5 \r\n");
+    uint8_t control_reg_5=0x00;
+    readReg(control_reg_5, LIS3DH_CTRL_REG5);
+
+    /*      I2C Master Read - FIFO CTRL Register     */
+    UART_PutString("\r\nFIFO REG \r\n");
+    uint8_t FIFO_control_reg=0x00;
+    readReg(FIFO_control_reg, LIS3DH_FIFO_CTRL_REG);
+   
+    
+    /******************************************/
+    /*       I2C Writing CTRL REG1            */
+    /******************************************/
+    
+    UART_PutString("\r\nSetting ctrl reg1 \r\n");
+    if (control_reg != LIS3DH_NORMAL_MODE_CTRL_REG1)
+    {
+        control_reg = LIS3DH_NORMAL_MODE_CTRL_REG1;
+        
+        setReg(control_reg,LIS3DH_CTRL_REG1);
+    }
+    
+    /******************************************/
+    /*     I2C Reading CTRL REG1 again        */
+    /******************************************/
+    
+    readReg(control_reg, LIS3DH_CTRL_REG1);
+    
+    /******************************************/
+    /*       I2C Writing CTRL REG5            */
+    /******************************************/
+    
+
+    if (control_reg_5 != LIS3DH_CTRL_REG5_FIFO_ON)
+    {
+        control_reg_5 = LIS3DH_CTRL_REG5_FIFO_ON;
+        
+        setReg(control_reg_5,LIS3DH_CTRL_REG5);
+
+    }
+    
+    /******************************************/
+    /*       I2C Writing CTRL REG3            */
+    /******************************************/
+ 
+    
+    if (control_reg_3 != LIS3DH_CTRL_REG3_INT)
+    {
+        control_reg_3 = LIS3DH_CTRL_REG3_INT;
+        
+        setReg(control_reg_3,LIS3DH_CTRL_REG3);
+
+    }
+    
+    /******************************************/
+    /*     I2C Reading CTRL REG3 again        */
+    /******************************************/
+    
+    readReg(control_reg_3, LIS3DH_CTRL_REG3);
+    
+    /******************************************/
+    /*       I2C Writing FIFO CTRL REG        */
+    /******************************************/
+    UART_PutString("\r\nDOVREI SCRIVERE QUI\r\n");
+    if (FIFO_control_reg != LIS3DH_FIFO_ON)
+    {
+        FIFO_control_reg = LIS3DH_FIFO_ON;
+        
+        setReg(FIFO_control_reg,LIS3DH_FIFO_CTRL_REG);
+    }
+    
+    /*      I2C Master Read - CTRL Register 5       */
+    
+    readReg(control_reg_5, LIS3DH_CTRL_REG5);
+    
+    /*      I2C Master Read - FIFO CTRL Register     */
+
+    readReg(FIFO_control_reg, LIS3DH_FIFO_CTRL_REG);
+   
+    
+    int16 regCount = 192;
+    uint8_t data[192];
+    uint8_t fifoFull;
+    int16 xData[32];
+    int16 yData[32];
+    int16 zData[32];
+
+    uint8_t regSetting;
+
+    
+    UART_PutString("\r\nConfiguration complete\r\n");
+    
+    regSetting=0x00;
+    error = I2C_Peripheral_WriteRegister(LIS3DH_DEVICE_ADDRESS,LIS3DH_FIFO_CTRL_REG,regSetting);
+    regSetting=0x40;
+    error = I2C_Peripheral_WriteRegister(LIS3DH_DEVICE_ADDRESS,LIS3DH_FIFO_CTRL_REG,regSetting);
+    
     for(;;)
     {
-        /*
-        //error = I2C_Peripheral_ReadRegister(LIS3DH_DEVICE_ADDRESS,LIS3DH_FIFO_SRC_REG,&ovrnReady);
-        //sprintf(message, "ovrn register value: 0x%02X\r\n", ovrnReady);
-        //UART_PutString(message);
-        deviceStatus = I2C_Peripheral_IsDeviceConnected(LIS3DH_DEVICE_ADDRESS);
-        if(deviceStatus != oldDeviceStatus)
-        {
-            switch (deviceStatus)
-            {
-                case 1:
-                Timer_LED_Stop();
-                problem = 0;
-                Pin_LED_Write(1);
-                break;
-                
-                case 0:
-                Timer_LED_Start();
-                problem = 1;
-            }
-            
-        }
-        
-        switch (status)
-        {
-            case SAMPLE:
-
-            error= I2C_Peripheral_ReadRegister(LIS3DH_DEVICE_ADDRESS, LIS3DH_CTRL_REG1, &regSetting);
-            if(regSetting!=0x17)
-            {
-                regSetting= 0x17; //1Hz di prova
-                setReg(regSetting,LIS3DH_CTRL_REG1);
-            }
-            error=I2C_Peripheral_ReadRegister(LIS3DH_DEVICE_ADDRESS, LIS3DH_FIFO_SRC_REG, &fifo_status);
-            if(((fifo_status & 0x40)>>6)==1 && ovrnStatus==0)
-            {
-                ovrnStatus=1;
-            }
-            
-            if(ovrnStatus)
-            {
-                error=I2C_Peripheral_ReadRegister(LIS3DH_DEVICE_ADDRESS, LIS3DH_FIFO_SRC_REG, &regStatus);
-                
-                //Leggo i dati e li stampo
-                error=I2C_Peripheral_ReadRegister(LIS3DH_DEVICE_ADDRESS, LIS3DH_OUT_X_L, &XData[0]); 
-                error=I2C_Peripheral_ReadRegister(LIS3DH_DEVICE_ADDRESS, LIS3DH_OUT_X_H, &XData[1]); 
-                //CyDelay(100); 
-                error=I2C_Peripheral_ReadRegister(LIS3DH_DEVICE_ADDRESS, LIS3DH_OUT_Y_L, &YData[0]); 
-                error=I2C_Peripheral_ReadRegister(LIS3DH_DEVICE_ADDRESS, LIS3DH_OUT_Y_H, &YData[1]);
-                //CyDelay(100); 
-                error=I2C_Peripheral_ReadRegister(LIS3DH_DEVICE_ADDRESS, LIS3DH_OUT_Z_L, &ZData[0]); 
-                error=I2C_Peripheral_ReadRegister(LIS3DH_DEVICE_ADDRESS, LIS3DH_OUT_Z_H, &ZData[1]);
-                if (error==NO_ERROR)
-                {
-                    outX= (int16) (XData[0] | (XData[1] <<8)) >> 6;
-                    outY= (int16) (YData[0] | (YData[1] <<8)) >> 6;
-                    outZ= (int16) (ZData[0] | (ZData[1] <<8)) >> 6; 
-                    sprintf(message, "%d, %d, %d \r\n", outX, outY, outZ);  
-                    UART_PutString(message);
-                    count++; 
-                }
-                
-                if(regStatus == 128)
-                {
-                    regSetting=0x00;
-                    error = I2C_Peripheral_WriteRegister(LIS3DH_DEVICE_ADDRESS,LIS3DH_FIFO_CTRL_REG,regSetting);
-                    regSetting=0x40;
-                    error = I2C_Peripheral_WriteRegister(LIS3DH_DEVICE_ADDRESS,LIS3DH_FIFO_CTRL_REG,regSetting);
-                    ovrnStatus = 0;
-                }
-            }
-            
-            if(count==180)
-            {
-                status=WAIT;
-                count = 0;
-            }
-            break;
-            
-            case WAIT:
-            ovrnStatus = 0;
-            regSetting = 0x00;
-            error = I2C_Peripheral_WriteRegister(LIS3DH_DEVICE_ADDRESS,LIS3DH_CTRL_REG1,regSetting); //spegniamo il campionamento 
-            count=0;
-            regSetting=0x00;
-            error = I2C_Peripheral_WriteRegister(LIS3DH_DEVICE_ADDRESS,LIS3DH_FIFO_CTRL_REG,regSetting);
-            regSetting=0x40;
-            error = I2C_Peripheral_WriteRegister(LIS3DH_DEVICE_ADDRESS,LIS3DH_FIFO_CTRL_REG,regSetting);
-            break;
-            
-        }            
-        */
-        
-        CyDelay(500); //to get stable data, di prova
+        CyDelay(500); //to get stable data, just a try
         error=I2C_Peripheral_ReadRegister(LIS3DH_DEVICE_ADDRESS, LIS3DH_FIFO_SRC_REG, &fifoFull); 
+        sprintf(message,"\r\novrn value: %d \r\n",(fifoFull & 0x40)>>6);
+        UART_PutString(message);
         if(error == NO_ERROR && (fifoFull & 0x40)>>6)
         {
             I2C_Peripheral_ReadRegisterMulti(LIS3DH_DEVICE_ADDRESS,LIS3DH_OUT_X_L,regCount,data);
@@ -173,11 +174,11 @@ int main(void)
                 xData[i] = (int16) (data[i*6] | (data[i*6+1]<<8))>>6;
                 yData[i] = (int16) (data[i*6+2] | (data[i*6+3]<<8))>>6;
                 zData[i] = (int16) (data[i*6+4] | (data[i*6+5]<<8))>>6;
-                sprintf(message, "xData: %d",xData[i]);
+                sprintf(message, "xData: %d\n",xData[i]);
                 UART_PutString(message);
-                sprintf(message, "yData: %d",yData[i]);
+                sprintf(message, "yData: %d\n",yData[i]);
                 UART_PutString(message);
-                sprintf(message, "zData: %d",zData[i]);
+                sprintf(message, "zData: %d\n",zData[i]);
                 UART_PutString(message);
             }
             regSetting=0x00;
@@ -185,8 +186,9 @@ int main(void)
             regSetting=0x40;
             error = I2C_Peripheral_WriteRegister(LIS3DH_DEVICE_ADDRESS,LIS3DH_FIFO_CTRL_REG,regSetting);
         }
-    }
+       
         
+    }
 }
 
 /* [] END OF FILE */
