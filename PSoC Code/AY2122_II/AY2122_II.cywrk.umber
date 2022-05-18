@@ -32,9 +32,11 @@
 <v>AY2122_II\Project4\Header Files\cyapicallbacks.h</v>
 <v>AY2122_II\Project4\Header Files\ErrorCodes.h</v>
 <v>AY2122_II\Project4\Header Files\I2C_Interface.h</v>
+<v>AY2122_II\Project4\Header Files\InterruptRoutines.h</v>
 <v>AY2122_II\Project4\Header Files\LIS3DH.h</v>
 <v>AY2122_II\Project4\Source Files</v>
 <v>AY2122_II\Project4\Source Files\I2C_Interface.c</v>
+<v>AY2122_II\Project4\Source Files\InterruptRoutines.c</v>
 <v>AY2122_II\Project4\Source Files\main.c</v>
 <v>AY2122_II\Project4\Generated_Source\PSoC5</v>
 </ExpandedNodeIds>
@@ -56,9 +58,11 @@
 <v>AY2122_II\Project4\Header Files\cyapicallbacks.h</v>
 <v>AY2122_II\Project4\Header Files\ErrorCodes.h</v>
 <v>AY2122_II\Project4\Header Files\I2C_Interface.h</v>
+<v>AY2122_II\Project4\Header Files\InterruptRoutines.h</v>
 <v>AY2122_II\Project4\Header Files\LIS3DH.h</v>
 <v>AY2122_II\Project4\Source Files</v>
 <v>AY2122_II\Project4\Source Files\I2C_Interface.c</v>
+<v>AY2122_II\Project4\Source Files\InterruptRoutines.c</v>
 <v>AY2122_II\Project4\Source Files\main.c</v>
 <v>AY2122_II\Project4\Generated_Source</v>
 </VisibleNodeIds>
@@ -103,9 +107,10 @@
 <v>AY2122_II\Project4\CortexM3\ARM_GCC_541\Debug\Listing Files\I2C_Master_MASTER.lst</v>
 <v>AY2122_II\Project4\CortexM3\ARM_GCC_541\Debug\Listing Files\I2C_Master_PM.lst</v>
 <v>AY2122_II\Project4\CortexM3\ARM_GCC_541\Debug\Listing Files\I2C_Master_SLAVE.lst</v>
+<v>AY2122_II\Project4\CortexM3\ARM_GCC_541\Debug\Listing Files\InterruptRoutines.lst</v>
 <v>AY2122_II\Project4\CortexM3\ARM_GCC_541\Debug\Listing Files\isr.lst</v>
+<v>AY2122_II\Project4\CortexM3\ARM_GCC_541\Debug\Listing Files\isr_RX.lst</v>
 <v>AY2122_II\Project4\CortexM3\ARM_GCC_541\Debug\Listing Files\main.lst</v>
-<v>AY2122_II\Project4\CortexM3\ARM_GCC_541\Debug\Listing Files\Pin_INT.lst</v>
 <v>AY2122_II\Project4\CortexM3\ARM_GCC_541\Debug\Listing Files\Pin_LED.lst</v>
 <v>AY2122_II\Project4\CortexM3\ARM_GCC_541\Debug\Listing Files\PWM_LED.lst</v>
 <v>AY2122_II\Project4\CortexM3\ARM_GCC_541\Debug\Listing Files\PWM_LED_PM.lst</v>
@@ -156,9 +161,10 @@
 <v>AY2122_II\Project4\CortexM3\ARM_GCC_541\Debug\Listing Files\I2C_Master_MASTER.lst</v>
 <v>AY2122_II\Project4\CortexM3\ARM_GCC_541\Debug\Listing Files\I2C_Master_PM.lst</v>
 <v>AY2122_II\Project4\CortexM3\ARM_GCC_541\Debug\Listing Files\I2C_Master_SLAVE.lst</v>
+<v>AY2122_II\Project4\CortexM3\ARM_GCC_541\Debug\Listing Files\InterruptRoutines.lst</v>
 <v>AY2122_II\Project4\CortexM3\ARM_GCC_541\Debug\Listing Files\isr.lst</v>
+<v>AY2122_II\Project4\CortexM3\ARM_GCC_541\Debug\Listing Files\isr_RX.lst</v>
 <v>AY2122_II\Project4\CortexM3\ARM_GCC_541\Debug\Listing Files\main.lst</v>
-<v>AY2122_II\Project4\CortexM3\ARM_GCC_541\Debug\Listing Files\Pin_INT.lst</v>
 <v>AY2122_II\Project4\CortexM3\ARM_GCC_541\Debug\Listing Files\Pin_LED.lst</v>
 <v>AY2122_II\Project4\CortexM3\ARM_GCC_541\Debug\Listing Files\PWM_LED.lst</v>
 <v>AY2122_II\Project4\CortexM3\ARM_GCC_541\Debug\Listing Files\PWM_LED_PM.lst</v>
@@ -199,7 +205,8 @@
 <v>AY2122_II\Project4\System Reference Guides</v>
 <v>AY2122_II\Project4\System Reference Guides\cy_boot_v6_10</v>
 <v>AY2122_II\Project4\cy_clock_v2_20.pdf</v>
-<v>AY2122_II\Project4\cy_isr_v1_71.pdf</v>
+<v>AY2122_II\Project4\cy_isr_v1_71</v>
+<v>AY2122_II\Project4\cy_isr_v1_71\cy_isr_v1_71.pdf</v>
 <v>AY2122_II\Project4\cy_pins_v2_20</v>
 <v>AY2122_II\Project4\cy_pins_v2_20\cy_pins_v2_20.pdf</v>
 <v>AY2122_II\Project4\I2C_v3_50.pdf</v>
@@ -218,7 +225,8 @@
 <v>AY2122_II\Project4\System Reference Guides</v>
 <v>AY2122_II\Project4\System Reference Guides\cy_boot_v6_10</v>
 <v>AY2122_II\Project4\cy_clock_v2_20.pdf</v>
-<v>AY2122_II\Project4\cy_isr_v1_71.pdf</v>
+<v>AY2122_II\Project4\cy_isr_v1_71</v>
+<v>AY2122_II\Project4\cy_isr_v1_71\cy_isr_v1_71.pdf</v>
 <v>AY2122_II\Project4\cy_pins_v2_20</v>
 <v>AY2122_II\Project4\cy_pins_v2_20\cy_pins_v2_20.pdf</v>
 <v>AY2122_II\Project4\I2C_v3_50.pdf</v>
@@ -244,10 +252,10 @@
 <CyGuid_5f2be1a5-0687-4501-bb8c-cf21cb8211bf type_name="CyDesigner.Common.ProjMgmt.GUI.CyBookmarkData" version="1">
 <indicators>
 <CyGuid_67999771-01c6-4f62-90b3-2054bb36a318 type_name="CyDesigner.Framework.CyBookmark" version="1">
-<CyGuid_a1027fc4-3497-43a6-85d7-b91ffa0029b7 type_name="CyDesigner.Framework.CySerializableMarginIndicator" version="1" LineNumber="24" DocumentName=".\Project4.cydsn\main.c" />
+<CyGuid_a1027fc4-3497-43a6-85d7-b91ffa0029b7 type_name="CyDesigner.Framework.CySerializableMarginIndicator" version="1" LineNumber="25" DocumentName=".\Project4.cydsn\main.c" />
 </CyGuid_67999771-01c6-4f62-90b3-2054bb36a318>
 <CyGuid_67999771-01c6-4f62-90b3-2054bb36a318 type_name="CyDesigner.Framework.CyBookmark" version="1">
-<CyGuid_a1027fc4-3497-43a6-85d7-b91ffa0029b7 type_name="CyDesigner.Framework.CySerializableMarginIndicator" version="1" LineNumber="25" DocumentName=".\Project4.cydsn\main.c" />
+<CyGuid_a1027fc4-3497-43a6-85d7-b91ffa0029b7 type_name="CyDesigner.Framework.CySerializableMarginIndicator" version="1" LineNumber="26" DocumentName=".\Project4.cydsn\main.c" />
 </CyGuid_67999771-01c6-4f62-90b3-2054bb36a318>
 </indicators>
 </CyGuid_5f2be1a5-0687-4501-bb8c-cf21cb8211bf>
@@ -257,8 +265,10 @@
 <Unloaded />
 <OpenDocs>
 <name v=".\Project4.cydsn\main.c" />
-<name v=".\Project4.cydsn\I2C_Interface.h" />
-<name v=".\Project4.cydsn\I2C_Interface.c" />
+<name v=".\Project4.cydsn\TopDesign\TopDesign.cysch" />
+<name v=".\Project4.cydsn\InterruptRoutines.c" />
+<name v=".\Project4.cydsn\InterruptRoutines.h" />
+<name v=".\Project4.cydsn\Project4.cydwr" />
 <name v=".\Project4.cydsn\LIS3DH.h" />
 </OpenDocs>
 <OpenDocsLayout><![CDATA[<?xml version="1.0"?><!--
@@ -267,7 +277,7 @@
   Copyright (c) 2001-2016 Actipro Software LLC.  All rights reserved.
   http://www.actiprosoftware.com
 
---><DocumentLayout Version="1.0"><LayoutData><TabbedMdiRootContainer Orientation="Horizontal"><TabbedMdiContainer Size="2039, 1089" SelectedTabbedMdiWindow="97bbdae2-4425-4b6c-a919-c69dcafdbf17"><ToolWindow Key="Start Page:bd4649ab-da6b-4d04-a663-c722b8bf99db:Start Page" Guid="8ab056a0-50af-48b3-9a46-63a501067250" /><DocumentWindow Key="D:\Download\AY2122_II_Project-4-ffbb298e331a025830749630a0214264f461f654\AY2122_II_Project-4-ffbb298e331a025830749630a0214264f461f654\PSoC Code\AY2122_II\Project4.cydsn\main.c" Guid="97bbdae2-4425-4b6c-a919-c69dcafdbf17" /><DocumentWindow Key="D:\Download\AY2122_II_Project-4-ffbb298e331a025830749630a0214264f461f654\AY2122_II_Project-4-ffbb298e331a025830749630a0214264f461f654\PSoC Code\AY2122_II\Project4.cydsn\I2C_Interface.h" Guid="df64c8c0-eecb-43a3-9f24-a84efd0c3f78" /><DocumentWindow Key="D:\Download\AY2122_II_Project-4-ffbb298e331a025830749630a0214264f461f654\AY2122_II_Project-4-ffbb298e331a025830749630a0214264f461f654\PSoC Code\AY2122_II\Project4.cydsn\I2C_Interface.c" Guid="39cacaa3-15d8-4c5c-8ea8-bbe4af07c7d7" /><DocumentWindow Key="D:\Download\AY2122_II_Project-4-ffbb298e331a025830749630a0214264f461f654\AY2122_II_Project-4-ffbb298e331a025830749630a0214264f461f654\PSoC Code\AY2122_II\Project4.cydsn\LIS3DH.h" Guid="1378685e-e3ea-4d3c-ad8d-4769cb3d975b" /></TabbedMdiContainer></TabbedMdiRootContainer><FloatingContainers /></LayoutData></DocumentLayout>]]></OpenDocsLayout>
+--><DocumentLayout Version="1.0"><LayoutData><TabbedMdiRootContainer Orientation="Horizontal"><TabbedMdiContainer Size="2039, 1089" SelectedTabbedMdiWindow="8b54ea61-62e9-44ba-8ad3-fba53bca59e6"><ToolWindow Key="Start Page:bd4649ab-da6b-4d04-a663-c722b8bf99db:Start Page" Guid="8ab056a0-50af-48b3-9a46-63a501067250" /><DocumentWindow Key="D:\Download\Progetto Lab\AY2122_II_Project-4\PSoC Code\AY2122_II\Project4.cydsn\main.c" Guid="fe96efed-9585-4234-80e7-c8eedf36b98d" /><DocumentWindow Key="D:\Download\Progetto Lab\AY2122_II_Project-4\PSoC Code\AY2122_II\Project4.cydsn\TopDesign\TopDesign.cysch" Guid="a773b1ce-c82d-43b3-bfd6-9d310a2b811b" /><DocumentWindow Key="D:\Download\Progetto Lab\AY2122_II_Project-4\PSoC Code\AY2122_II\Project4.cydsn\InterruptRoutines.c" Guid="a8748765-9609-4bd0-9720-ef101bd2e85a" /><DocumentWindow Key="D:\Download\Progetto Lab\AY2122_II_Project-4\PSoC Code\AY2122_II\Project4.cydsn\InterruptRoutines.h" Guid="348e5536-fce7-414e-ac12-50d03402f9ae" /><DocumentWindow Key="D:\Download\Progetto Lab\AY2122_II_Project-4\PSoC Code\AY2122_II\Project4.cydsn\Project4.cydwr" Guid="a53106fd-a5b4-4298-a7e3-a26e5a34ecb9" /><DocumentWindow Key="D:\Download\Progetto Lab\AY2122_II_Project-4\PSoC Code\AY2122_II\Project4.cydsn\LIS3DH.h" Guid="8b54ea61-62e9-44ba-8ad3-fba53bca59e6" /></TabbedMdiContainer></TabbedMdiRootContainer><FloatingContainers /></LayoutData></DocumentLayout>]]></OpenDocsLayout>
 <config v="" />
 <AutoUpdate v="true" />
 </CyGuid_843a90a4-0c4b-4e44-991d-05e7fb117a21>

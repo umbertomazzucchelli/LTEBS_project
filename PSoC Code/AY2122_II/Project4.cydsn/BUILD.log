@@ -1,39 +1,15 @@
---------------- Build Started: 05/18/2022 16:08:03 Project: Project4, Configuration: ARM GCC 5.4-2016-q2-update Debug ---------------
+--------------- Build Started: 05/18/2022 22:27:35 Project: Project4, Configuration: ARM GCC 5.4-2016-q2-update Debug ---------------
 The code generation step is up to date.
 arm-none-eabi-gcc.exe -mcpu=cortex-m3 -mthumb -I. -IGenerated_Source\PSoC5 -Wa,-alh=.\CortexM3\ARM_GCC_541\Debug/main.lst -g -D DEBUG -D CY_CORE_ID=0 -Wall -ffunction-sections -ffat-lto-objects -Og -c main.c -o .\CortexM3\ARM_GCC_541\Debug\main.o
-main.c: In function 'main':
-main.c:163:13: warning: unused variable 'fifo_status' [-Wunused-variable]
-     uint8_t fifo_status;
-             ^
-main.c:154:9: warning: unused variable 'count' [-Wunused-variable]
-     int count;
-         ^
-main.c:153:11: warning: unused variable 'outX' [-Wunused-variable]
-     int16 outX;
-           ^
-main.c:152:11: warning: unused variable 'outY' [-Wunused-variable]
-     int16 outY;
-           ^
-main.c:151:11: warning: unused variable 'outZ' [-Wunused-variable]
-     int16 outZ;
-           ^
-main.c:149:13: warning: unused variable 'ZData' [-Wunused-variable]
-     uint8_t ZData[2]; 
-             ^
-main.c:148:13: warning: unused variable 'YData' [-Wunused-variable]
-     uint8_t YData[2]; 
-             ^
-main.c:147:13: warning: unused variable 'XData' [-Wunused-variable]
-     uint8_t XData[2]; 
-             ^
-arm-none-eabi-ar.exe -rs .\CortexM3\ARM_GCC_541\Debug\Project4.a .\CortexM3\ARM_GCC_541\Debug\UART.o .\CortexM3\ARM_GCC_541\Debug\UART_PM.o .\CortexM3\ARM_GCC_541\Debug\UART_INT.o .\CortexM3\ARM_GCC_541\Debug\UART_BOOT.o .\CortexM3\ARM_GCC_541\Debug\timer_clock.o .\CortexM3\ARM_GCC_541\Debug\Timer_LED.o .\CortexM3\ARM_GCC_541\Debug\Timer_LED_PM.o .\CortexM3\ARM_GCC_541\Debug\PWM_LED.o .\CortexM3\ARM_GCC_541\Debug\PWM_LED_PM.o .\CortexM3\ARM_GCC_541\Debug\isr.o .\CortexM3\ARM_GCC_541\Debug\I2C_Master.o .\CortexM3\ARM_GCC_541\Debug\I2C_Master_BOOT.o .\CortexM3\ARM_GCC_541\Debug\I2C_Master_INT.o .\CortexM3\ARM_GCC_541\Debug\I2C_Master_PM.o .\CortexM3\ARM_GCC_541\Debug\I2C_Master_SLAVE.o .\CortexM3\ARM_GCC_541\Debug\I2C_Master_MASTER.o .\CortexM3\ARM_GCC_541\Debug\Pin_LED.o .\CortexM3\ARM_GCC_541\Debug\SDA.o .\CortexM3\ARM_GCC_541\Debug\SCL.o .\CortexM3\ARM_GCC_541\Debug\UART_IntClock.o .\CortexM3\ARM_GCC_541\Debug\CyDmac.o .\CortexM3\ARM_GCC_541\Debug\CyFlash.o .\CortexM3\ARM_GCC_541\Debug\CyLib.o .\CortexM3\ARM_GCC_541\Debug\cyPm.o .\CortexM3\ARM_GCC_541\Debug\CySpc.o .\CortexM3\ARM_GCC_541\Debug\cyutils.o .\CortexM3\ARM_GCC_541\Debug\cy_em_eeprom.o .\CortexM3\ARM_GCC_541\Debug\UART_BT.o .\CortexM3\ARM_GCC_541\Debug\UART_BT_PM.o .\CortexM3\ARM_GCC_541\Debug\UART_BT_INT.o .\CortexM3\ARM_GCC_541\Debug\UART_BT_BOOT.o .\CortexM3\ARM_GCC_541\Debug\UART_BT_IntClock.o .\CortexM3\ARM_GCC_541\Debug\Pin_INT.o .\CortexM3\ARM_GCC_541\Debug\CyBootAsmGnu.o
+arm-none-eabi-gcc.exe -mcpu=cortex-m3 -mthumb -I. -IGenerated_Source\PSoC5 -Wa,-alh=.\CortexM3\ARM_GCC_541\Debug/I2C_Interface.lst -g -D DEBUG -D CY_CORE_ID=0 -Wall -ffunction-sections -ffat-lto-objects -Og -c I2C_Interface.c -o .\CortexM3\ARM_GCC_541\Debug\I2C_Interface.o
+arm-none-eabi-ar.exe -rs .\CortexM3\ARM_GCC_541\Debug\Project4.a .\CortexM3\ARM_GCC_541\Debug\UART.o .\CortexM3\ARM_GCC_541\Debug\UART_PM.o .\CortexM3\ARM_GCC_541\Debug\UART_INT.o .\CortexM3\ARM_GCC_541\Debug\UART_BOOT.o .\CortexM3\ARM_GCC_541\Debug\timer_clock.o .\CortexM3\ARM_GCC_541\Debug\Timer_LED.o .\CortexM3\ARM_GCC_541\Debug\Timer_LED_PM.o .\CortexM3\ARM_GCC_541\Debug\PWM_LED.o .\CortexM3\ARM_GCC_541\Debug\PWM_LED_PM.o .\CortexM3\ARM_GCC_541\Debug\isr.o .\CortexM3\ARM_GCC_541\Debug\I2C_Master.o .\CortexM3\ARM_GCC_541\Debug\I2C_Master_BOOT.o .\CortexM3\ARM_GCC_541\Debug\I2C_Master_INT.o .\CortexM3\ARM_GCC_541\Debug\I2C_Master_PM.o .\CortexM3\ARM_GCC_541\Debug\I2C_Master_SLAVE.o .\CortexM3\ARM_GCC_541\Debug\I2C_Master_MASTER.o .\CortexM3\ARM_GCC_541\Debug\Pin_LED.o .\CortexM3\ARM_GCC_541\Debug\SDA.o .\CortexM3\ARM_GCC_541\Debug\SCL.o .\CortexM3\ARM_GCC_541\Debug\UART_IntClock.o .\CortexM3\ARM_GCC_541\Debug\CyDmac.o .\CortexM3\ARM_GCC_541\Debug\CyFlash.o .\CortexM3\ARM_GCC_541\Debug\CyLib.o .\CortexM3\ARM_GCC_541\Debug\cyPm.o .\CortexM3\ARM_GCC_541\Debug\CySpc.o .\CortexM3\ARM_GCC_541\Debug\cyutils.o .\CortexM3\ARM_GCC_541\Debug\cy_em_eeprom.o .\CortexM3\ARM_GCC_541\Debug\UART_BT.o .\CortexM3\ARM_GCC_541\Debug\UART_BT_PM.o .\CortexM3\ARM_GCC_541\Debug\UART_BT_INT.o .\CortexM3\ARM_GCC_541\Debug\UART_BT_BOOT.o .\CortexM3\ARM_GCC_541\Debug\UART_BT_IntClock.o .\CortexM3\ARM_GCC_541\Debug\isr_RX.o .\CortexM3\ARM_GCC_541\Debug\CyBootAsmGnu.o
 arm-none-eabi-ar.exe: creating .\CortexM3\ARM_GCC_541\Debug\Project4.a
-arm-none-eabi-gcc.exe -Wl,--start-group -o "D:\Download\AY2122_II_Project-4-ffbb298e331a025830749630a0214264f461f654\AY2122_II_Project-4-ffbb298e331a025830749630a0214264f461f654\PSoC Code\AY2122_II\Project4.cydsn\CortexM3\ARM_GCC_541\Debug\Project4.elf" .\CortexM3\ARM_GCC_541\Debug\main.o .\CortexM3\ARM_GCC_541\Debug\I2C_Interface.o .\CortexM3\ARM_GCC_541\Debug\cyfitter_cfg.o .\CortexM3\ARM_GCC_541\Debug\cymetadata.o .\CortexM3\ARM_GCC_541\Debug\Cm3Start.o .\CortexM3\ARM_GCC_541\Debug\Project4.a "K:\Programmi\Cypress\PSoC Creator\4.4\PSoC Creator\psoc\content\cycomponentlibrary\CyComponentLibrary.cylib\CortexM3\ARM_GCC_541\Debug\CyComponentLibrary.a" -mcpu=cortex-m3 -mthumb -L Generated_Source\PSoC5 -Wl,-Map,.\CortexM3\ARM_GCC_541\Debug/Project4.map -T Generated_Source\PSoC5\cm3gcc.ld -specs=nano.specs -Wl,--gc-sections -g -ffunction-sections -Og -ffat-lto-objects -Wl,--end-group
-cyelftool.exe -C "D:\Download\AY2122_II_Project-4-ffbb298e331a025830749630a0214264f461f654\AY2122_II_Project-4-ffbb298e331a025830749630a0214264f461f654\PSoC Code\AY2122_II\Project4.cydsn\CortexM3\ARM_GCC_541\Debug\Project4.elf" --flash_row_size 256 --flash_size 262144 --flash_offset 0x00000000
+arm-none-eabi-gcc.exe -Wl,--start-group -o "D:\Download\Progetto Lab\AY2122_II_Project-4\PSoC Code\AY2122_II\Project4.cydsn\CortexM3\ARM_GCC_541\Debug\Project4.elf" .\CortexM3\ARM_GCC_541\Debug\main.o .\CortexM3\ARM_GCC_541\Debug\I2C_Interface.o .\CortexM3\ARM_GCC_541\Debug\InterruptRoutines.o .\CortexM3\ARM_GCC_541\Debug\cyfitter_cfg.o .\CortexM3\ARM_GCC_541\Debug\cymetadata.o .\CortexM3\ARM_GCC_541\Debug\Cm3Start.o .\CortexM3\ARM_GCC_541\Debug\Project4.a "K:\Programmi\Cypress\PSoC Creator\4.4\PSoC Creator\psoc\content\cycomponentlibrary\CyComponentLibrary.cylib\CortexM3\ARM_GCC_541\Debug\CyComponentLibrary.a" -mcpu=cortex-m3 -mthumb -L Generated_Source\PSoC5 -Wl,-Map,.\CortexM3\ARM_GCC_541\Debug/Project4.map -T Generated_Source\PSoC5\cm3gcc.ld -specs=nano.specs -Wl,--gc-sections -g -ffunction-sections -Og -ffat-lto-objects -Wl,--end-group
+cyelftool.exe -C "D:\Download\Progetto Lab\AY2122_II_Project-4\PSoC Code\AY2122_II\Project4.cydsn\CortexM3\ARM_GCC_541\Debug\Project4.elf" --flash_row_size 256 --flash_size 262144 --flash_offset 0x00000000
 No ELF section .cychecksum found, creating one
 Application checksum calculated and stored in ELF section .cychecksum
 Checksum calculated and stored in ELF section .cymeta
-cyelftool.exe -S "D:\Download\AY2122_II_Project-4-ffbb298e331a025830749630a0214264f461f654\AY2122_II_Project-4-ffbb298e331a025830749630a0214264f461f654\PSoC Code\AY2122_II\Project4.cydsn\CortexM3\ARM_GCC_541\Debug\Project4.elf"
-Flash used: 7264 of 262144 bytes (2,8%).
+cyelftool.exe -S "D:\Download\Progetto Lab\AY2122_II_Project-4\PSoC Code\AY2122_II\Project4.cydsn\CortexM3\ARM_GCC_541\Debug\Project4.elf"
+Flash used: 7464 of 262144 bytes (2,8%).
 SRAM used: 2617 of 65536 bytes (4,0%). Stack: 2048 bytes. Heap: 128 bytes.
---------------- Build Succeeded: 05/18/2022 16:08:04 ---------------
+--------------- Build Succeeded: 05/18/2022 22:27:35 ---------------

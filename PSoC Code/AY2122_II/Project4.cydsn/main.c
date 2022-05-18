@@ -13,6 +13,7 @@
 #include "project.h"
 #include "I2C_Interface.h"
 #include "LIS3DH.h"
+#include "InterruptRoutines.h"
 
 // Set this to 1 to send byte data for the Bridge Control Panel
 // Otherwise set it to 0 to send temperature data as int16_t
@@ -32,6 +33,7 @@ int main(void)
     I2C_Peripheral_Start();
     UART_BT_Start();
     UART_Start();
+    isr_RX_StartEx(Custom_ISR_RX);
     
     CyDelay(5); //"The boot procedure is complete about 5 ms after device power-up."
     
@@ -126,7 +128,6 @@ int main(void)
     /******************************************/
     /*       I2C Writing FIFO CTRL REG        */
     /******************************************/
-    UART_PutString("\r\nDOVREI SCRIVERE QUI\r\n");
     if (FIFO_control_reg != LIS3DH_FIFO_ON)
     {
         FIFO_control_reg = LIS3DH_FIFO_ON;
@@ -152,6 +153,7 @@ int main(void)
 
     uint8_t regSetting;
 
+    status=0;
     
     UART_PutString("\r\nConfiguration complete\r\n");
     
@@ -162,31 +164,33 @@ int main(void)
     
     for(;;)
     {
-        CyDelay(500); //to get stable data, just a try
-        error=I2C_Peripheral_ReadRegister(LIS3DH_DEVICE_ADDRESS, LIS3DH_FIFO_SRC_REG, &fifoFull); 
-        sprintf(message,"\r\novrn value: %d \r\n",(fifoFull & 0x40)>>6);
-        UART_PutString(message);
-        if(error == NO_ERROR && (fifoFull & 0x40)>>6)
+        if(status==1)
         {
-            I2C_Peripheral_ReadRegisterMulti(LIS3DH_DEVICE_ADDRESS,LIS3DH_OUT_X_L,regCount,data);
-            for(int i = 0; i<32;i++)
+            CyDelay(500); //to get stable data, just a try
+            error=I2C_Peripheral_ReadRegister(LIS3DH_DEVICE_ADDRESS, LIS3DH_FIFO_SRC_REG, &fifoFull); 
+            sprintf(message,"\r\novrn value: %d \r\n",(fifoFull & 0x40)>>6);
+            UART_PutString(message);
+            if(error == NO_ERROR && (fifoFull & 0x40)>>6)
             {
-                xData[i] = (int16) (data[i*6] | (data[i*6+1]<<8))>>6;
-                yData[i] = (int16) (data[i*6+2] | (data[i*6+3]<<8))>>6;
-                zData[i] = (int16) (data[i*6+4] | (data[i*6+5]<<8))>>6;
-                sprintf(message, "xData: %d\n",xData[i]);
-                UART_PutString(message);
-                sprintf(message, "yData: %d\n",yData[i]);
-                UART_PutString(message);
-                sprintf(message, "zData: %d\n",zData[i]);
-                UART_PutString(message);
+                I2C_Peripheral_ReadRegisterMulti(LIS3DH_DEVICE_ADDRESS,LIS3DH_OUT_X_L,regCount,data);
+                for(int i = 0; i<32;i++)
+                {
+                    xData[i] = (int16) (data[i*6] | (data[i*6+1]<<8))>>6;
+                    yData[i] = (int16) (data[i*6+2] | (data[i*6+3]<<8))>>6;
+                    zData[i] = (int16) (data[i*6+4] | (data[i*6+5]<<8))>>6;
+                    sprintf(message, "xData: %d\n",xData[i]);
+                    UART_PutString(message);
+                    sprintf(message, "yData: %d\n",yData[i]);
+                    UART_PutString(message);
+                    sprintf(message, "zData: %d\n",zData[i]);
+                    UART_PutString(message);
+                }
+                regSetting=0x00;
+                error = I2C_Peripheral_WriteRegister(LIS3DH_DEVICE_ADDRESS,LIS3DH_FIFO_CTRL_REG,regSetting);
+                regSetting=0x40;
+                error = I2C_Peripheral_WriteRegister(LIS3DH_DEVICE_ADDRESS,LIS3DH_FIFO_CTRL_REG,regSetting);
             }
-            regSetting=0x00;
-            error = I2C_Peripheral_WriteRegister(LIS3DH_DEVICE_ADDRESS,LIS3DH_FIFO_CTRL_REG,regSetting);
-            regSetting=0x40;
-            error = I2C_Peripheral_WriteRegister(LIS3DH_DEVICE_ADDRESS,LIS3DH_FIFO_CTRL_REG,regSetting);
         }
-       
         
     }
 }
