@@ -1,4 +1,4 @@
-ARM GAS  C:\Users\umber\AppData\Local\Temp\ccS4gEOV.s 			page 1
+ARM GAS  C:\Users\Giorgio\AppData\Local\Temp\ccG8JYSt.s 			page 1
 
 
    1              		.syntax unified
@@ -58,7 +58,7 @@ ARM GAS  C:\Users\umber\AppData\Local\Temp\ccS4gEOV.s 			page 1
   29:Generated_Source\PSoC5/cyfitter_cfg.c **** 
   30:Generated_Source\PSoC5/cyfitter_cfg.c **** #if defined(__GNUC__) || defined(__ARMCC_VERSION)
   31:Generated_Source\PSoC5/cyfitter_cfg.c ****     #define CYPACKED 
-ARM GAS  C:\Users\umber\AppData\Local\Temp\ccS4gEOV.s 			page 2
+ARM GAS  C:\Users\Giorgio\AppData\Local\Temp\ccG8JYSt.s 			page 2
 
 
   32:Generated_Source\PSoC5/cyfitter_cfg.c ****     #define CYPACKED_ATTR __attribute__ ((packed))
@@ -118,7 +118,7 @@ ARM GAS  C:\Users\umber\AppData\Local\Temp\ccS4gEOV.s 			page 1
   86:Generated_Source\PSoC5/cyfitter_cfg.c **** 	(void)memcpy(dest, src, n);
   87:Generated_Source\PSoC5/cyfitter_cfg.c **** }
   88:Generated_Source\PSoC5/cyfitter_cfg.c **** CY_CFG_UNUSED
-ARM GAS  C:\Users\umber\AppData\Local\Temp\ccS4gEOV.s 			page 3
+ARM GAS  C:\Users\Giorgio\AppData\Local\Temp\ccG8JYSt.s 			page 3
 
 
   89:Generated_Source\PSoC5/cyfitter_cfg.c **** static void CYCONFIGCPYCODE(void *dest, const void *src, size_t n);
@@ -178,7 +178,7 @@ ARM GAS  C:\Users\umber\AppData\Local\Temp\ccS4gEOV.s 			page 1
   41              		.thumb
   42              		.thumb_func
   43              		.type	cfg_write_bytes32, %function
-ARM GAS  C:\Users\umber\AppData\Local\Temp\ccS4gEOV.s 			page 4
+ARM GAS  C:\Users\Giorgio\AppData\Local\Temp\ccG8JYSt.s 			page 4
 
 
   44              	cfg_write_bytes32:
@@ -238,7 +238,7 @@ ARM GAS  C:\Users\umber\AppData\Local\Temp\ccS4gEOV.s 			page 1
  181:Generated_Source\PSoC5/cyfitter_cfg.c **** *  This function is used for setting up the chip configuration areas that
  182:Generated_Source\PSoC5/cyfitter_cfg.c **** *  contain relatively sparse data.
  183:Generated_Source\PSoC5/cyfitter_cfg.c **** *
-ARM GAS  C:\Users\umber\AppData\Local\Temp\ccS4gEOV.s 			page 5
+ARM GAS  C:\Users\Giorgio\AppData\Local\Temp\ccG8JYSt.s 			page 5
 
 
  184:Generated_Source\PSoC5/cyfitter_cfg.c **** * Parameters:
@@ -298,7 +298,7 @@ ARM GAS  C:\Users\umber\AppData\Local\Temp\ccS4gEOV.s 			page 1
   80              		.loc 1 203 0
   81 0014 01EB4205 		add	r5, r1, r2, lsl #1
   82 0018 11F81240 		ldrb	r4, [r1, r2, lsl #1]	@ zero_extendqisi2
-ARM GAS  C:\Users\umber\AppData\Local\Temp\ccS4gEOV.s 			page 6
+ARM GAS  C:\Users\Giorgio\AppData\Local\Temp\ccG8JYSt.s 			page 6
 
 
   83 001c 6D78     		ldrb	r5, [r5, #1]	@ zero_extendqisi2
@@ -358,7 +358,7 @@ ARM GAS  C:\Users\umber\AppData\Local\Temp\ccS4gEOV.s 			page 1
  214:Generated_Source\PSoC5/cyfitter_cfg.c **** * Summary:
  215:Generated_Source\PSoC5/cyfitter_cfg.c **** *  Performs the initialization of all of the clocks in the device based on the
  216:Generated_Source\PSoC5/cyfitter_cfg.c **** *  settings in the Clock tab of the DWR.  This includes enabling the requested
-ARM GAS  C:\Users\umber\AppData\Local\Temp\ccS4gEOV.s 			page 7
+ARM GAS  C:\Users\Giorgio\AppData\Local\Temp\ccG8JYSt.s 			page 7
 
 
  217:Generated_Source\PSoC5/cyfitter_cfg.c **** *  clocks and setting the necessary dividers to produce the desired frequency. 
@@ -418,7 +418,7 @@ ARM GAS  C:\Users\umber\AppData\Local\Temp\ccS4gEOV.s 			page 1
  271:Generated_Source\PSoC5/cyfitter_cfg.c **** 	CY_SET_XTND_REG8((void CYFAR *)(CYREG_CLKDIST_LD), 0x02u);
  272:Generated_Source\PSoC5/cyfitter_cfg.c **** 
  273:Generated_Source\PSoC5/cyfitter_cfg.c **** 	CY_SET_XTND_REG8((void CYFAR *)(CYREG_PM_ACT_CFG2), ((CY_GET_XTND_REG8((void CYFAR *)CYREG_PM_ACT_
-ARM GAS  C:\Users\umber\AppData\Local\Temp\ccS4gEOV.s 			page 8
+ARM GAS  C:\Users\Giorgio\AppData\Local\Temp\ccG8JYSt.s 			page 8
 
 
  274:Generated_Source\PSoC5/cyfitter_cfg.c **** }
@@ -478,7 +478,7 @@ ARM GAS  C:\Users\umber\AppData\Local\Temp\ccS4gEOV.s 			page 1
  150              	.L10:
  151 001c CF010049 		.word	1224737231
  152 0020 6E580040 		.word	1073764462
-ARM GAS  C:\Users\umber\AppData\Local\Temp\ccS4gEOV.s 			page 9
+ARM GAS  C:\Users\Giorgio\AppData\Local\Temp\ccG8JYSt.s 			page 9
 
 
  153 0024 76580040 		.word	1073764470
@@ -538,7 +538,7 @@ ARM GAS  C:\Users\umber\AppData\Local\Temp\ccS4gEOV.s 			page 1
  203 0006 1D80     		strh	r5, [r3]	@ movhi
  235:Generated_Source\PSoC5/cyfitter_cfg.c **** 	CY_SET_XTND_REG16((void CYFAR *)(CYREG_CLKDIST_DCFG1_CFG0), 0x0138u);
  204              		.loc 1 235 0
-ARM GAS  C:\Users\umber\AppData\Local\Temp\ccS4gEOV.s 			page 10
+ARM GAS  C:\Users\Giorgio\AppData\Local\Temp\ccG8JYSt.s 			page 10
 
 
  205 0008 1823     		movs	r3, #24
@@ -598,7 +598,7 @@ ARM GAS  C:\Users\umber\AppData\Local\Temp\ccS4gEOV.s 			page 1
  248              		.loc 1 253 0
  249 0052 0024     		movs	r4, #0
  254:Generated_Source\PSoC5/cyfitter_cfg.c **** 	{ 
-ARM GAS  C:\Users\umber\AppData\Local\Temp\ccS4gEOV.s 			page 11
+ARM GAS  C:\Users\Giorgio\AppData\Local\Temp\ccG8JYSt.s 			page 11
 
 
  250              		.loc 1 254 0
@@ -658,7 +658,7 @@ ARM GAS  C:\Users\umber\AppData\Local\Temp\ccS4gEOV.s 			page 1
  269:Generated_Source\PSoC5/cyfitter_cfg.c **** 	CY_SET_XTND_REG8((void CYFAR *)(CYREG_CLKDIST_MSTR0), 0x00u);
  294              		.loc 1 269 0
  295 0090 4820     		movs	r0, #72
-ARM GAS  C:\Users\umber\AppData\Local\Temp\ccS4gEOV.s 			page 12
+ARM GAS  C:\Users\Giorgio\AppData\Local\Temp\ccG8JYSt.s 			page 12
 
 
  296 0092 0231     		adds	r1, r1, #2
@@ -718,7 +718,7 @@ ARM GAS  C:\Users\umber\AppData\Local\Temp\ccS4gEOV.s 			page 1
  345              	.LVL26:
  346 0006 08BD     		pop	{r3, pc}
  347              		.cfi_endproc
-ARM GAS  C:\Users\umber\AppData\Local\Temp\ccS4gEOV.s 			page 13
+ARM GAS  C:\Users\Giorgio\AppData\Local\Temp\ccG8JYSt.s 			page 13
 
 
  348              	.LFE1:
@@ -778,7 +778,7 @@ ARM GAS  C:\Users\umber\AppData\Local\Temp\ccS4gEOV.s 			page 1
  370 0006 1370     		strb	r3, [r2]
  371 0008 7047     		bx	lr
  372              	.L26:
-ARM GAS  C:\Users\umber\AppData\Local\Temp\ccS4gEOV.s 			page 14
+ARM GAS  C:\Users\Giorgio\AppData\Local\Temp\ccG8JYSt.s 			page 14
 
 
  373 000a 00BF     		.align	2
@@ -838,7 +838,7 @@ ARM GAS  C:\Users\umber\AppData\Local\Temp\ccS4gEOV.s 			page 1
  400 0002 72B6     		CPSID   i
  401              	@ 0 "" 2
  361:Generated_Source\PSoC5/cyfitter_cfg.c **** #endif
-ARM GAS  C:\Users\umber\AppData\Local\Temp\ccS4gEOV.s 			page 15
+ARM GAS  C:\Users\Giorgio\AppData\Local\Temp\ccG8JYSt.s 			page 15
 
 
  362:Generated_Source\PSoC5/cyfitter_cfg.c **** 
@@ -898,7 +898,7 @@ ARM GAS  C:\Users\umber\AppData\Local\Temp\ccS4gEOV.s 			page 1
  413 0010 0CE0     		b	.L28
  414              	.LVL30:
  415              	.L29:
-ARM GAS  C:\Users\umber\AppData\Local\Temp\ccS4gEOV.s 			page 16
+ARM GAS  C:\Users\Giorgio\AppData\Local\Temp\ccG8JYSt.s 			page 16
 
 
  416              	.LBB4:
@@ -958,7 +958,7 @@ ARM GAS  C:\Users\umber\AppData\Local\Temp\ccS4gEOV.s 			page 1
  455              	.LVL37:
  456 0044 586C     		ldr	r0, [r3, #68]	@ unaligned
  457              	.LVL38:
-ARM GAS  C:\Users\umber\AppData\Local\Temp\ccS4gEOV.s 			page 17
+ARM GAS  C:\Users\Giorgio\AppData\Local\Temp\ccG8JYSt.s 			page 17
 
 
  458 0046 FFF7FEFF 		bl	CYCONFIGCPY
@@ -1018,7 +1018,7 @@ ARM GAS  C:\Users\umber\AppData\Local\Temp\ccS4gEOV.s 			page 1
  430:Generated_Source\PSoC5/cyfitter_cfg.c **** 
  431:Generated_Source\PSoC5/cyfitter_cfg.c **** 
  432:Generated_Source\PSoC5/cyfitter_cfg.c **** 	/* Perform second pass device configuration. These items must be configured in specific order afte
-ARM GAS  C:\Users\umber\AppData\Local\Temp\ccS4gEOV.s 			page 18
+ARM GAS  C:\Users\Giorgio\AppData\Local\Temp\ccG8JYSt.s 			page 18
 
 
  433:Generated_Source\PSoC5/cyfitter_cfg.c **** 	CYCONFIGCPY((void CYFAR *)(CYREG_PRT12_DR), (const void CYFAR *)(BS_IOPINS0_7_VAL), 10u);
@@ -1078,7 +1078,7 @@ ARM GAS  C:\Users\umber\AppData\Local\Temp\ccS4gEOV.s 			page 1
  536 00c4 FFF7FEFF 		bl	AnalogSetDefault
  537              	.LVL48:
  449:Generated_Source\PSoC5/cyfitter_cfg.c **** 
-ARM GAS  C:\Users\umber\AppData\Local\Temp\ccS4gEOV.s 			page 19
+ARM GAS  C:\Users\Giorgio\AppData\Local\Temp\ccG8JYSt.s 			page 19
 
 
  450:Generated_Source\PSoC5/cyfitter_cfg.c **** 	/* Configure alternate active mode */
@@ -1138,7 +1138,7 @@ ARM GAS  C:\Users\umber\AppData\Local\Temp\ccS4gEOV.s 			page 1
  590 0036 004C0140 		.4byte	1073826816
  591 003a 0002     		.short	512
  592 003c 00500140 		.word	1073827840
-ARM GAS  C:\Users\umber\AppData\Local\Temp\ccS4gEOV.s 			page 20
+ARM GAS  C:\Users\Giorgio\AppData\Local\Temp\ccG8JYSt.s 			page 20
 
 
  593 0040 2000     		.short	32
@@ -1154,7 +1154,7 @@ ARM GAS  C:\Users\umber\AppData\Local\Temp\ccS4gEOV.s 			page 1
  603 0056 8000     		.short	128
  604              		.text
  605              	.Letext0:
- 606              		.file 2 "k:\\programmi\\cypress\\psoc creator\\4.4\\psoc creator\\import\\gnu\\arm\\5.4.1\\lib\\gc
+ 606              		.file 2 "c:\\program files (x86)\\cypress\\psoc creator\\4.4\\psoc creator\\import\\gnu\\arm\\5.4.
  607              		.file 3 "Generated_Source\\PSoC5\\cytypes.h"
  608              		.file 4 "Generated_Source\\PSoC5\\CyLib.h"
  609              		.section	.debug_info,"",%progbits
@@ -1164,10 +1164,10 @@ ARM GAS  C:\Users\umber\AppData\Local\Temp\ccS4gEOV.s 			page 1
  613 0006 00000000 		.4byte	.Ldebug_abbrev0
  614 000a 04       		.byte	0x4
  615 000b 01       		.uleb128 0x1
- 616 000c 73020000 		.4byte	.LASF52
+ 616 000c 2C020000 		.4byte	.LASF52
  617 0010 0C       		.byte	0xc
- 618 0011 60030000 		.4byte	.LASF53
- 619 0015 E4000000 		.4byte	.LASF54
+ 618 0011 19030000 		.4byte	.LASF53
+ 619 0015 F3000000 		.4byte	.LASF54
  620 0019 00000000 		.4byte	.Ldebug_ranges0+0
  621 001d 00000000 		.4byte	0
  622 0021 00000000 		.4byte	.Ldebug_line0
@@ -1183,7 +1183,7 @@ ARM GAS  C:\Users\umber\AppData\Local\Temp\ccS4gEOV.s 			page 1
  632 0037 04       		.uleb128 0x4
  633 0038 04       		.byte	0x4
  634 0039 07       		.byte	0x7
- 635 003a 9C010000 		.4byte	.LASF0
+ 635 003a 55010000 		.4byte	.LASF0
  636 003e 04       		.uleb128 0x4
  637 003f 08       		.byte	0x8
  638 0040 05       		.byte	0x5
@@ -1191,26 +1191,26 @@ ARM GAS  C:\Users\umber\AppData\Local\Temp\ccS4gEOV.s 			page 1
  640 0045 04       		.uleb128 0x4
  641 0046 08       		.byte	0x8
  642 0047 04       		.byte	0x4
- 643 0048 FA010000 		.4byte	.LASF2
+ 643 0048 B3010000 		.4byte	.LASF2
  644 004c 04       		.uleb128 0x4
  645 004d 01       		.byte	0x1
  646 004e 06       		.byte	0x6
  647 004f 7D000000 		.4byte	.LASF3
  648 0053 04       		.uleb128 0x4
  649 0054 01       		.byte	0x1
-ARM GAS  C:\Users\umber\AppData\Local\Temp\ccS4gEOV.s 			page 21
+ARM GAS  C:\Users\Giorgio\AppData\Local\Temp\ccG8JYSt.s 			page 21
 
 
  650 0055 08       		.byte	0x8
- 651 0056 5B020000 		.4byte	.LASF4
+ 651 0056 14020000 		.4byte	.LASF4
  652 005a 04       		.uleb128 0x4
  653 005b 02       		.byte	0x2
  654 005c 05       		.byte	0x5
- 655 005d 69020000 		.4byte	.LASF5
+ 655 005d 22020000 		.4byte	.LASF5
  656 0061 04       		.uleb128 0x4
  657 0062 02       		.byte	0x2
  658 0063 07       		.byte	0x7
- 659 0064 DE010000 		.4byte	.LASF6
+ 659 0064 97010000 		.4byte	.LASF6
  660 0068 04       		.uleb128 0x4
  661 0069 04       		.byte	0x4
  662 006a 05       		.byte	0x5
@@ -1218,7 +1218,7 @@ ARM GAS  C:\Users\umber\AppData\Local\Temp\ccS4gEOV.s 			page 1
  664 006f 04       		.uleb128 0x4
  665 0070 04       		.byte	0x4
  666 0071 07       		.byte	0x7
- 667 0072 B2010000 		.4byte	.LASF8
+ 667 0072 6B010000 		.4byte	.LASF8
  668 0076 04       		.uleb128 0x4
  669 0077 08       		.byte	0x8
  670 0078 07       		.byte	0x7
@@ -1226,13 +1226,13 @@ ARM GAS  C:\Users\umber\AppData\Local\Temp\ccS4gEOV.s 			page 1
  672 007d 04       		.uleb128 0x4
  673 007e 04       		.byte	0x4
  674 007f 07       		.byte	0x7
- 675 0080 F1010000 		.4byte	.LASF10
+ 675 0080 AA010000 		.4byte	.LASF10
  676 0084 05       		.uleb128 0x5
  677 0085 04       		.byte	0x4
  678 0086 04       		.uleb128 0x4
  679 0087 01       		.byte	0x1
  680 0088 08       		.byte	0x8
- 681 0089 1C030000 		.4byte	.LASF11
+ 681 0089 D5020000 		.4byte	.LASF11
  682 008d 06       		.uleb128 0x6
  683 008e C6000000 		.4byte	.LASF13
  684 0092 03       		.byte	0x3
@@ -1251,14 +1251,14 @@ ARM GAS  C:\Users\umber\AppData\Local\Temp\ccS4gEOV.s 			page 1
  697 00b1 04       		.uleb128 0x4
  698 00b2 04       		.byte	0x4
  699 00b3 04       		.byte	0x4
- 700 00b4 3A020000 		.4byte	.LASF16
+ 700 00b4 F3010000 		.4byte	.LASF16
  701 00b8 04       		.uleb128 0x4
  702 00b9 08       		.byte	0x8
  703 00ba 04       		.byte	0x4
  704 00bb CC000000 		.4byte	.LASF17
  705 00bf 06       		.uleb128 0x6
- 706 00c0 56020000 		.4byte	.LASF18
-ARM GAS  C:\Users\umber\AppData\Local\Temp\ccS4gEOV.s 			page 22
+ 706 00c0 0F020000 		.4byte	.LASF18
+ARM GAS  C:\Users\Giorgio\AppData\Local\Temp\ccG8JYSt.s 			page 22
 
 
  707 00c4 03       		.byte	0x3
@@ -1279,20 +1279,20 @@ ARM GAS  C:\Users\umber\AppData\Local\Temp\ccS4gEOV.s 			page 1
  722 00e4 98       		.byte	0x98
  723 00e5 02010000 		.4byte	0x102
  724 00e9 09       		.uleb128 0x9
- 725 00ea 3E030000 		.4byte	.LASF20
+ 725 00ea F7020000 		.4byte	.LASF20
  726 00ee 01       		.byte	0x1
  727 00ef 9A       		.byte	0x9a
  728 00f0 8D000000 		.4byte	0x8d
  729 00f4 00       		.byte	0
  730 00f5 09       		.uleb128 0x9
- 731 00f6 96010000 		.4byte	.LASF21
+ 731 00f6 ED000000 		.4byte	.LASF21
  732 00fa 01       		.byte	0x1
  733 00fb 9B       		.byte	0x9b
  734 00fc 8D000000 		.4byte	0x8d
  735 0100 01       		.byte	0x1
  736 0101 00       		.byte	0
  737 0102 03       		.uleb128 0x3
- 738 0103 09030000 		.4byte	.LASF22
+ 738 0103 C2020000 		.4byte	.LASF22
  739 0107 01       		.byte	0x1
  740 0108 9C       		.byte	0x9c
  741 0109 E1000000 		.4byte	0xe1
@@ -1318,7 +1318,7 @@ ARM GAS  C:\Users\umber\AppData\Local\Temp\ccS4gEOV.s 			page 1
  761 0135 01       		.byte	0x1
  762 0136 C0       		.byte	0xc0
  763 0137 00000000 		.4byte	.LFB4
-ARM GAS  C:\Users\umber\AppData\Local\Temp\ccS4gEOV.s 			page 23
+ARM GAS  C:\Users\Giorgio\AppData\Local\Temp\ccG8JYSt.s 			page 23
 
 
  764 013b 34000000 		.4byte	.LFE4-.LFB4
@@ -1378,7 +1378,7 @@ ARM GAS  C:\Users\umber\AppData\Local\Temp\ccS4gEOV.s 			page 1
  818 01af B3010000 		.4byte	0x1b3
  819 01b3 11       		.uleb128 0x11
  820 01b4 02010000 		.4byte	0x102
-ARM GAS  C:\Users\umber\AppData\Local\Temp\ccS4gEOV.s 			page 24
+ARM GAS  C:\Users\Giorgio\AppData\Local\Temp\ccG8JYSt.s 			page 24
 
 
  821 01b8 12       		.uleb128 0x12
@@ -1391,7 +1391,7 @@ ARM GAS  C:\Users\umber\AppData\Local\Temp\ccS4gEOV.s 			page 1
  828 01c9 9C       		.byte	0x9c
  829 01ca DF010000 		.4byte	0x1df
  830 01ce 13       		.uleb128 0x13
- 831 01cf 06020000 		.4byte	.LASF30
+ 831 01cf BF010000 		.4byte	.LASF30
  832 01d3 01       		.byte	0x1
  833 01d4 2A01     		.2byte	0x12a
  834 01d6 8D000000 		.4byte	0x8d
@@ -1438,7 +1438,7 @@ ARM GAS  C:\Users\umber\AppData\Local\Temp\ccS4gEOV.s 			page 1
  875 0225 52       		.byte	0x52
  876 0226 03       		.uleb128 0x3
  877 0227 F3       		.byte	0xf3
-ARM GAS  C:\Users\umber\AppData\Local\Temp\ccS4gEOV.s 			page 25
+ARM GAS  C:\Users\Giorgio\AppData\Local\Temp\ccG8JYSt.s 			page 25
 
 
  878 0228 01       		.uleb128 0x1
@@ -1455,13 +1455,13 @@ ARM GAS  C:\Users\umber\AppData\Local\Temp\ccS4gEOV.s 			page 1
  889 023c 9C       		.byte	0x9c
  890 023d 84020000 		.4byte	0x284
  891 0241 0F       		.uleb128 0xf
- 892 0242 C4010000 		.4byte	.LASF33
+ 892 0242 7D010000 		.4byte	.LASF33
  893 0246 01       		.byte	0x1
  894 0247 E5       		.byte	0xe5
  895 0248 A5000000 		.4byte	0xa5
  896 024c CF000000 		.4byte	.LLST7
  897 0250 0F       		.uleb128 0xf
- 898 0251 01030000 		.4byte	.LASF34
+ 898 0251 BA020000 		.4byte	.LASF34
  899 0255 01       		.byte	0x1
  900 0256 E6       		.byte	0xe6
  901 0257 8D000000 		.4byte	0x8d
@@ -1488,7 +1488,7 @@ ARM GAS  C:\Users\umber\AppData\Local\Temp\ccS4gEOV.s 			page 1
  922 0282 00       		.byte	0
  923 0283 00       		.byte	0
  924 0284 0C       		.uleb128 0xc
- 925 0285 54030000 		.4byte	.LASF35
+ 925 0285 0D030000 		.4byte	.LASF35
  926 0289 01       		.byte	0x1
  927 028a 54       		.byte	0x54
  928 028b 00000000 		.4byte	.LFB1
@@ -1497,8 +1497,8 @@ ARM GAS  C:\Users\umber\AppData\Local\Temp\ccS4gEOV.s 			page 1
  931 0294 9C       		.byte	0x9c
  932 0295 E4020000 		.4byte	0x2e4
  933 0299 18       		.uleb128 0x18
- 934 029a 35020000 		.4byte	.LASF36
-ARM GAS  C:\Users\umber\AppData\Local\Temp\ccS4gEOV.s 			page 26
+ 934 029a EE010000 		.4byte	.LASF36
+ARM GAS  C:\Users\Giorgio\AppData\Local\Temp\ccG8JYSt.s 			page 26
 
 
  935 029e 01       		.byte	0x1
@@ -1548,7 +1548,7 @@ ARM GAS  C:\Users\umber\AppData\Local\Temp\ccS4gEOV.s 			page 1
  979 02e6 EA020000 		.4byte	0x2ea
  980 02ea 19       		.uleb128 0x19
  981 02eb 1A       		.uleb128 0x1a
- 982 02ec 28030000 		.4byte	.LASF39
+ 982 02ec E1020000 		.4byte	.LASF39
  983 02f0 01       		.byte	0x1
  984 02f1 4201     		.2byte	0x142
  985 02f3 00000000 		.4byte	.LFB7
@@ -1557,8 +1557,8 @@ ARM GAS  C:\Users\umber\AppData\Local\Temp\ccS4gEOV.s 			page 1
  988 02fc 9C       		.byte	0x9c
  989 02fd 1E030000 		.4byte	0x31e
  990 0301 1B       		.uleb128 0x1b
- 991 0302 45030000 		.4byte	.LASF37
-ARM GAS  C:\Users\umber\AppData\Local\Temp\ccS4gEOV.s 			page 27
+ 991 0302 FE020000 		.4byte	.LASF37
+ARM GAS  C:\Users\Giorgio\AppData\Local\Temp\ccG8JYSt.s 			page 27
 
 
  992 0306 01       		.byte	0x1
@@ -1567,7 +1567,7 @@ ARM GAS  C:\Users\umber\AppData\Local\Temp\ccS4gEOV.s 			page 1
  995 030d 01       		.uleb128 0x1
  996 030e 50       		.byte	0x50
  997 030f 1C       		.uleb128 0x1c
- 998 0310 8D010000 		.4byte	.LASF38
+ 998 0310 E4000000 		.4byte	.LASF38
  999 0314 01       		.byte	0x1
  1000 0315 4401     		.2byte	0x144
  1001 0317 8D000000 		.4byte	0x8d
@@ -1575,7 +1575,7 @@ ARM GAS  C:\Users\umber\AppData\Local\Temp\ccS4gEOV.s 			page 1
  1003 031c 53       		.byte	0x53
  1004 031d 00       		.byte	0
  1005 031e 1A       		.uleb128 0x1a
- 1006 031f 9E030000 		.4byte	.LASF40
+ 1006 031f 57030000 		.4byte	.LASF40
  1007 0323 01       		.byte	0x1
  1008 0324 6401     		.2byte	0x164
  1009 0326 00000000 		.4byte	.LFB8
@@ -1593,20 +1593,20 @@ ARM GAS  C:\Users\umber\AppData\Local\Temp\ccS4gEOV.s 			page 1
  1021 0344 7001     		.2byte	0x170
  1022 0346 65030000 		.4byte	0x365
  1023 034a 1F       		.uleb128 0x1f
- 1024 034b 86030000 		.4byte	.LASF41
+ 1024 034b 3F030000 		.4byte	.LASF41
  1025 034f 01       		.byte	0x1
  1026 0350 7101     		.2byte	0x171
  1027 0352 84000000 		.4byte	0x84
  1028 0356 00       		.byte	0
  1029 0357 1F       		.uleb128 0x1f
- 1030 0358 D9010000 		.4byte	.LASF42
+ 1030 0358 92010000 		.4byte	.LASF42
  1031 035c 01       		.byte	0x1
  1032 035d 7201     		.2byte	0x172
  1033 035f 99000000 		.4byte	0x99
  1034 0363 04       		.byte	0x4
  1035 0364 00       		.byte	0
  1036 0365 06       		.uleb128 0x6
- 1037 0366 18020000 		.4byte	.LASF43
+ 1037 0366 D1010000 		.4byte	.LASF43
  1038 036a 01       		.byte	0x1
  1039 036b 7301     		.2byte	0x173
  1040 036d 41030000 		.4byte	0x341
@@ -1616,9 +1616,9 @@ ARM GAS  C:\Users\umber\AppData\Local\Temp\ccS4gEOV.s 			page 1
  1044 0374 7601     		.2byte	0x176
  1045 0376 A2030000 		.4byte	0x3a2
  1046 037a 1F       		.uleb128 0x1f
- 1047 037b 35020000 		.4byte	.LASF36
+ 1047 037b EE010000 		.4byte	.LASF36
  1048 037f 01       		.byte	0x1
-ARM GAS  C:\Users\umber\AppData\Local\Temp\ccS4gEOV.s 			page 28
+ARM GAS  C:\Users\Giorgio\AppData\Local\Temp\ccG8JYSt.s 			page 28
 
 
  1049 0380 7701     		.2byte	0x177
@@ -1631,14 +1631,14 @@ ARM GAS  C:\Users\umber\AppData\Local\Temp\ccS4gEOV.s 			page 1
  1056 038f E4020000 		.4byte	0x2e4
  1057 0393 04       		.byte	0x4
  1058 0394 1F       		.uleb128 0x1f
- 1059 0395 D9010000 		.4byte	.LASF42
+ 1059 0395 92010000 		.4byte	.LASF42
  1060 0399 01       		.byte	0x1
  1061 039a 7901     		.2byte	0x179
  1062 039c 99000000 		.4byte	0x99
  1063 03a0 08       		.byte	0x8
  1064 03a1 00       		.byte	0
  1065 03a2 06       		.uleb128 0x6
- 1066 03a3 CC010000 		.4byte	.LASF44
+ 1066 03a3 85010000 		.4byte	.LASF44
  1067 03a7 01       		.byte	0x1
  1068 03a8 7A01     		.2byte	0x17a
  1069 03aa 71030000 		.4byte	0x371
@@ -1652,7 +1652,7 @@ ARM GAS  C:\Users\umber\AppData\Local\Temp\ccS4gEOV.s 			page 1
  1077 03be 11       		.uleb128 0x11
  1078 03bf 65030000 		.4byte	0x365
  1079 03c3 1C       		.uleb128 0x1c
- 1080 03c4 25020000 		.4byte	.LASF45
+ 1080 03c4 DE010000 		.4byte	.LASF45
  1081 03c8 01       		.byte	0x1
  1082 03c9 7C01     		.2byte	0x17c
  1083 03cb D5030000 		.4byte	0x3d5
@@ -1671,14 +1671,14 @@ ARM GAS  C:\Users\umber\AppData\Local\Temp\ccS4gEOV.s 			page 1
  1096 03ea 11       		.uleb128 0x11
  1097 03eb A2030000 		.4byte	0x3a2
  1098 03ef 1C       		.uleb128 0x1c
- 1099 03f0 8E030000 		.4byte	.LASF46
+ 1099 03f0 47030000 		.4byte	.LASF46
  1100 03f4 01       		.byte	0x1
  1101 03f5 8B01     		.2byte	0x18b
  1102 03f7 01040000 		.4byte	0x401
  1103 03fb 05       		.uleb128 0x5
  1104 03fc 03       		.byte	0x3
  1105 03fd 44000000 		.4byte	cfg_memcpy_list.5019
-ARM GAS  C:\Users\umber\AppData\Local\Temp\ccS4gEOV.s 			page 29
+ARM GAS  C:\Users\Giorgio\AppData\Local\Temp\ccG8JYSt.s 			page 29
 
 
  1106 0401 11       		.uleb128 0x11
@@ -1738,7 +1738,7 @@ ARM GAS  C:\Users\umber\AppData\Local\Temp\ccS4gEOV.s 			page 1
  1160 0467 6D6300   		.ascii	"mc\000"
  1161 046a 01       		.byte	0x1
  1162 046b 9D01     		.2byte	0x19d
-ARM GAS  C:\Users\umber\AppData\Local\Temp\ccS4gEOV.s 			page 30
+ARM GAS  C:\Users\Giorgio\AppData\Local\Temp\ccG8JYSt.s 			page 30
 
 
  1163 046d 75040000 		.4byte	0x475
@@ -1747,19 +1747,19 @@ ARM GAS  C:\Users\umber\AppData\Local\Temp\ccS4gEOV.s 			page 1
  1166 0476 04       		.byte	0x4
  1167 0477 EA030000 		.4byte	0x3ea
  1168 047b 13       		.uleb128 0x13
- 1169 047c 4E020000 		.4byte	.LASF47
+ 1169 047c 07020000 		.4byte	.LASF47
  1170 0480 01       		.byte	0x1
  1171 0481 9E01     		.2byte	0x19e
  1172 0483 84000000 		.4byte	0x84
  1173 0487 1F020000 		.4byte	.LLST15
  1174 048b 13       		.uleb128 0x13
- 1175 048c 21030000 		.4byte	.LASF48
+ 1175 048c DA020000 		.4byte	.LASF48
  1176 0490 01       		.byte	0x1
  1177 0491 9F01     		.2byte	0x19f
  1178 0493 E4020000 		.4byte	0x2e4
  1179 0497 32020000 		.4byte	.LLST16
  1180 049b 13       		.uleb128 0x13
- 1181 049c A9010000 		.4byte	.LASF49
+ 1181 049c 62010000 		.4byte	.LASF49
  1182 04a0 01       		.byte	0x1
  1183 04a1 A001     		.2byte	0x1a0
  1184 04a3 99000000 		.4byte	0x99
@@ -1798,7 +1798,7 @@ ARM GAS  C:\Users\umber\AppData\Local\Temp\ccS4gEOV.s 			page 1
  1217 04da 50       		.byte	0x50
  1218 04db 03       		.uleb128 0x3
  1219 04dc 42       		.byte	0x42
-ARM GAS  C:\Users\umber\AppData\Local\Temp\ccS4gEOV.s 			page 31
+ARM GAS  C:\Users\Giorgio\AppData\Local\Temp\ccG8JYSt.s 			page 31
 
 
  1220 04dd 4A       		.byte	0x4a
@@ -1858,7 +1858,7 @@ ARM GAS  C:\Users\umber\AppData\Local\Temp\ccS4gEOV.s 			page 1
  1274 0534 17       		.uleb128 0x17
  1275 0535 A6000000 		.4byte	.LVL46
  1276 0539 84020000 		.4byte	0x284
-ARM GAS  C:\Users\umber\AppData\Local\Temp\ccS4gEOV.s 			page 32
+ARM GAS  C:\Users\Giorgio\AppData\Local\Temp\ccG8JYSt.s 			page 32
 
 
  1277 053d 59050000 		.4byte	0x559
@@ -1909,16 +1909,16 @@ ARM GAS  C:\Users\umber\AppData\Local\Temp\ccS4gEOV.s 			page 1
  1322 0588 00       		.byte	0
  1323 0589 00       		.byte	0
  1324 058a 25       		.uleb128 0x25
- 1325 058b 4D030000 		.4byte	.LASF50
- 1326 058f 4D030000 		.4byte	.LASF50
+ 1325 058b 06030000 		.4byte	.LASF50
+ 1326 058f 06030000 		.4byte	.LASF50
  1327 0593 26       		.uleb128 0x26
- 1328 0594 40020000 		.4byte	.LASF56
- 1329 0598 40020000 		.4byte	.LASF56
+ 1328 0594 F9010000 		.4byte	.LASF56
+ 1329 0598 F9010000 		.4byte	.LASF56
  1330 059c 04       		.byte	0x4
  1331 059d 79       		.byte	0x79
  1332 059e 25       		.uleb128 0x25
  1333 059f BF000000 		.4byte	.LASF51
-ARM GAS  C:\Users\umber\AppData\Local\Temp\ccS4gEOV.s 			page 33
+ARM GAS  C:\Users\Giorgio\AppData\Local\Temp\ccG8JYSt.s 			page 33
 
 
  1334 05a3 BF000000 		.4byte	.LASF51
@@ -1978,7 +1978,7 @@ ARM GAS  C:\Users\umber\AppData\Local\Temp\ccS4gEOV.s 			page 1
  1388 0032 03       		.uleb128 0x3
  1389 0033 0E       		.uleb128 0xe
  1390 0034 00       		.byte	0
-ARM GAS  C:\Users\umber\AppData\Local\Temp\ccS4gEOV.s 			page 34
+ARM GAS  C:\Users\Giorgio\AppData\Local\Temp\ccG8JYSt.s 			page 34
 
 
  1391 0035 00       		.byte	0
@@ -2038,7 +2038,7 @@ ARM GAS  C:\Users\umber\AppData\Local\Temp\ccS4gEOV.s 			page 1
  1445 006b 00       		.byte	0
  1446 006c 00       		.byte	0
  1447 006d 0A       		.uleb128 0xa
-ARM GAS  C:\Users\umber\AppData\Local\Temp\ccS4gEOV.s 			page 35
+ARM GAS  C:\Users\Giorgio\AppData\Local\Temp\ccG8JYSt.s 			page 35
 
 
  1448 006e 2E       		.uleb128 0x2e
@@ -2098,7 +2098,7 @@ ARM GAS  C:\Users\umber\AppData\Local\Temp\ccS4gEOV.s 			page 1
  1502 00a6 40       		.uleb128 0x40
  1503 00a7 18       		.uleb128 0x18
  1504 00a8 9742     		.uleb128 0x2117
-ARM GAS  C:\Users\umber\AppData\Local\Temp\ccS4gEOV.s 			page 36
+ARM GAS  C:\Users\Giorgio\AppData\Local\Temp\ccG8JYSt.s 			page 36
 
 
  1505 00aa 19       		.uleb128 0x19
@@ -2158,7 +2158,7 @@ ARM GAS  C:\Users\umber\AppData\Local\Temp\ccS4gEOV.s 			page 1
  1559 00e0 26       		.uleb128 0x26
  1560 00e1 00       		.byte	0
  1561 00e2 49       		.uleb128 0x49
-ARM GAS  C:\Users\umber\AppData\Local\Temp\ccS4gEOV.s 			page 37
+ARM GAS  C:\Users\Giorgio\AppData\Local\Temp\ccG8JYSt.s 			page 37
 
 
  1562 00e3 13       		.uleb128 0x13
@@ -2218,7 +2218,7 @@ ARM GAS  C:\Users\umber\AppData\Local\Temp\ccS4gEOV.s 			page 1
  1616 011a 00       		.byte	0
  1617 011b 00       		.byte	0
  1618 011c 15       		.uleb128 0x15
-ARM GAS  C:\Users\umber\AppData\Local\Temp\ccS4gEOV.s 			page 38
+ARM GAS  C:\Users\Giorgio\AppData\Local\Temp\ccG8JYSt.s 			page 38
 
 
  1619 011d 898201   		.uleb128 0x4109
@@ -2278,7 +2278,7 @@ ARM GAS  C:\Users\umber\AppData\Local\Temp\ccS4gEOV.s 			page 1
  1673 015a 0E       		.uleb128 0xe
  1674 015b 3A       		.uleb128 0x3a
  1675 015c 0B       		.uleb128 0xb
-ARM GAS  C:\Users\umber\AppData\Local\Temp\ccS4gEOV.s 			page 39
+ARM GAS  C:\Users\Giorgio\AppData\Local\Temp\ccG8JYSt.s 			page 39
 
 
  1676 015d 3B       		.uleb128 0x3b
@@ -2338,7 +2338,7 @@ ARM GAS  C:\Users\umber\AppData\Local\Temp\ccS4gEOV.s 			page 1
  1730 0194 13       		.uleb128 0x13
  1731 0195 00       		.byte	0
  1732 0196 00       		.byte	0
-ARM GAS  C:\Users\umber\AppData\Local\Temp\ccS4gEOV.s 			page 40
+ARM GAS  C:\Users\Giorgio\AppData\Local\Temp\ccG8JYSt.s 			page 40
 
 
  1733 0197 1E       		.uleb128 0x1e
@@ -2398,7 +2398,7 @@ ARM GAS  C:\Users\umber\AppData\Local\Temp\ccS4gEOV.s 			page 1
  1787 01cd 00       		.byte	0
  1788 01ce 49       		.uleb128 0x49
  1789 01cf 13       		.uleb128 0x13
-ARM GAS  C:\Users\umber\AppData\Local\Temp\ccS4gEOV.s 			page 41
+ARM GAS  C:\Users\Giorgio\AppData\Local\Temp\ccG8JYSt.s 			page 41
 
 
  1790 01d0 2F       		.uleb128 0x2f
@@ -2458,7 +2458,7 @@ ARM GAS  C:\Users\umber\AppData\Local\Temp\ccS4gEOV.s 			page 1
  1844 0208 3B       		.uleb128 0x3b
  1845 0209 0B       		.uleb128 0xb
  1846 020a 00       		.byte	0
-ARM GAS  C:\Users\umber\AppData\Local\Temp\ccS4gEOV.s 			page 42
+ARM GAS  C:\Users\Giorgio\AppData\Local\Temp\ccG8JYSt.s 			page 42
 
 
  1847 020b 00       		.byte	0
@@ -2518,7 +2518,7 @@ ARM GAS  C:\Users\umber\AppData\Local\Temp\ccS4gEOV.s 			page 1
  1901 0082 00000000 		.4byte	.LVL14
  1902 0086 09000000 		.4byte	.LVL16-1
  1903 008a 0100     		.2byte	0x1
-ARM GAS  C:\Users\umber\AppData\Local\Temp\ccS4gEOV.s 			page 43
+ARM GAS  C:\Users\Giorgio\AppData\Local\Temp\ccG8JYSt.s 			page 43
 
 
  1904 008c 50       		.byte	0x50
@@ -2578,7 +2578,7 @@ ARM GAS  C:\Users\umber\AppData\Local\Temp\ccS4gEOV.s 			page 1
  1958 0110 00000000 		.4byte	0
  1959 0114 00000000 		.4byte	0
  1960              	.LLST9:
-ARM GAS  C:\Users\umber\AppData\Local\Temp\ccS4gEOV.s 			page 44
+ARM GAS  C:\Users\Giorgio\AppData\Local\Temp\ccG8JYSt.s 			page 44
 
 
  1961 0118 00000000 		.4byte	.LVL25
@@ -2638,7 +2638,7 @@ ARM GAS  C:\Users\umber\AppData\Local\Temp\ccS4gEOV.s 			page 1
  2015 019c 54       		.byte	0x54
  2016 019d 34000000 		.4byte	.LVL35
  2017 01a1 4C000000 		.4byte	.LVL40
-ARM GAS  C:\Users\umber\AppData\Local\Temp\ccS4gEOV.s 			page 45
+ARM GAS  C:\Users\Giorgio\AppData\Local\Temp\ccG8JYSt.s 			page 45
 
 
  2018 01a5 0100     		.2byte	0x1
@@ -2698,7 +2698,7 @@ ARM GAS  C:\Users\umber\AppData\Local\Temp\ccS4gEOV.s 			page 1
  2072 0215 22       		.byte	0x22
  2073 0216 9F       		.byte	0x9f
  2074 0217 00000000 		.4byte	0
-ARM GAS  C:\Users\umber\AppData\Local\Temp\ccS4gEOV.s 			page 46
+ARM GAS  C:\Users\Giorgio\AppData\Local\Temp\ccG8JYSt.s 			page 46
 
 
  2075 021b 00000000 		.4byte	0
@@ -2758,7 +2758,7 @@ ARM GAS  C:\Users\umber\AppData\Local\Temp\ccS4gEOV.s 			page 1
  2129 000a 04       		.byte	0x4
  2130 000b 00       		.byte	0
  2131 000c 0000     		.2byte	0
-ARM GAS  C:\Users\umber\AppData\Local\Temp\ccS4gEOV.s 			page 47
+ARM GAS  C:\Users\Giorgio\AppData\Local\Temp\ccG8JYSt.s 			page 47
 
 
  2132 000e 0000     		.2byte	0
@@ -2802,8 +2802,8 @@ ARM GAS  C:\Users\umber\AppData\Local\Temp\ccS4gEOV.s 			page 1
  2170 0044 00000000 		.4byte	0
  2171              		.section	.debug_line,"",%progbits
  2172              	.Ldebug_line0:
- 2173 0000 E9010000 		.section	.debug_str,"MS",%progbits,1
- 2173      0200CC00 
+ 2173 0000 F3010000 		.section	.debug_str,"MS",%progbits,1
+ 2173      0200D600 
  2173      00000201 
  2173      FB0E0D00 
  2173      01010101 
@@ -2818,7 +2818,7 @@ ARM GAS  C:\Users\umber\AppData\Local\Temp\ccS4gEOV.s 			page 1
  2179      41646472 
  2179      00
  2180              	.LASF12:
-ARM GAS  C:\Users\umber\AppData\Local\Temp\ccS4gEOV.s 			page 48
+ARM GAS  C:\Users\Giorgio\AppData\Local\Temp\ccG8JYSt.s 			page 48
 
 
  2181 0016 73697A65 		.ascii	"size_t\000"
@@ -2878,7 +2878,7 @@ ARM GAS  C:\Users\umber\AppData\Local\Temp\ccS4gEOV.s 			page 1
  2203      00
  2204              	.LASF19:
  2205 00b9 72656731 		.ascii	"reg16\000"
-ARM GAS  C:\Users\umber\AppData\Local\Temp\ccS4gEOV.s 			page 49
+ARM GAS  C:\Users\Giorgio\AppData\Local\Temp\ccG8JYSt.s 			page 49
 
 
  2205      3600
@@ -2898,192 +2898,183 @@ ARM GAS  C:\Users\umber\AppData\Local\Temp\ccS4gEOV.s 			page 1
  2214              	.LASF15:
  2215 00dd 75696E74 		.ascii	"uint32\000"
  2215      333200
- 2216              	.LASF54:
- 2217 00e4 443A5C44 		.ascii	"D:\\Download\\AY2122_II_Project-4-ffbb298e331a02583"
- 2217      6F776E6C 
- 2217      6F61645C 
- 2217      41593231 
- 2217      32325F49 
- 2218 0115 30373439 		.ascii	"0749630a0214264f461f654\\AY2122_II_Project-4-ffbb29"
- 2218      36333061 
- 2218      30323134 
- 2218      32363466 
- 2218      34363166 
- 2219 0147 38653333 		.ascii	"8e331a025830749630a0214264f461f654\\PSoC Code\\AY21"
- 2219      31613032 
- 2219      35383330 
- 2219      37343936 
- 2219      33306130 
- 2220 0178 32325F49 		.ascii	"22_II\\Project4.cydsn\000"
- 2220      495C5072 
- 2220      6F6A6563 
- 2220      74342E63 
- 2220      7964736E 
- 2221              	.LASF38:
- 2222 018d 72656756 		.ascii	"regValue\000"
- 2222      616C7565 
- 2222      00
- 2223              	.LASF21:
- 2224 0196 76616C75 		.ascii	"value\000"
- 2224      6500
- 2225              	.LASF0:
- 2226 019c 756E7369 		.ascii	"unsigned int\000"
- 2226      676E6564 
- 2226      20696E74 
- 2226      00
- 2227              	.LASF49:
- 2228 01a9 6E756D42 		.ascii	"numBytes\000"
- 2228      79746573 
- 2228      00
- 2229              	.LASF8:
- 2230 01b2 6C6F6E67 		.ascii	"long unsigned int\000"
- 2230      20756E73 
-ARM GAS  C:\Users\umber\AppData\Local\Temp\ccS4gEOV.s 			page 50
+ 2216              	.LASF38:
+ 2217 00e4 72656756 		.ascii	"regValue\000"
+ 2217      616C7565 
+ 2217      00
+ 2218              	.LASF21:
+ 2219 00ed 76616C75 		.ascii	"value\000"
+ 2219      6500
+ 2220              	.LASF54:
+ 2221 00f3 433A5C55 		.ascii	"C:\\Users\\Giorgio\\Desktop\\LAB_FINAL_PROJECT\\AY2"
+ 2221      73657273 
+ 2221      5C47696F 
+ 2221      7267696F 
+ 2221      5C446573 
+ 2222 0121 3132325F 		.ascii	"122_II_Project-4\\PSoC Code\\AY2122_II\\Project4.cy"
+ 2222      49495F50 
+ 2222      726F6A65 
+ 2222      63742D34 
+ 2222      5C50536F 
+ 2223 0151 64736E00 		.ascii	"dsn\000"
+ 2224              	.LASF0:
+ 2225 0155 756E7369 		.ascii	"unsigned int\000"
+ 2225      676E6564 
+ 2225      20696E74 
+ 2225      00
+ 2226              	.LASF49:
+ 2227 0162 6E756D42 		.ascii	"numBytes\000"
+ 2227      79746573 
+ 2227      00
+ 2228              	.LASF8:
+ 2229 016b 6C6F6E67 		.ascii	"long unsigned int\000"
+ 2229      20756E73 
+ 2229      69676E65 
+ 2229      6420696E 
+ 2229      7400
+ 2230              	.LASF33:
+ 2231 017d 74696D65 		.ascii	"timeout\000"
+ 2231      6F757400 
+ 2232              	.LASF44:
+ 2233 0185 6366675F 		.ascii	"cfg_memcpy_t\000"
+ 2233      6D656D63 
+ARM GAS  C:\Users\Giorgio\AppData\Local\Temp\ccG8JYSt.s 			page 50
 
 
- 2230      69676E65 
- 2230      6420696E 
- 2230      7400
- 2231              	.LASF33:
- 2232 01c4 74696D65 		.ascii	"timeout\000"
- 2232      6F757400 
- 2233              	.LASF44:
- 2234 01cc 6366675F 		.ascii	"cfg_memcpy_t\000"
- 2234      6D656D63 
- 2234      70795F74 
- 2234      00
- 2235              	.LASF42:
- 2236 01d9 73697A65 		.ascii	"size\000"
- 2236      00
- 2237              	.LASF6:
- 2238 01de 73686F72 		.ascii	"short unsigned int\000"
- 2238      7420756E 
- 2238      7369676E 
- 2238      65642069 
- 2238      6E7400
- 2239              	.LASF10:
- 2240 01f1 73697A65 		.ascii	"sizetype\000"
- 2240      74797065 
- 2240      00
- 2241              	.LASF2:
- 2242 01fa 6C6F6E67 		.ascii	"long double\000"
- 2242      20646F75 
- 2242      626C6500 
- 2243              	.LASF30:
- 2244 0206 62675F78 		.ascii	"bg_xover_inl_trim\000"
- 2244      6F766572 
- 2244      5F696E6C 
- 2244      5F747269 
- 2244      6D00
- 2245              	.LASF43:
- 2246 0218 6366675F 		.ascii	"cfg_memset_t\000"
- 2246      6D656D73 
- 2246      65745F74 
- 2246      00
- 2247              	.LASF45:
- 2248 0225 6366675F 		.ascii	"cfg_memset_list\000"
- 2248      6D656D73 
- 2248      65745F6C 
- 2248      69737400 
- 2249              	.LASF36:
- 2250 0235 64657374 		.ascii	"dest\000"
- 2250      00
- 2251              	.LASF16:
- 2252 023a 666C6F61 		.ascii	"float\000"
- 2252      7400
- 2253              	.LASF56:
- 2254 0240 43794465 		.ascii	"CyDelayCycles\000"
- 2254      6C617943 
- 2254      79636C65 
- 2254      7300
- 2255              	.LASF47:
- 2256 024e 64657374 		.ascii	"destPtr\000"
-ARM GAS  C:\Users\umber\AppData\Local\Temp\ccS4gEOV.s 			page 51
+ 2233      70795F74 
+ 2233      00
+ 2234              	.LASF42:
+ 2235 0192 73697A65 		.ascii	"size\000"
+ 2235      00
+ 2236              	.LASF6:
+ 2237 0197 73686F72 		.ascii	"short unsigned int\000"
+ 2237      7420756E 
+ 2237      7369676E 
+ 2237      65642069 
+ 2237      6E7400
+ 2238              	.LASF10:
+ 2239 01aa 73697A65 		.ascii	"sizetype\000"
+ 2239      74797065 
+ 2239      00
+ 2240              	.LASF2:
+ 2241 01b3 6C6F6E67 		.ascii	"long double\000"
+ 2241      20646F75 
+ 2241      626C6500 
+ 2242              	.LASF30:
+ 2243 01bf 62675F78 		.ascii	"bg_xover_inl_trim\000"
+ 2243      6F766572 
+ 2243      5F696E6C 
+ 2243      5F747269 
+ 2243      6D00
+ 2244              	.LASF43:
+ 2245 01d1 6366675F 		.ascii	"cfg_memset_t\000"
+ 2245      6D656D73 
+ 2245      65745F74 
+ 2245      00
+ 2246              	.LASF45:
+ 2247 01de 6366675F 		.ascii	"cfg_memset_list\000"
+ 2247      6D656D73 
+ 2247      65745F6C 
+ 2247      69737400 
+ 2248              	.LASF36:
+ 2249 01ee 64657374 		.ascii	"dest\000"
+ 2249      00
+ 2250              	.LASF16:
+ 2251 01f3 666C6F61 		.ascii	"float\000"
+ 2251      7400
+ 2252              	.LASF56:
+ 2253 01f9 43794465 		.ascii	"CyDelayCycles\000"
+ 2253      6C617943 
+ 2253      79636C65 
+ 2253      7300
+ 2254              	.LASF47:
+ 2255 0207 64657374 		.ascii	"destPtr\000"
+ 2255      50747200 
+ 2256              	.LASF18:
+ 2257 020f 72656738 		.ascii	"reg8\000"
+ 2257      00
+ 2258              	.LASF4:
+ 2259 0214 756E7369 		.ascii	"unsigned char\000"
+ 2259      676E6564 
+ 2259      20636861 
+ 2259      7200
+ARM GAS  C:\Users\Giorgio\AppData\Local\Temp\ccG8JYSt.s 			page 51
 
 
- 2256      50747200 
- 2257              	.LASF18:
- 2258 0256 72656738 		.ascii	"reg8\000"
- 2258      00
- 2259              	.LASF4:
- 2260 025b 756E7369 		.ascii	"unsigned char\000"
- 2260      676E6564 
- 2260      20636861 
- 2260      7200
- 2261              	.LASF5:
- 2262 0269 73686F72 		.ascii	"short int\000"
- 2262      7420696E 
- 2262      7400
- 2263              	.LASF52:
- 2264 0273 474E5520 		.ascii	"GNU C11 5.4.1 20160609 (release) [ARM/embedded-5-br"
- 2264      43313120 
- 2264      352E342E 
- 2264      31203230 
- 2264      31363036 
- 2265 02a6 616E6368 		.ascii	"anch revision 237715] -mcpu=cortex-m3 -mthumb -g -O"
- 2265      20726576 
- 2265      6973696F 
- 2265      6E203233 
- 2265      37373135 
- 2266 02d9 67202D66 		.ascii	"g -ffunction-sections -ffat-lto-objects\000"
- 2266      66756E63 
- 2266      74696F6E 
- 2266      2D736563 
- 2266      74696F6E 
- 2267              	.LASF34:
- 2268 0301 706C6C4C 		.ascii	"pllLock\000"
- 2268      6F636B00 
- 2269              	.LASF22:
- 2270 0309 63795F63 		.ascii	"cy_cfg_addrvalue_t\000"
- 2270      66675F61 
- 2270      64647276 
- 2270      616C7565 
- 2270      5F7400
- 2271              	.LASF11:
- 2272 031c 63686172 		.ascii	"char\000"
- 2272      00
- 2273              	.LASF48:
- 2274 0321 73726350 		.ascii	"srcPtr\000"
- 2274      747200
- 2275              	.LASF39:
- 2276 0328 53657441 		.ascii	"SetAnalogRoutingPumps\000"
- 2276      6E616C6F 
- 2276      67526F75 
- 2276      74696E67 
- 2276      50756D70 
- 2277              	.LASF20:
- 2278 033e 6F666673 		.ascii	"offset\000"
- 2278      657400
- 2279              	.LASF37:
- 2280 0345 656E6162 		.ascii	"enabled\000"
- 2280      6C656400 
- 2281              	.LASF50:
-ARM GAS  C:\Users\umber\AppData\Local\Temp\ccS4gEOV.s 			page 52
+ 2260              	.LASF5:
+ 2261 0222 73686F72 		.ascii	"short int\000"
+ 2261      7420696E 
+ 2261      7400
+ 2262              	.LASF52:
+ 2263 022c 474E5520 		.ascii	"GNU C11 5.4.1 20160609 (release) [ARM/embedded-5-br"
+ 2263      43313120 
+ 2263      352E342E 
+ 2263      31203230 
+ 2263      31363036 
+ 2264 025f 616E6368 		.ascii	"anch revision 237715] -mcpu=cortex-m3 -mthumb -g -O"
+ 2264      20726576 
+ 2264      6973696F 
+ 2264      6E203233 
+ 2264      37373135 
+ 2265 0292 67202D66 		.ascii	"g -ffunction-sections -ffat-lto-objects\000"
+ 2265      66756E63 
+ 2265      74696F6E 
+ 2265      2D736563 
+ 2265      74696F6E 
+ 2266              	.LASF34:
+ 2267 02ba 706C6C4C 		.ascii	"pllLock\000"
+ 2267      6F636B00 
+ 2268              	.LASF22:
+ 2269 02c2 63795F63 		.ascii	"cy_cfg_addrvalue_t\000"
+ 2269      66675F61 
+ 2269      64647276 
+ 2269      616C7565 
+ 2269      5F7400
+ 2270              	.LASF11:
+ 2271 02d5 63686172 		.ascii	"char\000"
+ 2271      00
+ 2272              	.LASF48:
+ 2273 02da 73726350 		.ascii	"srcPtr\000"
+ 2273      747200
+ 2274              	.LASF39:
+ 2275 02e1 53657441 		.ascii	"SetAnalogRoutingPumps\000"
+ 2275      6E616C6F 
+ 2275      67526F75 
+ 2275      74696E67 
+ 2275      50756D70 
+ 2276              	.LASF20:
+ 2277 02f7 6F666673 		.ascii	"offset\000"
+ 2277      657400
+ 2278              	.LASF37:
+ 2279 02fe 656E6162 		.ascii	"enabled\000"
+ 2279      6C656400 
+ 2280              	.LASF50:
+ 2281 0306 6D656D73 		.ascii	"memset\000"
+ 2281      657400
+ 2282              	.LASF35:
+ 2283 030d 4359434F 		.ascii	"CYCONFIGCPY\000"
+ 2283      4E464947 
+ 2283      43505900 
+ 2284              	.LASF53:
+ 2285 0319 47656E65 		.ascii	"Generated_Source\\PSoC5\\cyfitter_cfg.c\000"
+ 2285      72617465 
+ARM GAS  C:\Users\Giorgio\AppData\Local\Temp\ccG8JYSt.s 			page 52
 
 
- 2282 034d 6D656D73 		.ascii	"memset\000"
- 2282      657400
- 2283              	.LASF35:
- 2284 0354 4359434F 		.ascii	"CYCONFIGCPY\000"
- 2284      4E464947 
- 2284      43505900 
- 2285              	.LASF53:
- 2286 0360 47656E65 		.ascii	"Generated_Source\\PSoC5\\cyfitter_cfg.c\000"
- 2286      72617465 
- 2286      645F536F 
- 2286      75726365 
- 2286      5C50536F 
- 2287              	.LASF41:
- 2288 0386 61646472 		.ascii	"address\000"
- 2288      65737300 
- 2289              	.LASF46:
- 2290 038e 6366675F 		.ascii	"cfg_memcpy_list\000"
- 2290      6D656D63 
- 2290      70795F6C 
- 2290      69737400 
- 2291              	.LASF40:
- 2292 039e 63796669 		.ascii	"cyfitter_cfg\000"
- 2292      74746572 
- 2292      5F636667 
- 2292      00
- 2293              		.ident	"GCC: (GNU Tools for ARM Embedded Processors) 5.4.1 20160609 (release) [ARM/embedded-5-bran
+ 2285      645F536F 
+ 2285      75726365 
+ 2285      5C50536F 
+ 2286              	.LASF41:
+ 2287 033f 61646472 		.ascii	"address\000"
+ 2287      65737300 
+ 2288              	.LASF46:
+ 2289 0347 6366675F 		.ascii	"cfg_memcpy_list\000"
+ 2289      6D656D63 
+ 2289      70795F6C 
+ 2289      69737400 
+ 2290              	.LASF40:
+ 2291 0357 63796669 		.ascii	"cyfitter_cfg\000"
+ 2291      74746572 
+ 2291      5F636667 
+ 2291      00
+ 2292              		.ident	"GCC: (GNU Tools for ARM Embedded Processors) 5.4.1 20160609 (release) [ARM/embedded-5-bran

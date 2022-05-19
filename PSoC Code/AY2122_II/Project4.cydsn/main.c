@@ -13,6 +13,7 @@
 #include "project.h"
 #include "I2C_Interface.h"
 #include "LIS3DH.h"
+#include "EEPROM_Custom.h"
 
 // Set this to 1 to send byte data for the Bridge Control Panel
 // Otherwise set it to 0 to send temperature data as int16_t
@@ -21,8 +22,15 @@ uint8_t ovrnReady;
 uint8_t emptyBit;
 uint8_t reg;
 ErrorCode error;
+uint8_t So[2];
+uint8_t FS;
+
+uint8_t init = 0; //initialization flag
 
 char message[50] = {'\0'};
+
+
+
 
 int main(void)
 {
@@ -32,6 +40,8 @@ int main(void)
     I2C_Peripheral_Start();
     UART_BT_Start();
     UART_Start();
+    EEPROM_Custom_Start();
+    
     
     CyDelay(5); //"The boot procedure is complete about 5 ms after device power-up."
     
@@ -159,9 +169,57 @@ int main(void)
     error = I2C_Peripheral_WriteRegister(LIS3DH_DEVICE_ADDRESS,LIS3DH_FIFO_CTRL_REG,regSetting);
     regSetting=0x40;
     error = I2C_Peripheral_WriteRegister(LIS3DH_DEVICE_ADDRESS,LIS3DH_FIFO_CTRL_REG,regSetting);
+
+    uint8_t control_reg_1 = 0x00;
+    uint8_t control_reg_4 = 0x00;
+    
+    // flags that are set by the GUI (serial)
+//    uint8_t FS_flag = 0;
+//    uint8_t So_flag = 0;
     
     for(;;)
     {
+        
+        if (init == 0) //system just initialized
+        {
+            init = 1;
+            
+            // retrieve from EEPROM memory
+            FS = EEPROM_retrieve_FS();
+            So[0] = EEPROM_retrieve_So_lsb();
+            So[1] = EEPROM_retrieve_So_msb();
+            
+            // read registers 
+            readReg(control_reg_3, LIS3DH_CTRL_REG3);
+            readReg(control_reg_1, LIS3DH_CTRL_REG1);
+            readReg(control_reg_4, LIS3DH_CTRL_REG4);
+            
+            //writes FS in register CTRL_REG_1[5,4]
+            setReg(((FS<<4)|control_reg_3), LIS3DH_CTRL_REG3);   
+            
+            // writes So bits in reg1[3] and reg4[3]
+            setReg(((So[0]<<3)|control_reg_4), LIS3DH_CTRL_REG4); //lsb in CTRL_REG_4[3]
+            setReg(((So[1]<<3)|control_reg_1), LIS3DH_CTRL_REG1); //msb in CTRL_REG_1[3]
+            
+            UART_PutString("\r\nFull Scale and Sensitivity settings retrieved and set\r\n");
+        }
+       
+        // at any cycle check if there were changes from GUI in the FS and So registers and save in EEPROM
+        /*
+        if (FS_flag == 1) // set to 1 from GUI
+        {
+            
+            !!read serial FS value ...!!
+            !!PUT CODE HERE!!
+        
+            setReg((new_FS<<4)|control_reg_3), LIS3DH_CTRL_REG3);
+            setReg((new_So[0]<<3)|control_reg_1), LIS_CTRL_REG1);
+            setReg((new_So[1]<<3)|control_reg_4), LIS3DH_REG4);
+        }
+            */
+           
+            
+        
         CyDelay(500); //to get stable data, just a try
         error=I2C_Peripheral_ReadRegister(LIS3DH_DEVICE_ADDRESS, LIS3DH_FIFO_SRC_REG, &fifoFull); 
         sprintf(message,"\r\novrn value: %d \r\n",(fifoFull & 0x40)>>6);

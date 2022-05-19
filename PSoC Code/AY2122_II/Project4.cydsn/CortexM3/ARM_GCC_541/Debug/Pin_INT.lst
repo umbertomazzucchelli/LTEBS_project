@@ -1,4 +1,4 @@
-ARM GAS  C:\Users\umber\AppData\Local\Temp\ccspsw30.s 			page 1
+ARM GAS  C:\Users\Giorgio\AppData\Local\Temp\ccy12mTB.s 			page 1
 
 
    1              		.syntax unified
@@ -58,7 +58,7 @@ ARM GAS  C:\Users\umber\AppData\Local\Temp\ccspsw30.s 			page 1
   28:Generated_Source\PSoC5/Pin_INT.c **** *
   29:Generated_Source\PSoC5/Pin_INT.c **** * \brief Writes the value to the physical port (data output register), masking
   30:Generated_Source\PSoC5/Pin_INT.c **** *  and shifting the bits appropriately. 
-ARM GAS  C:\Users\umber\AppData\Local\Temp\ccspsw30.s 			page 2
+ARM GAS  C:\Users\Giorgio\AppData\Local\Temp\ccy12mTB.s 			page 2
 
 
   31:Generated_Source\PSoC5/Pin_INT.c **** *
@@ -118,7 +118,7 @@ ARM GAS  C:\Users\umber\AppData\Local\Temp\ccspsw30.s 			page 1
   52              		.size	Pin_INT_Write, .-Pin_INT_Write
   53              		.section	.text.Pin_INT_SetDriveMode,"ax",%progbits
   54              		.align	2
-ARM GAS  C:\Users\umber\AppData\Local\Temp\ccspsw30.s 			page 3
+ARM GAS  C:\Users\Giorgio\AppData\Local\Temp\ccy12mTB.s 			page 3
 
 
   55              		.global	Pin_INT_SetDriveMode
@@ -178,7 +178,7 @@ ARM GAS  C:\Users\umber\AppData\Local\Temp\ccspsw30.s 			page 1
   77 0012 00BF     		.align	2
   78              	.L5:
   79 0014 64500040 		.word	1073762404
-ARM GAS  C:\Users\umber\AppData\Local\Temp\ccspsw30.s 			page 4
+ARM GAS  C:\Users\Giorgio\AppData\Local\Temp\ccy12mTB.s 			page 4
 
 
   80              		.cfi_endproc
@@ -238,7 +238,7 @@ ARM GAS  C:\Users\umber\AppData\Local\Temp\ccspsw30.s 			page 1
  110              		.align	2
  111              		.global	Pin_INT_ReadDataReg
  112              		.thumb
-ARM GAS  C:\Users\umber\AppData\Local\Temp\ccspsw30.s 			page 5
+ARM GAS  C:\Users\Giorgio\AppData\Local\Temp\ccy12mTB.s 			page 5
 
 
  113              		.thumb_func
@@ -298,7 +298,7 @@ ARM GAS  C:\Users\umber\AppData\Local\Temp\ccspsw30.s 			page 1
  139              	.Ldebug_info0:
  140 0000 1B010000 		.4byte	0x11b
  141 0004 0400     		.2byte	0x4
-ARM GAS  C:\Users\umber\AppData\Local\Temp\ccspsw30.s 			page 6
+ARM GAS  C:\Users\Giorgio\AppData\Local\Temp\ccy12mTB.s 			page 6
 
 
  142 0006 00000000 		.4byte	.Ldebug_abbrev0
@@ -306,15 +306,15 @@ ARM GAS  C:\Users\umber\AppData\Local\Temp\ccspsw30.s 			page 1
  144 000b 01       		.uleb128 0x1
  145 000c 40000000 		.4byte	.LASF20
  146 0010 0C       		.byte	0xc
- 147 0011 32020000 		.4byte	.LASF21
- 148 0015 38010000 		.4byte	.LASF22
+ 147 0011 EB010000 		.4byte	.LASF21
+ 148 0015 F8000000 		.4byte	.LASF22
  149 0019 00000000 		.4byte	.Ldebug_ranges0+0
  150 001d 00000000 		.4byte	0
  151 0021 00000000 		.4byte	.Ldebug_line0
  152 0025 02       		.uleb128 0x2
  153 0026 01       		.byte	0x1
  154 0027 06       		.byte	0x6
- 155 0028 26020000 		.4byte	.LASF0
+ 155 0028 DF010000 		.4byte	.LASF0
  156 002c 02       		.uleb128 0x2
  157 002d 01       		.byte	0x1
  158 002e 08       		.byte	0x8
@@ -322,7 +322,7 @@ ARM GAS  C:\Users\umber\AppData\Local\Temp\ccspsw30.s 			page 1
  160 0033 02       		.uleb128 0x2
  161 0034 02       		.byte	0x2
  162 0035 05       		.byte	0x5
- 163 0036 F9010000 		.4byte	.LASF2
+ 163 0036 B2010000 		.4byte	.LASF2
  164 003a 02       		.uleb128 0x2
  165 003b 02       		.byte	0x2
  166 003c 07       		.byte	0x7
@@ -330,7 +330,7 @@ ARM GAS  C:\Users\umber\AppData\Local\Temp\ccspsw30.s 			page 1
  168 0041 02       		.uleb128 0x2
  169 0042 04       		.byte	0x4
  170 0043 05       		.byte	0x5
- 171 0044 09020000 		.4byte	.LASF4
+ 171 0044 C2010000 		.4byte	.LASF4
  172 0048 02       		.uleb128 0x2
  173 0049 04       		.byte	0x4
  174 004a 07       		.byte	0x7
@@ -338,11 +338,11 @@ ARM GAS  C:\Users\umber\AppData\Local\Temp\ccspsw30.s 			page 1
  176 004f 02       		.uleb128 0x2
  177 0050 08       		.byte	0x8
  178 0051 05       		.byte	0x5
- 179 0052 E6010000 		.4byte	.LASF6
+ 179 0052 9F010000 		.4byte	.LASF6
  180 0056 02       		.uleb128 0x2
  181 0057 08       		.byte	0x8
  182 0058 07       		.byte	0x7
- 183 0059 21010000 		.4byte	.LASF7
+ 183 0059 83010000 		.4byte	.LASF7
  184 005d 03       		.uleb128 0x3
  185 005e 04       		.byte	0x4
  186 005f 05       		.byte	0x5
@@ -350,15 +350,15 @@ ARM GAS  C:\Users\umber\AppData\Local\Temp\ccspsw30.s 			page 1
  188 0064 02       		.uleb128 0x2
  189 0065 04       		.byte	0x4
  190 0066 07       		.byte	0x7
- 191 0067 14010000 		.4byte	.LASF8
+ 191 0067 76010000 		.4byte	.LASF8
  192 006b 04       		.uleb128 0x4
- 193 006c 03020000 		.4byte	.LASF12
+ 193 006c BC010000 		.4byte	.LASF12
  194 0070 02       		.byte	0x2
  195 0071 E901     		.2byte	0x1e9
  196 0073 2C000000 		.4byte	0x2c
  197 0077 02       		.uleb128 0x2
  198 0078 04       		.byte	0x4
-ARM GAS  C:\Users\umber\AppData\Local\Temp\ccspsw30.s 			page 7
+ARM GAS  C:\Users\Giorgio\AppData\Local\Temp\ccy12mTB.s 			page 7
 
 
  199 0079 04       		.byte	0x4
@@ -366,11 +366,11 @@ ARM GAS  C:\Users\umber\AppData\Local\Temp\ccspsw30.s 			page 1
  201 007e 02       		.uleb128 0x2
  202 007f 08       		.byte	0x8
  203 0080 04       		.byte	0x4
- 204 0081 F8000000 		.4byte	.LASF10
+ 204 0081 5A010000 		.4byte	.LASF10
  205 0085 02       		.uleb128 0x2
  206 0086 01       		.byte	0x1
  207 0087 08       		.byte	0x8
- 208 0088 F4010000 		.4byte	.LASF11
+ 208 0088 AD010000 		.4byte	.LASF11
  209 008c 04       		.uleb128 0x4
  210 008d CE000000 		.4byte	.LASF13
  211 0091 02       		.byte	0x2
@@ -402,7 +402,7 @@ ARM GAS  C:\Users\umber\AppData\Local\Temp\ccspsw30.s 			page 1
  237 00cd 53       		.byte	0x53
  238 00ce 00       		.byte	0
  239 00cf 06       		.uleb128 0x6
- 240 00d0 FF000000 		.4byte	.LASF15
+ 240 00d0 61010000 		.4byte	.LASF15
  241 00d4 01       		.byte	0x1
  242 00d5 5A       		.byte	0x5a
  243 00d6 00000000 		.4byte	.LFB1
@@ -411,14 +411,14 @@ ARM GAS  C:\Users\umber\AppData\Local\Temp\ccspsw30.s 			page 1
  246 00df 9C       		.byte	0x9c
  247 00e0 F4000000 		.4byte	0xf4
  248 00e4 07       		.uleb128 0x7
- 249 00e5 E1010000 		.4byte	.LASF17
+ 249 00e5 9A010000 		.4byte	.LASF17
  250 00e9 01       		.byte	0x1
  251 00ea 5A       		.byte	0x5a
  252 00eb 6B000000 		.4byte	0x6b
  253 00ef 21000000 		.4byte	.LLST1
  254 00f3 00       		.byte	0
  255 00f4 09       		.uleb128 0x9
-ARM GAS  C:\Users\umber\AppData\Local\Temp\ccspsw30.s 			page 8
+ARM GAS  C:\Users\Giorgio\AppData\Local\Temp\ccy12mTB.s 			page 8
 
 
  256 00f5 00000000 		.4byte	.LASF18
@@ -430,7 +430,7 @@ ARM GAS  C:\Users\umber\AppData\Local\Temp\ccspsw30.s 			page 1
  262 0107 01       		.uleb128 0x1
  263 0108 9C       		.byte	0x9c
  264 0109 09       		.uleb128 0x9
- 265 010a 12020000 		.4byte	.LASF19
+ 265 010a CB010000 		.4byte	.LASF19
  266 010e 01       		.byte	0x1
  267 010f 8D       		.byte	0x8d
  268 0110 6B000000 		.4byte	0x6b
@@ -478,7 +478,7 @@ ARM GAS  C:\Users\umber\AppData\Local\Temp\ccspsw30.s 			page 1
  310 0022 0B       		.uleb128 0xb
  311 0023 3E       		.uleb128 0x3e
  312 0024 0B       		.uleb128 0xb
-ARM GAS  C:\Users\umber\AppData\Local\Temp\ccspsw30.s 			page 9
+ARM GAS  C:\Users\Giorgio\AppData\Local\Temp\ccy12mTB.s 			page 9
 
 
  313 0025 03       		.uleb128 0x3
@@ -538,7 +538,7 @@ ARM GAS  C:\Users\umber\AppData\Local\Temp\ccspsw30.s 			page 1
  367 005c 3A       		.uleb128 0x3a
  368 005d 0B       		.uleb128 0xb
  369 005e 3B       		.uleb128 0x3b
-ARM GAS  C:\Users\umber\AppData\Local\Temp\ccspsw30.s 			page 10
+ARM GAS  C:\Users\Giorgio\AppData\Local\Temp\ccy12mTB.s 			page 10
 
 
  370 005f 0B       		.uleb128 0xb
@@ -598,7 +598,7 @@ ARM GAS  C:\Users\umber\AppData\Local\Temp\ccspsw30.s 			page 1
  424 000a 50       		.byte	0x50
  425 000b 0A000000 		.4byte	.LVL2
  426 000f 18000000 		.4byte	.LFE0
-ARM GAS  C:\Users\umber\AppData\Local\Temp\ccspsw30.s 			page 11
+ARM GAS  C:\Users\Giorgio\AppData\Local\Temp\ccy12mTB.s 			page 11
 
 
  427 0013 0400     		.2byte	0x4
@@ -658,7 +658,7 @@ ARM GAS  C:\Users\umber\AppData\Local\Temp\ccspsw30.s 			page 1
  480      02004400 
  480      00000201 
  480      FB0E0D00 
-ARM GAS  C:\Users\umber\AppData\Local\Temp\ccspsw30.s 			page 12
+ARM GAS  C:\Users\Giorgio\AppData\Local\Temp\ccy12mTB.s 			page 12
 
 
  480      01010101 
@@ -718,89 +718,80 @@ ARM GAS  C:\Users\umber\AppData\Local\Temp\ccspsw30.s 			page 1
  502      7369676E 
  502      65642069 
  502      6E7400
-ARM GAS  C:\Users\umber\AppData\Local\Temp\ccspsw30.s 			page 13
+ARM GAS  C:\Users\Giorgio\AppData\Local\Temp\ccy12mTB.s 			page 13
 
 
- 503              	.LASF10:
- 504 00f8 646F7562 		.ascii	"double\000"
- 504      6C6500
- 505              	.LASF15:
- 506 00ff 50696E5F 		.ascii	"Pin_INT_SetDriveMode\000"
- 506      494E545F 
- 506      53657444 
- 506      72697665 
- 506      4D6F6465 
- 507              	.LASF8:
- 508 0114 756E7369 		.ascii	"unsigned int\000"
- 508      676E6564 
- 508      20696E74 
- 508      00
- 509              	.LASF7:
- 510 0121 6C6F6E67 		.ascii	"long long unsigned int\000"
- 510      206C6F6E 
- 510      6720756E 
- 510      7369676E 
- 510      65642069 
- 511              	.LASF22:
- 512 0138 443A5C44 		.ascii	"D:\\Download\\AY2122_II_Project-4-ffbb298e331a02583"
- 512      6F776E6C 
- 512      6F61645C 
- 512      41593231 
- 512      32325F49 
- 513 0169 30373439 		.ascii	"0749630a0214264f461f654\\AY2122_II_Project-4-ffbb29"
- 513      36333061 
- 513      30323134 
- 513      32363466 
- 513      34363166 
- 514 019b 38653333 		.ascii	"8e331a025830749630a0214264f461f654\\PSoC Code\\AY21"
- 514      31613032 
- 514      35383330 
- 514      37343936 
- 514      33306130 
- 515 01cc 32325F49 		.ascii	"22_II\\Project4.cydsn\000"
- 515      495C5072 
- 515      6F6A6563 
- 515      74342E63 
- 515      7964736E 
- 516              	.LASF17:
- 517 01e1 6D6F6465 		.ascii	"mode\000"
- 517      00
- 518              	.LASF6:
- 519 01e6 6C6F6E67 		.ascii	"long long int\000"
- 519      206C6F6E 
- 519      6720696E 
- 519      7400
- 520              	.LASF11:
- 521 01f4 63686172 		.ascii	"char\000"
- 521      00
- 522              	.LASF2:
- 523 01f9 73686F72 		.ascii	"short int\000"
- 523      7420696E 
- 523      7400
- 524              	.LASF12:
-ARM GAS  C:\Users\umber\AppData\Local\Temp\ccspsw30.s 			page 14
+ 503              	.LASF22:
+ 504 00f8 433A5C55 		.ascii	"C:\\Users\\Giorgio\\Desktop\\LAB_FINAL_PROJECT\\AY2"
+ 504      73657273 
+ 504      5C47696F 
+ 504      7267696F 
+ 504      5C446573 
+ 505 0126 3132325F 		.ascii	"122_II_Project-4\\PSoC Code\\AY2122_II\\Project4.cy"
+ 505      49495F50 
+ 505      726F6A65 
+ 505      63742D34 
+ 505      5C50536F 
+ 506 0156 64736E00 		.ascii	"dsn\000"
+ 507              	.LASF10:
+ 508 015a 646F7562 		.ascii	"double\000"
+ 508      6C6500
+ 509              	.LASF15:
+ 510 0161 50696E5F 		.ascii	"Pin_INT_SetDriveMode\000"
+ 510      494E545F 
+ 510      53657444 
+ 510      72697665 
+ 510      4D6F6465 
+ 511              	.LASF8:
+ 512 0176 756E7369 		.ascii	"unsigned int\000"
+ 512      676E6564 
+ 512      20696E74 
+ 512      00
+ 513              	.LASF7:
+ 514 0183 6C6F6E67 		.ascii	"long long unsigned int\000"
+ 514      206C6F6E 
+ 514      6720756E 
+ 514      7369676E 
+ 514      65642069 
+ 515              	.LASF17:
+ 516 019a 6D6F6465 		.ascii	"mode\000"
+ 516      00
+ 517              	.LASF6:
+ 518 019f 6C6F6E67 		.ascii	"long long int\000"
+ 518      206C6F6E 
+ 518      6720696E 
+ 518      7400
+ 519              	.LASF11:
+ 520 01ad 63686172 		.ascii	"char\000"
+ 520      00
+ 521              	.LASF2:
+ 522 01b2 73686F72 		.ascii	"short int\000"
+ 522      7420696E 
+ 522      7400
+ 523              	.LASF12:
+ 524 01bc 75696E74 		.ascii	"uint8\000"
+ 524      3800
+ 525              	.LASF4:
+ 526 01c2 6C6F6E67 		.ascii	"long int\000"
+ 526      20696E74 
+ 526      00
+ 527              	.LASF19:
+ 528 01cb 50696E5F 		.ascii	"Pin_INT_ReadDataReg\000"
+ 528      494E545F 
+ARM GAS  C:\Users\Giorgio\AppData\Local\Temp\ccy12mTB.s 			page 14
 
 
- 525 0203 75696E74 		.ascii	"uint8\000"
- 525      3800
- 526              	.LASF4:
- 527 0209 6C6F6E67 		.ascii	"long int\000"
- 527      20696E74 
- 527      00
- 528              	.LASF19:
- 529 0212 50696E5F 		.ascii	"Pin_INT_ReadDataReg\000"
- 529      494E545F 
- 529      52656164 
- 529      44617461 
- 529      52656700 
- 530              	.LASF0:
- 531 0226 7369676E 		.ascii	"signed char\000"
- 531      65642063 
- 531      68617200 
- 532              	.LASF21:
- 533 0232 47656E65 		.ascii	"Generated_Source\\PSoC5\\Pin_INT.c\000"
- 533      72617465 
- 533      645F536F 
- 533      75726365 
- 533      5C50536F 
- 534              		.ident	"GCC: (GNU Tools for ARM Embedded Processors) 5.4.1 20160609 (release) [ARM/embedded-5-bran
+ 528      52656164 
+ 528      44617461 
+ 528      52656700 
+ 529              	.LASF0:
+ 530 01df 7369676E 		.ascii	"signed char\000"
+ 530      65642063 
+ 530      68617200 
+ 531              	.LASF21:
+ 532 01eb 47656E65 		.ascii	"Generated_Source\\PSoC5\\Pin_INT.c\000"
+ 532      72617465 
+ 532      645F536F 
+ 532      75726365 
+ 532      5C50536F 
+ 533              		.ident	"GCC: (GNU Tools for ARM Embedded Processors) 5.4.1 20160609 (release) [ARM/embedded-5-bran

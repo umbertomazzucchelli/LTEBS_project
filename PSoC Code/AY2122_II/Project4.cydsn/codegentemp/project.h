@@ -35,6 +35,7 @@
 #include "UART.h"
 #include "Pin_INT_aliases.h"
 #include "Pin_INT.h"
+#include "EEPROM.h"
 #include "UART_BT_IntClock.h"
 #include "UART_IntClock.h"
 #include "core_cm3_psoc5.h"

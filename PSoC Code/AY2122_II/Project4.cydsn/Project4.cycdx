@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <blockRegMap version="1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://cypress.com/xsd/cyblockregmap cyblockregmap.xsd" xmlns="http://cypress.com/xsd/cyblockregmap">
-  <block name="SCL" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
   <block name="UART" BASE="0x0" SIZE="0x0" desc="UART" visible="true" hidden="false">
     <block name="IntClock" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
     <block name="VirtualMux_1" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
@@ -25,13 +24,44 @@
       <field name="UART_RX_STS_ADDR_MATCH" from="6" to="6" access="R" resetVal="" desc="" hidden="false" />
     </register>
   </block>
+  <block name="Rx" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+  <block name="SCL" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
   <block name="Pin_LED" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
   <block name="SDA" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
-  <block name="Rx" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
   <block name="cy_boot" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
   <block name="Em_EEPROM_Dynamic" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+  <block name="EEPROM" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
   <block name="Tx" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
   <block name="Pin_INT" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+  <block name="Tx_BT" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+  <block name="timer_clock" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+  <block name="Rx_BT" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+  <block name="KIT_059_1" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+  <block name="UART_BT" BASE="0x0" SIZE="0x0" desc="UART" visible="true" hidden="false">
+    <block name="IntClock" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="VirtualMux_1" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="BUART" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <register name="RX_UART_BT_RX_ADDRESS1" address="0x40006429" bitWidth="8" desc="RX Address1 Register" hidden="false" />
+    <register name="RX_UART_BT_RX_ADDRESS2" address="0x40006439" bitWidth="8" desc="RX Address2 Register" hidden="false" />
+    <register name="RX_UART_BT_RX_DATA" address="0x40006449" bitWidth="8" desc="RX Data Register" hidden="false" />
+    <register name="TX_UART_BT_TX_DATA" address="0x4000644D" bitWidth="8" desc="TX Data Register" hidden="false" />
+    <register name="RX_UART_BT_RX_STATUS" address="0x40006468" bitWidth="8" desc="RX status register" hidden="false">
+      <field name="UART_BT_RX_STS_MRKSPC" from="0" to="0" access="R" resetVal="" desc="" hidden="false" />
+      <field name="UART_BT_RX_STS_BREAK" from="1" to="1" access="R" resetVal="" desc="" hidden="false" />
+      <field name="UART_BT_RX_STS_PAR_ERROR" from="2" to="2" access="R" resetVal="" desc="" hidden="false" />
+      <field name="UART_BT_RX_STS_STOP_ERROR" from="3" to="3" access="R" resetVal="" desc="" hidden="false" />
+      <field name="UART_BT_RX_STS_OVERRUN" from="4" to="4" access="R" resetVal="" desc="" hidden="false" />
+      <field name="UART_BT_RX_STS_FIFO_NOTEMPTY" from="5" to="5" access="R" resetVal="" desc="" hidden="false" />
+      <field name="UART_BT_RX_STS_ADDR_MATCH" from="6" to="6" access="R" resetVal="" desc="" hidden="false" />
+    </register>
+    <register name="TX_UART_BT_TX_STATUS" address="0x4000646D" bitWidth="8" desc="TX status register" hidden="false">
+      <field name="UART_BT_TX_STS_COMPLETE" from="0" to="0" access="R" resetVal="" desc="" hidden="false" />
+      <field name="UART_BT_TX_STS_FIFO_EMPTY" from="1" to="1" access="R" resetVal="" desc="" hidden="false" />
+      <field name="UART_BT_TX_STS_FIFO_FULL" from="2" to="2" access="R" resetVal="" desc="" hidden="false" />
+      <field name="UART_BT_TX_STS_FIFO_NOT_FULL" from="3" to="3" access="R" resetVal="" desc="" hidden="false" />
+    </register>
+  </block>
+  <block name="isr" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
   <block name="I2C_Master" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false">
     <block name="BusClock" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
     <block name="or_ff" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
@@ -116,34 +146,6 @@
       <field name="timeout_period_highnibble" from="3" to="0" access="RW" resetVal="" desc="The configuration of this register along with that in register TMOUT_CFG1 to define the number units before SCL or SDA stuck low timeout triggers the I2C interrupt. The one unit is equal to SYSCLK/1024. The TMOUT_CFG1 defines higher octet of the period." hidden="false" />
     </register>
   </block>
-  <block name="Rx_BT" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
-  <block name="Tx_BT" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
-  <block name="KIT_059_1" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
-  <block name="UART_BT" BASE="0x0" SIZE="0x0" desc="UART" visible="true" hidden="false">
-    <block name="IntClock" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
-    <block name="VirtualMux_1" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
-    <block name="BUART" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
-    <register name="RX_UART_BT_RX_ADDRESS1" address="0x40006429" bitWidth="8" desc="RX Address1 Register" hidden="false" />
-    <register name="RX_UART_BT_RX_ADDRESS2" address="0x40006439" bitWidth="8" desc="RX Address2 Register" hidden="false" />
-    <register name="RX_UART_BT_RX_DATA" address="0x40006449" bitWidth="8" desc="RX Data Register" hidden="false" />
-    <register name="TX_UART_BT_TX_DATA" address="0x4000644D" bitWidth="8" desc="TX Data Register" hidden="false" />
-    <register name="RX_UART_BT_RX_STATUS" address="0x40006468" bitWidth="8" desc="RX status register" hidden="false">
-      <field name="UART_BT_RX_STS_MRKSPC" from="0" to="0" access="R" resetVal="" desc="" hidden="false" />
-      <field name="UART_BT_RX_STS_BREAK" from="1" to="1" access="R" resetVal="" desc="" hidden="false" />
-      <field name="UART_BT_RX_STS_PAR_ERROR" from="2" to="2" access="R" resetVal="" desc="" hidden="false" />
-      <field name="UART_BT_RX_STS_STOP_ERROR" from="3" to="3" access="R" resetVal="" desc="" hidden="false" />
-      <field name="UART_BT_RX_STS_OVERRUN" from="4" to="4" access="R" resetVal="" desc="" hidden="false" />
-      <field name="UART_BT_RX_STS_FIFO_NOTEMPTY" from="5" to="5" access="R" resetVal="" desc="" hidden="false" />
-      <field name="UART_BT_RX_STS_ADDR_MATCH" from="6" to="6" access="R" resetVal="" desc="" hidden="false" />
-    </register>
-    <register name="TX_UART_BT_TX_STATUS" address="0x4000646D" bitWidth="8" desc="TX status register" hidden="false">
-      <field name="UART_BT_TX_STS_COMPLETE" from="0" to="0" access="R" resetVal="" desc="" hidden="false" />
-      <field name="UART_BT_TX_STS_FIFO_EMPTY" from="1" to="1" access="R" resetVal="" desc="" hidden="false" />
-      <field name="UART_BT_TX_STS_FIFO_FULL" from="2" to="2" access="R" resetVal="" desc="" hidden="false" />
-      <field name="UART_BT_TX_STS_FIFO_NOT_FULL" from="3" to="3" access="R" resetVal="" desc="" hidden="false" />
-    </register>
-  </block>
-  <block name="timer_clock" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
   <block name="PWM_LED" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false">
     <block name="vmIRQ" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
     <block name="ZeroTerminal_1" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
@@ -192,7 +194,6 @@
       </field>
     </register>
   </block>
-  <block name="isr" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
   <block name="ZeroTerminal_1" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
   <block name="Timer_LED" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false">
     <block name="VirtualMux_2" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />

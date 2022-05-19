@@ -54,6 +54,12 @@
     #define LIS3DH_TEMP_CFG_REG 0x1F 
 
     #define LIS3DH_TEMP_CFG_REG_ACTIVE 0xC0
+    
+    /**
+    * \brief FS bits and So settings:
+    * - FS = [-2, 2]g       -->  FS_bits = 00 -- DEFAULT VALUE
+    * - So = normal mode    -->  4mg/digits   -- NORMAL MODE
+    */
    
     /////////////////////////////////////////////////
     //EX.3
@@ -86,13 +92,15 @@
     #define LIS3DH_FIFO_BYP 0x00
     
     #define LIS3DH_CTRL_REG3 0x22
-    #define LIS3DH_CTRL_REG3_INT 0x02 
+    #define LIS3DH_CTRL_REG3_INT 0x00
     
     #define LIS3DH_CTRL_REG5 0x24
     #define LIS3DH_CTRL_REG5_FIFO_ON 0x40
     
     #define LIS3DH_FIFO_SRC_REG 0x2F
     #define LIS3DH_FIFO_SRC_OVRN 0b01000000
+    
+    
     
 #endif
 
