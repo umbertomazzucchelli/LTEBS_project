@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 ARM GAS  C:\Users\Giorgio\AppData\Local\Temp\cc4stnyU.s 			page 1
+=======
+ARM GAS  C:\Users\umber\AppData\Local\Temp\ccwSNAoU.s 			page 1
+>>>>>>> 040b500309df093adbafd37b4e49319d3f1a6083
 
 
    1              		.syntax unified
@@ -58,7 +62,11 @@ ARM GAS  C:\Users\Giorgio\AppData\Local\Temp\cc4stnyU.s 			page 1
   28:Generated_Source\PSoC5/Pin_LED.c **** *
   29:Generated_Source\PSoC5/Pin_LED.c **** * \brief Writes the value to the physical port (data output register), masking
   30:Generated_Source\PSoC5/Pin_LED.c **** *  and shifting the bits appropriately. 
+<<<<<<< HEAD
 ARM GAS  C:\Users\Giorgio\AppData\Local\Temp\cc4stnyU.s 			page 2
+=======
+ARM GAS  C:\Users\umber\AppData\Local\Temp\ccwSNAoU.s 			page 2
+>>>>>>> 040b500309df093adbafd37b4e49319d3f1a6083
 
 
   31:Generated_Source\PSoC5/Pin_LED.c **** *
@@ -118,7 +126,11 @@ ARM GAS  C:\Users\Giorgio\AppData\Local\Temp\cc4stnyU.s 			page 1
   52              		.size	Pin_LED_Write, .-Pin_LED_Write
   53              		.section	.text.Pin_LED_SetDriveMode,"ax",%progbits
   54              		.align	2
+<<<<<<< HEAD
 ARM GAS  C:\Users\Giorgio\AppData\Local\Temp\cc4stnyU.s 			page 3
+=======
+ARM GAS  C:\Users\umber\AppData\Local\Temp\ccwSNAoU.s 			page 3
+>>>>>>> 040b500309df093adbafd37b4e49319d3f1a6083
 
 
   55              		.global	Pin_LED_SetDriveMode
@@ -178,7 +190,11 @@ ARM GAS  C:\Users\Giorgio\AppData\Local\Temp\cc4stnyU.s 			page 1
   77 0012 00BF     		.align	2
   78              	.L5:
   79 0014 11500040 		.word	1073762321
+<<<<<<< HEAD
 ARM GAS  C:\Users\Giorgio\AppData\Local\Temp\cc4stnyU.s 			page 4
+=======
+ARM GAS  C:\Users\umber\AppData\Local\Temp\ccwSNAoU.s 			page 4
+>>>>>>> 040b500309df093adbafd37b4e49319d3f1a6083
 
 
   80              		.cfi_endproc
@@ -238,7 +254,11 @@ ARM GAS  C:\Users\Giorgio\AppData\Local\Temp\cc4stnyU.s 			page 1
  110              		.align	2
  111              		.global	Pin_LED_ReadDataReg
  112              		.thumb
+<<<<<<< HEAD
 ARM GAS  C:\Users\Giorgio\AppData\Local\Temp\cc4stnyU.s 			page 5
+=======
+ARM GAS  C:\Users\umber\AppData\Local\Temp\ccwSNAoU.s 			page 5
+>>>>>>> 040b500309df093adbafd37b4e49319d3f1a6083
 
 
  113              		.thumb_func
@@ -298,51 +318,80 @@ ARM GAS  C:\Users\Giorgio\AppData\Local\Temp\cc4stnyU.s 			page 1
  139              	.Ldebug_info0:
  140 0000 1B010000 		.4byte	0x11b
  141 0004 0400     		.2byte	0x4
+<<<<<<< HEAD
 ARM GAS  C:\Users\Giorgio\AppData\Local\Temp\cc4stnyU.s 			page 6
+=======
+ARM GAS  C:\Users\umber\AppData\Local\Temp\ccwSNAoU.s 			page 6
+>>>>>>> 040b500309df093adbafd37b4e49319d3f1a6083
 
 
  142 0006 00000000 		.4byte	.Ldebug_abbrev0
  143 000a 04       		.byte	0x4
  144 000b 01       		.uleb128 0x1
- 145 000c 46000000 		.4byte	.LASF20
+ 145 000c 96000000 		.4byte	.LASF20
  146 0010 0C       		.byte	0xc
+<<<<<<< HEAD
  147 0011 11000000 		.4byte	.LASF21
  148 0015 FE000000 		.4byte	.LASF22
+=======
+ 147 0011 61000000 		.4byte	.LASF21
+ 148 0015 11000000 		.4byte	.LASF22
+>>>>>>> 040b500309df093adbafd37b4e49319d3f1a6083
  149 0019 00000000 		.4byte	.Ldebug_ranges0+0
  150 001d 00000000 		.4byte	0
  151 0021 00000000 		.4byte	.Ldebug_line0
  152 0025 02       		.uleb128 0x2
  153 0026 01       		.byte	0x1
  154 0027 06       		.byte	0x6
+<<<<<<< HEAD
  155 0028 00020000 		.4byte	.LASF0
+=======
+ 155 0028 EE010000 		.4byte	.LASF0
+>>>>>>> 040b500309df093adbafd37b4e49319d3f1a6083
  156 002c 02       		.uleb128 0x2
  157 002d 01       		.byte	0x1
  158 002e 08       		.byte	0x8
- 159 002f 38000000 		.4byte	.LASF1
+ 159 002f 88000000 		.4byte	.LASF1
  160 0033 02       		.uleb128 0x2
  161 0034 02       		.byte	0x2
  162 0035 05       		.byte	0x5
+<<<<<<< HEAD
  163 0036 E7010000 		.4byte	.LASF2
+=======
+ 163 0036 D5010000 		.4byte	.LASF2
+>>>>>>> 040b500309df093adbafd37b4e49319d3f1a6083
  164 003a 02       		.uleb128 0x2
  165 003b 02       		.byte	0x2
  166 003c 07       		.byte	0x7
- 167 003d EB000000 		.4byte	.LASF3
+ 167 003d 3B010000 		.4byte	.LASF3
  168 0041 02       		.uleb128 0x2
  169 0042 04       		.byte	0x4
  170 0043 05       		.byte	0x5
+<<<<<<< HEAD
  171 0044 F7010000 		.4byte	.LASF4
+=======
+ 171 0044 E5010000 		.4byte	.LASF4
+>>>>>>> 040b500309df093adbafd37b4e49319d3f1a6083
  172 0048 02       		.uleb128 0x2
  173 0049 04       		.byte	0x4
  174 004a 07       		.byte	0x7
- 175 004b D9000000 		.4byte	.LASF5
+ 175 004b 29010000 		.4byte	.LASF5
  176 004f 02       		.uleb128 0x2
  177 0050 08       		.byte	0x8
  178 0051 05       		.byte	0x5
+<<<<<<< HEAD
  179 0052 D4010000 		.4byte	.LASF6
  180 0056 02       		.uleb128 0x2
  181 0057 08       		.byte	0x8
  182 0058 07       		.byte	0x7
  183 0059 AB010000 		.4byte	.LASF7
+=======
+ 179 0052 C2010000 		.4byte	.LASF6
+ 180 0056 02       		.uleb128 0x2
+ 181 0057 08       		.byte	0x8
+ 182 0058 07       		.byte	0x7
+ 183 0059 99010000 		.4byte	.LASF7
+>>>>>>> 040b500309df093adbafd37b4e49319d3f1a6083
  184 005d 03       		.uleb128 0x3
  185 005e 04       		.byte	0x4
  186 005f 05       		.byte	0x5
@@ -350,36 +399,58 @@ ARM GAS  C:\Users\Giorgio\AppData\Local\Temp\cc4stnyU.s 			page 1
  188 0064 02       		.uleb128 0x2
  189 0065 04       		.byte	0x4
  190 0066 07       		.byte	0x7
+<<<<<<< HEAD
  191 0067 90010000 		.4byte	.LASF8
  192 006b 04       		.uleb128 0x4
  193 006c F1010000 		.4byte	.LASF12
+=======
+ 191 0067 7E010000 		.4byte	.LASF8
+ 192 006b 04       		.uleb128 0x4
+ 193 006c DF010000 		.4byte	.LASF12
+>>>>>>> 040b500309df093adbafd37b4e49319d3f1a6083
  194 0070 02       		.byte	0x2
  195 0071 E901     		.2byte	0x1e9
  196 0073 2C000000 		.4byte	0x2c
  197 0077 02       		.uleb128 0x2
  198 0078 04       		.byte	0x4
+<<<<<<< HEAD
 ARM GAS  C:\Users\Giorgio\AppData\Local\Temp\cc4stnyU.s 			page 7
+=======
+ARM GAS  C:\Users\umber\AppData\Local\Temp\ccwSNAoU.s 			page 7
+>>>>>>> 040b500309df093adbafd37b4e49319d3f1a6083
 
 
  199 0079 04       		.byte	0x4
- 200 007a 32000000 		.4byte	.LASF9
+ 200 007a 82000000 		.4byte	.LASF9
  201 007e 02       		.uleb128 0x2
  202 007f 08       		.byte	0x8
  203 0080 04       		.byte	0x4
+<<<<<<< HEAD
  204 0081 60010000 		.4byte	.LASF10
  205 0085 02       		.uleb128 0x2
  206 0086 01       		.byte	0x1
  207 0087 08       		.byte	0x8
  208 0088 E2010000 		.4byte	.LASF11
+=======
+ 204 0081 4E010000 		.4byte	.LASF10
+ 205 0085 02       		.uleb128 0x2
+ 206 0086 01       		.byte	0x1
+ 207 0087 08       		.byte	0x8
+ 208 0088 D0010000 		.4byte	.LASF11
+>>>>>>> 040b500309df093adbafd37b4e49319d3f1a6083
  209 008c 04       		.uleb128 0x4
- 210 008d D4000000 		.4byte	.LASF13
+ 210 008d 24010000 		.4byte	.LASF13
  211 0091 02       		.byte	0x2
  212 0092 9302     		.2byte	0x293
  213 0094 98000000 		.4byte	0x98
  214 0098 05       		.uleb128 0x5
  215 0099 6B000000 		.4byte	0x6b
  216 009d 06       		.uleb128 0x6
+<<<<<<< HEAD
  217 009e 9D010000 		.4byte	.LASF14
+=======
+ 217 009e 8B010000 		.4byte	.LASF14
+>>>>>>> 040b500309df093adbafd37b4e49319d3f1a6083
  218 00a2 01       		.byte	0x1
  219 00a3 39       		.byte	0x39
  220 00a4 00000000 		.4byte	.LFB0
@@ -402,7 +473,11 @@ ARM GAS  C:\Users\Giorgio\AppData\Local\Temp\cc4stnyU.s 			page 1
  237 00cd 53       		.byte	0x53
  238 00ce 00       		.byte	0
  239 00cf 06       		.uleb128 0x6
+<<<<<<< HEAD
  240 00d0 7B010000 		.4byte	.LASF15
+=======
+ 240 00d0 69010000 		.4byte	.LASF15
+>>>>>>> 040b500309df093adbafd37b4e49319d3f1a6083
  241 00d4 01       		.byte	0x1
  242 00d5 5A       		.byte	0x5a
  243 00d6 00000000 		.4byte	.LFB1
@@ -411,17 +486,28 @@ ARM GAS  C:\Users\Giorgio\AppData\Local\Temp\cc4stnyU.s 			page 1
  246 00df 9C       		.byte	0x9c
  247 00e0 F4000000 		.4byte	0xf4
  248 00e4 07       		.uleb128 0x7
+<<<<<<< HEAD
  249 00e5 C2010000 		.4byte	.LASF17
+=======
+ 249 00e5 B0010000 		.4byte	.LASF17
+>>>>>>> 040b500309df093adbafd37b4e49319d3f1a6083
  250 00e9 01       		.byte	0x1
  251 00ea 5A       		.byte	0x5a
  252 00eb 6B000000 		.4byte	0x6b
  253 00ef 21000000 		.4byte	.LLST1
  254 00f3 00       		.byte	0
  255 00f4 09       		.uleb128 0x9
+<<<<<<< HEAD
 ARM GAS  C:\Users\Giorgio\AppData\Local\Temp\cc4stnyU.s 			page 8
 
 
  256 00f5 C7010000 		.4byte	.LASF18
+=======
+ARM GAS  C:\Users\umber\AppData\Local\Temp\ccwSNAoU.s 			page 8
+
+
+ 256 00f5 B5010000 		.4byte	.LASF18
+>>>>>>> 040b500309df093adbafd37b4e49319d3f1a6083
  257 00f9 01       		.byte	0x1
  258 00fa 71       		.byte	0x71
  259 00fb 6B000000 		.4byte	0x6b
@@ -430,7 +516,11 @@ ARM GAS  C:\Users\Giorgio\AppData\Local\Temp\cc4stnyU.s 			page 1
  262 0107 01       		.uleb128 0x1
  263 0108 9C       		.byte	0x9c
  264 0109 09       		.uleb128 0x9
+<<<<<<< HEAD
  265 010a 67010000 		.4byte	.LASF19
+=======
+ 265 010a 55010000 		.4byte	.LASF19
+>>>>>>> 040b500309df093adbafd37b4e49319d3f1a6083
  266 010e 01       		.byte	0x1
  267 010f 8D       		.byte	0x8d
  268 0110 6B000000 		.4byte	0x6b
@@ -478,7 +568,11 @@ ARM GAS  C:\Users\Giorgio\AppData\Local\Temp\cc4stnyU.s 			page 1
  310 0022 0B       		.uleb128 0xb
  311 0023 3E       		.uleb128 0x3e
  312 0024 0B       		.uleb128 0xb
+<<<<<<< HEAD
 ARM GAS  C:\Users\Giorgio\AppData\Local\Temp\cc4stnyU.s 			page 9
+=======
+ARM GAS  C:\Users\umber\AppData\Local\Temp\ccwSNAoU.s 			page 9
+>>>>>>> 040b500309df093adbafd37b4e49319d3f1a6083
 
 
  313 0025 03       		.uleb128 0x3
@@ -538,7 +632,11 @@ ARM GAS  C:\Users\Giorgio\AppData\Local\Temp\cc4stnyU.s 			page 1
  367 005c 3A       		.uleb128 0x3a
  368 005d 0B       		.uleb128 0xb
  369 005e 3B       		.uleb128 0x3b
+<<<<<<< HEAD
 ARM GAS  C:\Users\Giorgio\AppData\Local\Temp\cc4stnyU.s 			page 10
+=======
+ARM GAS  C:\Users\umber\AppData\Local\Temp\ccwSNAoU.s 			page 10
+>>>>>>> 040b500309df093adbafd37b4e49319d3f1a6083
 
 
  370 005f 0B       		.uleb128 0xb
@@ -598,7 +696,11 @@ ARM GAS  C:\Users\Giorgio\AppData\Local\Temp\cc4stnyU.s 			page 1
  424 000a 50       		.byte	0x50
  425 000b 0A000000 		.4byte	.LVL2
  426 000f 18000000 		.4byte	.LFE0
+<<<<<<< HEAD
 ARM GAS  C:\Users\Giorgio\AppData\Local\Temp\cc4stnyU.s 			page 11
+=======
+ARM GAS  C:\Users\umber\AppData\Local\Temp\ccwSNAoU.s 			page 11
+>>>>>>> 040b500309df093adbafd37b4e49319d3f1a6083
 
 
  427 0013 0400     		.2byte	0x4
@@ -658,7 +760,11 @@ ARM GAS  C:\Users\Giorgio\AppData\Local\Temp\cc4stnyU.s 			page 1
  480      02004400 
  480      00000201 
  480      FB0E0D00 
+<<<<<<< HEAD
 ARM GAS  C:\Users\Giorgio\AppData\Local\Temp\cc4stnyU.s 			page 12
+=======
+ARM GAS  C:\Users\umber\AppData\Local\Temp\ccwSNAoU.s 			page 12
+>>>>>>> 040b500309df093adbafd37b4e49319d3f1a6083
 
 
  480      01010101 
@@ -669,6 +775,7 @@ ARM GAS  C:\Users\Giorgio\AppData\Local\Temp\cc4stnyU.s 			page 1
  484 0006 73746174 		.ascii	"staticBits\000"
  484      69634269 
  484      747300
+<<<<<<< HEAD
  485              	.LASF21:
  486 0011 47656E65 		.ascii	"Generated_Source\\PSoC5\\Pin_LED.c\000"
  486      72617465 
@@ -795,3 +902,130 @@ ARM GAS  C:\Users\Giorgio\AppData\Local\Temp\cc4stnyU.s 			page 1
  532      65642063 
  532      68617200 
  533              		.ident	"GCC: (GNU Tools for ARM Embedded Processors) 5.4.1 20160609 (release) [ARM/embedded-5-bran
+=======
+ 485              	.LASF22:
+ 486 0011 443A5C44 		.ascii	"D:\\Download\\Progetto Lab\\AY2122_II_Project-4\\PS"
+ 486      6F776E6C 
+ 486      6F61645C 
+ 486      50726F67 
+ 486      6574746F 
+ 487 0040 6F432043 		.ascii	"oC Code\\AY2122_II\\Project4.cydsn\000"
+ 487      6F64655C 
+ 487      41593231 
+ 487      32325F49 
+ 487      495C5072 
+ 488              	.LASF21:
+ 489 0061 47656E65 		.ascii	"Generated_Source\\PSoC5\\Pin_LED.c\000"
+ 489      72617465 
+ 489      645F536F 
+ 489      75726365 
+ 489      5C50536F 
+ 490              	.LASF9:
+ 491 0082 666C6F61 		.ascii	"float\000"
+ 491      7400
+ 492              	.LASF1:
+ 493 0088 756E7369 		.ascii	"unsigned char\000"
+ 493      676E6564 
+ 493      20636861 
+ 493      7200
+ 494              	.LASF20:
+ 495 0096 474E5520 		.ascii	"GNU C11 5.4.1 20160609 (release) [ARM/embedded-5-br"
+ 495      43313120 
+ 495      352E342E 
+ 495      31203230 
+ 495      31363036 
+ 496 00c9 616E6368 		.ascii	"anch revision 237715] -mcpu=cortex-m3 -mthumb -g -O"
+ 496      20726576 
+ 496      6973696F 
+ 496      6E203233 
+ 496      37373135 
+ 497 00fc 67202D66 		.ascii	"g -ffunction-sections -ffat-lto-objects\000"
+ 497      66756E63 
+ 497      74696F6E 
+ 497      2D736563 
+ 497      74696F6E 
+ 498              	.LASF13:
+ 499 0124 72656738 		.ascii	"reg8\000"
+ 499      00
+ 500              	.LASF5:
+ 501 0129 6C6F6E67 		.ascii	"long unsigned int\000"
+ 501      20756E73 
+ 501      69676E65 
+ 501      6420696E 
+ARM GAS  C:\Users\umber\AppData\Local\Temp\ccwSNAoU.s 			page 13
+
+
+ 501      7400
+ 502              	.LASF3:
+ 503 013b 73686F72 		.ascii	"short unsigned int\000"
+ 503      7420756E 
+ 503      7369676E 
+ 503      65642069 
+ 503      6E7400
+ 504              	.LASF10:
+ 505 014e 646F7562 		.ascii	"double\000"
+ 505      6C6500
+ 506              	.LASF19:
+ 507 0155 50696E5F 		.ascii	"Pin_LED_ReadDataReg\000"
+ 507      4C45445F 
+ 507      52656164 
+ 507      44617461 
+ 507      52656700 
+ 508              	.LASF15:
+ 509 0169 50696E5F 		.ascii	"Pin_LED_SetDriveMode\000"
+ 509      4C45445F 
+ 509      53657444 
+ 509      72697665 
+ 509      4D6F6465 
+ 510              	.LASF8:
+ 511 017e 756E7369 		.ascii	"unsigned int\000"
+ 511      676E6564 
+ 511      20696E74 
+ 511      00
+ 512              	.LASF14:
+ 513 018b 50696E5F 		.ascii	"Pin_LED_Write\000"
+ 513      4C45445F 
+ 513      57726974 
+ 513      6500
+ 514              	.LASF7:
+ 515 0199 6C6F6E67 		.ascii	"long long unsigned int\000"
+ 515      206C6F6E 
+ 515      6720756E 
+ 515      7369676E 
+ 515      65642069 
+ 516              	.LASF17:
+ 517 01b0 6D6F6465 		.ascii	"mode\000"
+ 517      00
+ 518              	.LASF18:
+ 519 01b5 50696E5F 		.ascii	"Pin_LED_Read\000"
+ 519      4C45445F 
+ 519      52656164 
+ 519      00
+ 520              	.LASF6:
+ 521 01c2 6C6F6E67 		.ascii	"long long int\000"
+ 521      206C6F6E 
+ 521      6720696E 
+ 521      7400
+ 522              	.LASF11:
+ 523 01d0 63686172 		.ascii	"char\000"
+ 523      00
+ 524              	.LASF2:
+ 525 01d5 73686F72 		.ascii	"short int\000"
+ 525      7420696E 
+ARM GAS  C:\Users\umber\AppData\Local\Temp\ccwSNAoU.s 			page 14
+
+
+ 525      7400
+ 526              	.LASF12:
+ 527 01df 75696E74 		.ascii	"uint8\000"
+ 527      3800
+ 528              	.LASF4:
+ 529 01e5 6C6F6E67 		.ascii	"long int\000"
+ 529      20696E74 
+ 529      00
+ 530              	.LASF0:
+ 531 01ee 7369676E 		.ascii	"signed char\000"
+ 531      65642063 
+ 531      68617200 
+ 532              		.ident	"GCC: (GNU Tools for ARM Embedded Processors) 5.4.1 20160609 (release) [ARM/embedded-5-bran
+>>>>>>> 040b500309df093adbafd37b4e49319d3f1a6083

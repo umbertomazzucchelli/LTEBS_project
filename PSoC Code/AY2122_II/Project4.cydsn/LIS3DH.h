@@ -41,7 +41,7 @@
     /**
     *   \brief Hex value to set normal mode to the accelerator
     */
-    #define LIS3DH_NORMAL_MODE_CTRL_REG1 0x27
+    #define LIS3DH_NORMAL_MODE_CTRL_REG1 0x47
     
     /**
     *   \brief Hex value to set normal mode (powered off)

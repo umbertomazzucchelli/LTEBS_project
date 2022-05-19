@@ -1,5 +1,9 @@
 # Project4
+<<<<<<< HEAD
 # 2022-05-19 12:43:27Z
+=======
+# 2022-05-18 20:25:44Z
+>>>>>>> 040b500309df093adbafd37b4e49319d3f1a6083
 
 # IO_0@[IOP=(1)][IoId=(0)] is reserved: SWDDebugEnabled
 dont_use_io iocell 1 0
@@ -14,4 +18,3 @@ set_io "SDA(0)" iocell 12 1
 set_io "SCL(0)" iocell 12 0
 set_io "Rx(0)" iocell 12 6
 set_io "Tx(0)" iocell 12 7
-set_io "Pin_INT(0)" iocell 12 4

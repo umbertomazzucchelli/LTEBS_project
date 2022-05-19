@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 ARM GAS  C:\Users\Giorgio\AppData\Local\Temp\ccnJ3jmH.s 			page 1
+=======
+ARM GAS  C:\Users\umber\AppData\Local\Temp\ccUKYxtu.s 			page 1
+>>>>>>> 040b500309df093adbafd37b4e49319d3f1a6083
 
 
    1              		.syntax unified
@@ -58,7 +62,11 @@ ARM GAS  C:\Users\Giorgio\AppData\Local\Temp\ccnJ3jmH.s 			page 1
   28:Generated_Source\PSoC5/I2C_Master_INT.c **** /*******************************************************************************
   29:Generated_Source\PSoC5/I2C_Master_INT.c **** * Function Name: I2C_Master_ISR
   30:Generated_Source\PSoC5/I2C_Master_INT.c **** ********************************************************************************
+<<<<<<< HEAD
 ARM GAS  C:\Users\Giorgio\AppData\Local\Temp\ccnJ3jmH.s 			page 2
+=======
+ARM GAS  C:\Users\umber\AppData\Local\Temp\ccUKYxtu.s 			page 2
+>>>>>>> 040b500309df093adbafd37b4e49319d3f1a6083
 
 
   31:Generated_Source\PSoC5/I2C_Master_INT.c **** *
@@ -118,7 +126,11 @@ ARM GAS  C:\Users\Giorgio\AppData\Local\Temp\ccnJ3jmH.s 			page 1
   71:Generated_Source\PSoC5/I2C_Master_INT.c **** #if(I2C_Master_MODE_MULTI_MASTER_SLAVE_ENABLED)
   72:Generated_Source\PSoC5/I2C_Master_INT.c ****     if(I2C_Master_CHECK_START_GEN(I2C_Master_MCSR_REG))
   73:Generated_Source\PSoC5/I2C_Master_INT.c ****     {
+<<<<<<< HEAD
 ARM GAS  C:\Users\Giorgio\AppData\Local\Temp\ccnJ3jmH.s 			page 3
+=======
+ARM GAS  C:\Users\umber\AppData\Local\Temp\ccUKYxtu.s 			page 3
+>>>>>>> 040b500309df093adbafd37b4e49319d3f1a6083
 
 
   74:Generated_Source\PSoC5/I2C_Master_INT.c ****         I2C_Master_CLEAR_START_GEN;
@@ -178,7 +190,11 @@ ARM GAS  C:\Users\Giorgio\AppData\Local\Temp\ccnJ3jmH.s 			page 1
   48              		.loc 1 121 0
   49 0014 14F0010F 		tst	r4, #1
   50 0018 00F01D81 		beq	.L3
+<<<<<<< HEAD
 ARM GAS  C:\Users\Giorgio\AppData\Local\Temp\ccnJ3jmH.s 			page 4
+=======
+ARM GAS  C:\Users\umber\AppData\Local\Temp\ccUKYxtu.s 			page 4
+>>>>>>> 040b500309df093adbafd37b4e49319d3f1a6083
 
 
  122:Generated_Source\PSoC5/I2C_Master_INT.c ****         {
@@ -238,7 +254,11 @@ ARM GAS  C:\Users\Giorgio\AppData\Local\Temp\ccnJ3jmH.s 			page 1
   87 005a 1B68     		ldr	r3, [r3]
   88 005c 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
   89 005e DBB2     		uxtb	r3, r3
+<<<<<<< HEAD
 ARM GAS  C:\Users\Giorgio\AppData\Local\Temp\ccnJ3jmH.s 			page 5
+=======
+ARM GAS  C:\Users\umber\AppData\Local\Temp\ccUKYxtu.s 			page 5
+>>>>>>> 040b500309df093adbafd37b4e49319d3f1a6083
 
 
   90 0060 914A     		ldr	r2, .L27+16
@@ -298,7 +318,11 @@ ARM GAS  C:\Users\Giorgio\AppData\Local\Temp\ccnJ3jmH.s 			page 1
  127 009c 2C46     		mov	r4, r5
  128 009e DAE0     		b	.L3
  129              	.L12:
+<<<<<<< HEAD
 ARM GAS  C:\Users\Giorgio\AppData\Local\Temp\ccnJ3jmH.s 			page 6
+=======
+ARM GAS  C:\Users\umber\AppData\Local\Temp\ccUKYxtu.s 			page 6
+>>>>>>> 040b500309df093adbafd37b4e49319d3f1a6083
 
 
  155:Generated_Source\PSoC5/I2C_Master_INT.c ****                         }
@@ -358,7 +382,11 @@ ARM GAS  C:\Users\Giorgio\AppData\Local\Temp\ccnJ3jmH.s 			page 1
  163 00d0 1378     		ldrb	r3, [r2]	@ zero_extendqisi2
  164 00d2 43F0A003 		orr	r3, r3, #160
  165 00d6 1370     		strb	r3, [r2]
+<<<<<<< HEAD
 ARM GAS  C:\Users\Giorgio\AppData\Local\Temp\ccnJ3jmH.s 			page 7
+=======
+ARM GAS  C:\Users\umber\AppData\Local\Temp\ccUKYxtu.s 			page 7
+>>>>>>> 040b500309df093adbafd37b4e49319d3f1a6083
 
 
  174:Generated_Source\PSoC5/I2C_Master_INT.c ****                                                     I2C_Master_MSTAT_ERR_ADDR_NAK);
@@ -418,7 +446,11 @@ ARM GAS  C:\Users\Giorgio\AppData\Local\Temp\ccnJ3jmH.s 			page 1
  187:Generated_Source\PSoC5/I2C_Master_INT.c ****                         I2C_Master_GENERATE_STOP;
  204              		.loc 1 187 0
  205 0116 1022     		movs	r2, #16
+<<<<<<< HEAD
 ARM GAS  C:\Users\Giorgio\AppData\Local\Temp\ccnJ3jmH.s 			page 8
+=======
+ARM GAS  C:\Users\umber\AppData\Local\Temp\ccUKYxtu.s 			page 8
+>>>>>>> 040b500309df093adbafd37b4e49319d3f1a6083
 
 
  206 0118 694B     		ldr	r3, .L27+40
@@ -478,7 +510,11 @@ ARM GAS  C:\Users\Giorgio\AppData\Local\Temp\ccnJ3jmH.s 			page 1
  210:Generated_Source\PSoC5/I2C_Master_INT.c ****                     {
  211:Generated_Source\PSoC5/I2C_Master_INT.c ****                         I2C_Master_DATA_REG =
  212:Generated_Source\PSoC5/I2C_Master_INT.c ****                                                  I2C_Master_mstrWrBufPtr[I2C_Master_mstrWrBufIndex]
+<<<<<<< HEAD
 ARM GAS  C:\Users\Giorgio\AppData\Local\Temp\ccnJ3jmH.s 			page 9
+=======
+ARM GAS  C:\Users\umber\AppData\Local\Temp\ccUKYxtu.s 			page 9
+>>>>>>> 040b500309df093adbafd37b4e49319d3f1a6083
 
 
  236              		.loc 1 212 0
@@ -538,7 +574,11 @@ ARM GAS  C:\Users\Giorgio\AppData\Local\Temp\ccnJ3jmH.s 			page 1
  277              	.L18:
  225:Generated_Source\PSoC5/I2C_Master_INT.c ****                     }
  226:Generated_Source\PSoC5/I2C_Master_INT.c ****                     else  /* Do normal Stop */
+<<<<<<< HEAD
 ARM GAS  C:\Users\Giorgio\AppData\Local\Temp\ccnJ3jmH.s 			page 10
+=======
+ARM GAS  C:\Users\umber\AppData\Local\Temp\ccUKYxtu.s 			page 10
+>>>>>>> 040b500309df093adbafd37b4e49319d3f1a6083
 
 
  227:Generated_Source\PSoC5/I2C_Master_INT.c ****                     {
@@ -598,7 +638,11 @@ ARM GAS  C:\Users\Giorgio\AppData\Local\Temp\ccnJ3jmH.s 			page 1
  312              		.loc 1 246 0
  313 01c8 3C4A     		ldr	r2, .L27+36
  314 01ca 1378     		ldrb	r3, [r2]	@ zero_extendqisi2
+<<<<<<< HEAD
 ARM GAS  C:\Users\Giorgio\AppData\Local\Temp\ccnJ3jmH.s 			page 11
+=======
+ARM GAS  C:\Users\umber\AppData\Local\Temp\ccUKYxtu.s 			page 11
+>>>>>>> 040b500309df093adbafd37b4e49319d3f1a6083
 
 
  315 01cc 43F01003 		orr	r3, r3, #16
@@ -658,7 +702,11 @@ ARM GAS  C:\Users\Giorgio\AppData\Local\Temp\ccnJ3jmH.s 			page 1
  353 0210 03D2     		bcs	.L20
  263:Generated_Source\PSoC5/I2C_Master_INT.c ****                 {
  264:Generated_Source\PSoC5/I2C_Master_INT.c ****                     I2C_Master_ACK_AND_RECEIVE;       /* ACK and receive byte */
+<<<<<<< HEAD
 ARM GAS  C:\Users\Giorgio\AppData\Local\Temp\ccnJ3jmH.s 			page 12
+=======
+ARM GAS  C:\Users\umber\AppData\Local\Temp\ccUKYxtu.s 			page 12
+>>>>>>> 040b500309df093adbafd37b4e49319d3f1a6083
 
 
  354              		.loc 1 264 0
@@ -718,7 +766,11 @@ ARM GAS  C:\Users\Giorgio\AppData\Local\Temp\ccnJ3jmH.s 			page 1
  282:Generated_Source\PSoC5/I2C_Master_INT.c **** 
  283:Generated_Source\PSoC5/I2C_Master_INT.c ****             default: /* This is an invalid state and should not occur */
  284:Generated_Source\PSoC5/I2C_Master_INT.c **** 
+<<<<<<< HEAD
 ARM GAS  C:\Users\Giorgio\AppData\Local\Temp\ccnJ3jmH.s 			page 13
+=======
+ARM GAS  C:\Users\umber\AppData\Local\Temp\ccUKYxtu.s 			page 13
+>>>>>>> 040b500309df093adbafd37b4e49319d3f1a6083
 
 
  285:Generated_Source\PSoC5/I2C_Master_INT.c ****             #if(I2C_Master_TIMEOUT_ENABLED)
@@ -778,7 +830,11 @@ ARM GAS  C:\Users\Giorgio\AppData\Local\Temp\ccnJ3jmH.s 			page 1
  425              	.L2:
  305:Generated_Source\PSoC5/I2C_Master_INT.c ****         }
  306:Generated_Source\PSoC5/I2C_Master_INT.c ****     #endif /* (I2C_Master_MODE_MASTER_ENABLED) */
+<<<<<<< HEAD
 ARM GAS  C:\Users\Giorgio\AppData\Local\Temp\ccnJ3jmH.s 			page 14
+=======
+ARM GAS  C:\Users\umber\AppData\Local\Temp\ccUKYxtu.s 			page 14
+>>>>>>> 040b500309df093adbafd37b4e49319d3f1a6083
 
 
  307:Generated_Source\PSoC5/I2C_Master_INT.c ****     }
@@ -838,7 +894,11 @@ ARM GAS  C:\Users\Giorgio\AppData\Local\Temp\ccnJ3jmH.s 			page 1
  356:Generated_Source\PSoC5/I2C_Master_INT.c ****                             /* Load first data byte from array */
  357:Generated_Source\PSoC5/I2C_Master_INT.c ****                             I2C_Master_DATA_REG = I2C_Master_slRdBufPtr[I2C_Master_slRdBufIndex];
  358:Generated_Source\PSoC5/I2C_Master_INT.c ****                             I2C_Master_ACK_AND_TRANSMIT;
+<<<<<<< HEAD
 ARM GAS  C:\Users\Giorgio\AppData\Local\Temp\ccnJ3jmH.s 			page 15
+=======
+ARM GAS  C:\Users\umber\AppData\Local\Temp\ccUKYxtu.s 			page 15
+>>>>>>> 040b500309df093adbafd37b4e49319d3f1a6083
 
 
  359:Generated_Source\PSoC5/I2C_Master_INT.c ****                             I2C_Master_slRdBufIndex++;
@@ -898,7 +958,11 @@ ARM GAS  C:\Users\Giorgio\AppData\Local\Temp\ccnJ3jmH.s 			page 1
  413:Generated_Source\PSoC5/I2C_Master_INT.c ****                     /* `#END` */
  414:Generated_Source\PSoC5/I2C_Master_INT.c ****                     
  415:Generated_Source\PSoC5/I2C_Master_INT.c ****                 #ifdef I2C_Master_HW_PREPARE_READ_BUF_CALLBACK
+<<<<<<< HEAD
 ARM GAS  C:\Users\Giorgio\AppData\Local\Temp\ccnJ3jmH.s 			page 16
+=======
+ARM GAS  C:\Users\umber\AppData\Local\Temp\ccUKYxtu.s 			page 16
+>>>>>>> 040b500309df093adbafd37b4e49319d3f1a6083
 
 
  416:Generated_Source\PSoC5/I2C_Master_INT.c ****                     I2C_Master_HwPrepareReadBuf_Callback();
@@ -958,7 +1022,11 @@ ARM GAS  C:\Users\Giorgio\AppData\Local\Temp\ccnJ3jmH.s 			page 1
  470:Generated_Source\PSoC5/I2C_Master_INT.c ****             else if(I2C_Master_state == I2C_Master_SM_SL_RD_DATA)
  471:Generated_Source\PSoC5/I2C_Master_INT.c ****             {
  472:Generated_Source\PSoC5/I2C_Master_INT.c ****                 if(I2C_Master_CHECK_DATA_ACK(tmpCsr))
+<<<<<<< HEAD
 ARM GAS  C:\Users\Giorgio\AppData\Local\Temp\ccnJ3jmH.s 			page 17
+=======
+ARM GAS  C:\Users\umber\AppData\Local\Temp\ccUKYxtu.s 			page 17
+>>>>>>> 040b500309df093adbafd37b4e49319d3f1a6083
 
 
  473:Generated_Source\PSoC5/I2C_Master_INT.c ****                 {
@@ -1018,7 +1086,11 @@ ARM GAS  C:\Users\Giorgio\AppData\Local\Temp\ccnJ3jmH.s 			page 1
  439              		.align	2
  440              	.L27:
  441 0298 D7490040 		.word	1073760727
+<<<<<<< HEAD
 ARM GAS  C:\Users\Giorgio\AppData\Local\Temp\ccnJ3jmH.s 			page 18
+=======
+ARM GAS  C:\Users\umber\AppData\Local\Temp\ccUKYxtu.s 			page 18
+>>>>>>> 040b500309df093adbafd37b4e49319d3f1a6083
 
 
  442 029c 00000000 		.word	I2C_Master_state
@@ -1049,25 +1121,37 @@ ARM GAS  C:\Users\Giorgio\AppData\Local\Temp\ccnJ3jmH.s 			page 1
  467 0006 00000000 		.4byte	.Ldebug_abbrev0
  468 000a 04       		.byte	0x4
  469 000b 01       		.uleb128 0x1
- 470 000c AA000000 		.4byte	.LASF27
+ 470 000c FA000000 		.4byte	.LASF27
  471 0010 0C       		.byte	0xc
  472 0011 1E000000 		.4byte	.LASF28
+<<<<<<< HEAD
  473 0015 85010000 		.4byte	.LASF29
+=======
+ 473 0015 5F000000 		.4byte	.LASF29
+>>>>>>> 040b500309df093adbafd37b4e49319d3f1a6083
  474 0019 00000000 		.4byte	.Ldebug_ranges0+0
  475 001d 00000000 		.4byte	0
  476 0021 00000000 		.4byte	.Ldebug_line0
  477 0025 02       		.uleb128 0x2
  478 0026 01       		.byte	0x1
  479 0027 06       		.byte	0x6
+<<<<<<< HEAD
  480 0028 8E020000 		.4byte	.LASF0
+=======
+ 480 0028 7C020000 		.4byte	.LASF0
+>>>>>>> 040b500309df093adbafd37b4e49319d3f1a6083
  481 002c 02       		.uleb128 0x2
  482 002d 01       		.byte	0x1
  483 002e 08       		.byte	0x8
- 484 002f 9C000000 		.4byte	.LASF1
+ 484 002f EC000000 		.4byte	.LASF1
  485 0033 02       		.uleb128 0x2
  486 0034 02       		.byte	0x2
  487 0035 05       		.byte	0x5
+<<<<<<< HEAD
  488 0036 6F020000 		.4byte	.LASF2
+=======
+ 488 0036 5D020000 		.4byte	.LASF2
+>>>>>>> 040b500309df093adbafd37b4e49319d3f1a6083
  489 003a 02       		.uleb128 0x2
  490 003b 02       		.byte	0x2
  491 003c 07       		.byte	0x7
@@ -1075,22 +1159,37 @@ ARM GAS  C:\Users\Giorgio\AppData\Local\Temp\ccnJ3jmH.s 			page 1
  493 0041 02       		.uleb128 0x2
  494 0042 04       		.byte	0x4
  495 0043 05       		.byte	0x5
+<<<<<<< HEAD
  496 0044 79020000 		.4byte	.LASF4
  497 0048 02       		.uleb128 0x2
  498 0049 04       		.byte	0x4
 ARM GAS  C:\Users\Giorgio\AppData\Local\Temp\ccnJ3jmH.s 			page 19
+=======
+ 496 0044 67020000 		.4byte	.LASF4
+ 497 0048 02       		.uleb128 0x2
+ 498 0049 04       		.byte	0x4
+ARM GAS  C:\Users\umber\AppData\Local\Temp\ccUKYxtu.s 			page 19
+>>>>>>> 040b500309df093adbafd37b4e49319d3f1a6083
 
 
  499 004a 07       		.byte	0x7
- 500 004b 54010000 		.4byte	.LASF5
+ 500 004b A4010000 		.4byte	.LASF5
  501 004f 02       		.uleb128 0x2
  502 0050 08       		.byte	0x8
  503 0051 05       		.byte	0x5
+<<<<<<< HEAD
  504 0052 29020000 		.4byte	.LASF6
  505 0056 02       		.uleb128 0x2
  506 0057 08       		.byte	0x8
  507 0058 07       		.byte	0x7
  508 0059 02020000 		.4byte	.LASF7
+=======
+ 504 0052 17020000 		.4byte	.LASF6
+ 505 0056 02       		.uleb128 0x2
+ 506 0057 08       		.byte	0x8
+ 507 0058 07       		.byte	0x7
+ 508 0059 F0010000 		.4byte	.LASF7
+>>>>>>> 040b500309df093adbafd37b4e49319d3f1a6083
  509 005d 03       		.uleb128 0x3
  510 005e 04       		.byte	0x4
  511 005f 05       		.byte	0x5
@@ -1098,14 +1197,22 @@ ARM GAS  C:\Users\Giorgio\AppData\Local\Temp\ccnJ3jmH.s 			page 1
  513 0064 02       		.uleb128 0x2
  514 0065 04       		.byte	0x4
  515 0066 07       		.byte	0x7
+<<<<<<< HEAD
  516 0067 F5010000 		.4byte	.LASF8
+=======
+ 516 0067 E3010000 		.4byte	.LASF8
+>>>>>>> 040b500309df093adbafd37b4e49319d3f1a6083
  517 006b 04       		.uleb128 0x4
- 518 006c 66010000 		.4byte	.LASF9
+ 518 006c B6010000 		.4byte	.LASF9
  519 0070 02       		.byte	0x2
  520 0071 E901     		.2byte	0x1e9
  521 0073 2C000000 		.4byte	0x2c
  522 0077 04       		.uleb128 0x4
+<<<<<<< HEAD
  523 0078 EE010000 		.4byte	.LASF10
+=======
+ 523 0078 DC010000 		.4byte	.LASF10
+>>>>>>> 040b500309df093adbafd37b4e49319d3f1a6083
  524 007c 02       		.byte	0x2
  525 007d EB01     		.2byte	0x1eb
  526 007f 48000000 		.4byte	0x48
@@ -1116,13 +1223,21 @@ ARM GAS  C:\Users\Giorgio\AppData\Local\Temp\ccnJ3jmH.s 			page 1
  531 008a 02       		.uleb128 0x2
  532 008b 08       		.byte	0x8
  533 008c 04       		.byte	0x4
+<<<<<<< HEAD
  534 008d E7010000 		.4byte	.LASF12
  535 0091 02       		.uleb128 0x2
  536 0092 01       		.byte	0x1
  537 0093 08       		.byte	0x8
  538 0094 51020000 		.4byte	.LASF13
+=======
+ 534 008d D5010000 		.4byte	.LASF12
+ 535 0091 02       		.uleb128 0x2
+ 536 0092 01       		.byte	0x1
+ 537 0093 08       		.byte	0x8
+ 538 0094 3F020000 		.4byte	.LASF13
+>>>>>>> 040b500309df093adbafd37b4e49319d3f1a6083
  539 0098 04       		.uleb128 0x4
- 540 0099 38010000 		.4byte	.LASF14
+ 540 0099 88010000 		.4byte	.LASF14
  541 009d 02       		.byte	0x2
  542 009e 9302     		.2byte	0x293
  543 00a0 A4000000 		.4byte	0xa4
@@ -1138,6 +1253,7 @@ ARM GAS  C:\Users\Giorgio\AppData\Local\Temp\ccnJ3jmH.s 			page 1
  553 00ba 02       		.uleb128 0x2
  554 00bb 08       		.byte	0x8
  555 00bc 04       		.byte	0x4
+<<<<<<< HEAD
 ARM GAS  C:\Users\Giorgio\AppData\Local\Temp\ccnJ3jmH.s 			page 20
 
 
@@ -1146,8 +1262,18 @@ ARM GAS  C:\Users\Giorgio\AppData\Local\Temp\ccnJ3jmH.s 			page 1
  558 00c2 04       		.byte	0x4
  559 00c3 07       		.byte	0x7
  560 00c4 20020000 		.4byte	.LASF17
+=======
+ARM GAS  C:\Users\umber\AppData\Local\Temp\ccUKYxtu.s 			page 20
+
+
+ 556 00bd 70020000 		.4byte	.LASF16
+ 557 00c1 02       		.uleb128 0x2
+ 558 00c2 04       		.byte	0x4
+ 559 00c3 07       		.byte	0x7
+ 560 00c4 0E020000 		.4byte	.LASF17
+>>>>>>> 040b500309df093adbafd37b4e49319d3f1a6083
  561 00c8 06       		.uleb128 0x6
- 562 00c9 8D000000 		.4byte	.LASF30
+ 562 00c9 DD000000 		.4byte	.LASF30
  563 00cd 01       		.byte	0x1
  564 00ce 2E       		.byte	0x2e
  565 00cf 00000000 		.4byte	.LFB0
@@ -1187,18 +1313,23 @@ ARM GAS  C:\Users\Giorgio\AppData\Local\Temp\ccnJ3jmH.s 			page 1
  599 0115 23       		.byte	0x23
  600 0116 A4000000 		.4byte	0xa4
  601 011a 0B       		.uleb128 0xb
- 602 011b 77000000 		.4byte	.LASF19
+ 602 011b C7000000 		.4byte	.LASF19
  603 011f 03       		.byte	0x3
  604 0120 27       		.byte	0x27
  605 0121 A4000000 		.4byte	0xa4
  606 0125 0B       		.uleb128 0xb
- 607 0126 3D010000 		.4byte	.LASF20
+ 607 0126 8D010000 		.4byte	.LASF20
  608 012a 03       		.byte	0x3
  609 012b 28       		.byte	0x28
  610 012c A4000000 		.4byte	0xa4
  611 0130 0B       		.uleb128 0xb
+<<<<<<< HEAD
  612 0131 9A020000 		.4byte	.LASF21
 ARM GAS  C:\Users\Giorgio\AppData\Local\Temp\ccnJ3jmH.s 			page 21
+=======
+ 612 0131 88020000 		.4byte	.LASF21
+ARM GAS  C:\Users\umber\AppData\Local\Temp\ccUKYxtu.s 			page 21
+>>>>>>> 040b500309df093adbafd37b4e49319d3f1a6083
 
 
  613 0135 03       		.byte	0x3
@@ -1208,33 +1339,50 @@ ARM GAS  C:\Users\Giorgio\AppData\Local\Temp\ccnJ3jmH.s 			page 1
  617 013c 04       		.byte	0x4
  618 013d A4000000 		.4byte	0xa4
  619 0141 0B       		.uleb128 0xb
- 620 0142 6C010000 		.4byte	.LASF22
+ 620 0142 BC010000 		.4byte	.LASF22
  621 0146 03       		.byte	0x3
  622 0147 2C       		.byte	0x2c
  623 0148 A4000000 		.4byte	0xa4
  624 014c 0B       		.uleb128 0xb
+<<<<<<< HEAD
  625 014d B2020000 		.4byte	.LASF23
+=======
+ 625 014d A0020000 		.4byte	.LASF23
+>>>>>>> 040b500309df093adbafd37b4e49319d3f1a6083
  626 0151 03       		.byte	0x3
  627 0152 2D       		.byte	0x2d
  628 0153 A4000000 		.4byte	0xa4
  629 0157 0B       		.uleb128 0xb
- 630 0158 5F000000 		.4byte	.LASF24
+ 630 0158 AF000000 		.4byte	.LASF24
  631 015c 03       		.byte	0x3
  632 015d 30       		.byte	0x30
  633 015e 3B010000 		.4byte	0x13b
  634 0162 0B       		.uleb128 0xb
+<<<<<<< HEAD
  635 0163 56020000 		.4byte	.LASF25
+=======
+ 635 0163 44020000 		.4byte	.LASF25
+>>>>>>> 040b500309df093adbafd37b4e49319d3f1a6083
  636 0167 03       		.byte	0x3
  637 0168 31       		.byte	0x31
  638 0169 A4000000 		.4byte	0xa4
  639 016d 0B       		.uleb128 0xb
+<<<<<<< HEAD
  640 016e 37020000 		.4byte	.LASF26
+=======
+ 640 016e 25020000 		.4byte	.LASF26
+>>>>>>> 040b500309df093adbafd37b4e49319d3f1a6083
  641 0172 03       		.byte	0x3
  642 0173 32       		.byte	0x32
  643 0174 A4000000 		.4byte	0xa4
  644 0178 0D       		.uleb128 0xd
+<<<<<<< HEAD
  645 0179 19020000 		.4byte	.LASF32
  646 017d 19020000 		.4byte	.LASF32
+=======
+ 645 0179 07020000 		.4byte	.LASF32
+ 646 017d 07020000 		.4byte	.LASF32
+>>>>>>> 040b500309df093adbafd37b4e49319d3f1a6083
  647 0181 04       		.byte	0x4
  648 0182 7F       		.byte	0x7f
  649 0183 00       		.byte	0
@@ -1258,7 +1406,11 @@ ARM GAS  C:\Users\Giorgio\AppData\Local\Temp\ccnJ3jmH.s 			page 1
  667 000f 10       		.uleb128 0x10
  668 0010 17       		.uleb128 0x17
  669 0011 00       		.byte	0
+<<<<<<< HEAD
 ARM GAS  C:\Users\Giorgio\AppData\Local\Temp\ccnJ3jmH.s 			page 22
+=======
+ARM GAS  C:\Users\umber\AppData\Local\Temp\ccUKYxtu.s 			page 22
+>>>>>>> 040b500309df093adbafd37b4e49319d3f1a6083
 
 
  670 0012 00       		.byte	0
@@ -1318,7 +1470,11 @@ ARM GAS  C:\Users\Giorgio\AppData\Local\Temp\ccnJ3jmH.s 			page 1
  724 0048 27       		.uleb128 0x27
  725 0049 19       		.uleb128 0x19
  726 004a 11       		.uleb128 0x11
+<<<<<<< HEAD
 ARM GAS  C:\Users\Giorgio\AppData\Local\Temp\ccnJ3jmH.s 			page 23
+=======
+ARM GAS  C:\Users\umber\AppData\Local\Temp\ccUKYxtu.s 			page 23
+>>>>>>> 040b500309df093adbafd37b4e49319d3f1a6083
 
 
  727 004b 01       		.uleb128 0x1
@@ -1378,7 +1534,11 @@ ARM GAS  C:\Users\Giorgio\AppData\Local\Temp\ccnJ3jmH.s 			page 1
  781 0089 00       		.byte	0
  782 008a 0B       		.uleb128 0xb
  783 008b 34       		.uleb128 0x34
+<<<<<<< HEAD
 ARM GAS  C:\Users\Giorgio\AppData\Local\Temp\ccnJ3jmH.s 			page 24
+=======
+ARM GAS  C:\Users\umber\AppData\Local\Temp\ccUKYxtu.s 			page 24
+>>>>>>> 040b500309df093adbafd37b4e49319d3f1a6083
 
 
  784 008c 00       		.byte	0
@@ -1438,7 +1598,11 @@ ARM GAS  C:\Users\Giorgio\AppData\Local\Temp\ccnJ3jmH.s 			page 1
  838 001a 96020000 		.4byte	.LVL6
  839 001e 0100     		.2byte	0x1
  840 0020 54       		.byte	0x54
+<<<<<<< HEAD
 ARM GAS  C:\Users\Giorgio\AppData\Local\Temp\ccnJ3jmH.s 			page 25
+=======
+ARM GAS  C:\Users\umber\AppData\Local\Temp\ccUKYxtu.s 			page 25
+>>>>>>> 040b500309df093adbafd37b4e49319d3f1a6083
 
 
  841 0021 00000000 		.4byte	0
@@ -1495,6 +1659,7 @@ ARM GAS  C:\Users\Giorgio\AppData\Local\Temp\ccnJ3jmH.s 			page 1
  875      7369676E 
  875      65642069 
  875      6E7400
+<<<<<<< HEAD
  876              	.LASF24:
  877 005f 4932435F 		.ascii	"I2C_Master_mstrWrBufPtr\000"
  877      4D617374 
@@ -1651,3 +1816,160 @@ ARM GAS  C:\Users\Giorgio\AppData\Local\Temp\ccnJ3jmH.s 			page 1
  933      73747252 
  933      64427566 
  934              		.ident	"GCC: (GNU Tools for ARM Embedded Processors) 5.4.1 20160609 (release) [ARM/embedded-5-bran
+=======
+ 876              	.LASF29:
+ 877 005f 443A5C44 		.ascii	"D:\\Download\\Progetto Lab\\AY2122_II_Project-4\\PS"
+ 877      6F776E6C 
+ARM GAS  C:\Users\umber\AppData\Local\Temp\ccUKYxtu.s 			page 26
+
+
+ 877      6F61645C 
+ 877      50726F67 
+ 877      6574746F 
+ 878 008e 6F432043 		.ascii	"oC Code\\AY2122_II\\Project4.cydsn\000"
+ 878      6F64655C 
+ 878      41593231 
+ 878      32325F49 
+ 878      495C5072 
+ 879              	.LASF24:
+ 880 00af 4932435F 		.ascii	"I2C_Master_mstrWrBufPtr\000"
+ 880      4D617374 
+ 880      65725F6D 
+ 880      73747257 
+ 880      72427566 
+ 881              	.LASF19:
+ 882 00c7 4932435F 		.ascii	"I2C_Master_mstrStatus\000"
+ 882      4D617374 
+ 882      65725F6D 
+ 882      73747253 
+ 882      74617475 
+ 883              	.LASF30:
+ 884 00dd 4932435F 		.ascii	"I2C_Master_ISR\000"
+ 884      4D617374 
+ 884      65725F49 
+ 884      535200
+ 885              	.LASF1:
+ 886 00ec 756E7369 		.ascii	"unsigned char\000"
+ 886      676E6564 
+ 886      20636861 
+ 886      7200
+ 887              	.LASF27:
+ 888 00fa 474E5520 		.ascii	"GNU C11 5.4.1 20160609 (release) [ARM/embedded-5-br"
+ 888      43313120 
+ 888      352E342E 
+ 888      31203230 
+ 888      31363036 
+ 889 012d 616E6368 		.ascii	"anch revision 237715] -mcpu=cortex-m3 -mthumb -g -O"
+ 889      20726576 
+ 889      6973696F 
+ 889      6E203233 
+ 889      37373135 
+ 890 0160 67202D66 		.ascii	"g -ffunction-sections -ffat-lto-objects\000"
+ 890      66756E63 
+ 890      74696F6E 
+ 890      2D736563 
+ 890      74696F6E 
+ 891              	.LASF14:
+ 892 0188 72656738 		.ascii	"reg8\000"
+ 892      00
+ 893              	.LASF20:
+ 894 018d 4932435F 		.ascii	"I2C_Master_mstrControl\000"
+ 894      4D617374 
+ 894      65725F6D 
+ 894      73747243 
+ 894      6F6E7472 
+ 895              	.LASF5:
+ 896 01a4 6C6F6E67 		.ascii	"long unsigned int\000"
+ARM GAS  C:\Users\umber\AppData\Local\Temp\ccUKYxtu.s 			page 27
+
+
+ 896      20756E73 
+ 896      69676E65 
+ 896      6420696E 
+ 896      7400
+ 897              	.LASF9:
+ 898 01b6 75696E74 		.ascii	"uint8\000"
+ 898      3800
+ 899              	.LASF22:
+ 900 01bc 4932435F 		.ascii	"I2C_Master_mstrRdBufSize\000"
+ 900      4D617374 
+ 900      65725F6D 
+ 900      73747252 
+ 900      64427566 
+ 901              	.LASF12:
+ 902 01d5 646F7562 		.ascii	"double\000"
+ 902      6C6500
+ 903              	.LASF10:
+ 904 01dc 75696E74 		.ascii	"uint32\000"
+ 904      333200
+ 905              	.LASF8:
+ 906 01e3 756E7369 		.ascii	"unsigned int\000"
+ 906      676E6564 
+ 906      20696E74 
+ 906      00
+ 907              	.LASF7:
+ 908 01f0 6C6F6E67 		.ascii	"long long unsigned int\000"
+ 908      206C6F6E 
+ 908      6720756E 
+ 908      7369676E 
+ 908      65642069 
+ 909              	.LASF32:
+ 910 0207 43794861 		.ascii	"CyHalt\000"
+ 910      6C7400
+ 911              	.LASF17:
+ 912 020e 73697A65 		.ascii	"sizetype\000"
+ 912      74797065 
+ 912      00
+ 913              	.LASF6:
+ 914 0217 6C6F6E67 		.ascii	"long long int\000"
+ 914      206C6F6E 
+ 914      6720696E 
+ 914      7400
+ 915              	.LASF26:
+ 916 0225 4932435F 		.ascii	"I2C_Master_mstrWrBufIndex\000"
+ 916      4D617374 
+ 916      65725F6D 
+ 916      73747257 
+ 916      72427566 
+ 917              	.LASF13:
+ 918 023f 63686172 		.ascii	"char\000"
+ 918      00
+ 919              	.LASF25:
+ 920 0244 4932435F 		.ascii	"I2C_Master_mstrWrBufSize\000"
+ 920      4D617374 
+ 920      65725F6D 
+ 920      73747257 
+ 920      72427566 
+ARM GAS  C:\Users\umber\AppData\Local\Temp\ccUKYxtu.s 			page 28
+
+
+ 921              	.LASF2:
+ 922 025d 73686F72 		.ascii	"short int\000"
+ 922      7420696E 
+ 922      7400
+ 923              	.LASF4:
+ 924 0267 6C6F6E67 		.ascii	"long int\000"
+ 924      20696E74 
+ 924      00
+ 925              	.LASF16:
+ 926 0270 6C6F6E67 		.ascii	"long double\000"
+ 926      20646F75 
+ 926      626C6500 
+ 927              	.LASF0:
+ 928 027c 7369676E 		.ascii	"signed char\000"
+ 928      65642063 
+ 928      68617200 
+ 929              	.LASF21:
+ 930 0288 4932435F 		.ascii	"I2C_Master_mstrRdBufPtr\000"
+ 930      4D617374 
+ 930      65725F6D 
+ 930      73747252 
+ 930      64427566 
+ 931              	.LASF23:
+ 932 02a0 4932435F 		.ascii	"I2C_Master_mstrRdBufIndex\000"
+ 932      4D617374 
+ 932      65725F6D 
+ 932      73747252 
+ 932      64427566 
+ 933              		.ident	"GCC: (GNU Tools for ARM Embedded Processors) 5.4.1 20160609 (release) [ARM/embedded-5-bran
+>>>>>>> 040b500309df093adbafd37b4e49319d3f1a6083

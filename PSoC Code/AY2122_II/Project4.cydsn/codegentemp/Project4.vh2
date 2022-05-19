@@ -2,7 +2,11 @@
 --	Conversion of Project4.v to vh2:
 --
 --	Cypress Semiconductor - WARP Version 6.3 IR 41
+<<<<<<< HEAD
 --	Thu May 19 14:43:26 2022
+=======
+--	Wed May 18 22:25:43 2022
+>>>>>>> 040b500309df093adbafd37b4e49319d3f1a6083
 --
 
 USE cypress.cypress.all;
@@ -1168,11 +1172,6 @@ SIGNAL tmpFB_0__Tx_net_0 : bit;
 SIGNAL tmpIO_0__Tx_net_0 : bit;
 TERMINAL tmpSIOVREF__Tx_net_0 : bit;
 SIGNAL tmpINTERRUPT_0__Tx_net_0 : bit;
-SIGNAL tmpOE__Pin_INT_net_0 : bit;
-SIGNAL tmpFB_0__Pin_INT_net_0 : bit;
-SIGNAL Net_280 : bit;
-TERMINAL tmpSIOVREF__Pin_INT_net_0 : bit;
-SIGNAL tmpINTERRUPT_0__Pin_INT_net_0 : bit;
 SIGNAL \UART_BT:BUART:reset_reg\\D\ : bit;
 SIGNAL \UART_BT:BUART:txn\\D\ : bit;
 SIGNAL \UART_BT:BUART:tx_state_1\\D\ : bit;
@@ -2640,7 +2639,7 @@ SCL:cy_psoc3_pins_v1_10
 		clock=>\UART:BUART:clock_op\,
 		status=>(zero, \UART:BUART:rx_status_5\, \UART:BUART:rx_status_4\, \UART:BUART:rx_status_3\,
 			\UART:BUART:rx_status_2\, zero, zero),
-		interrupt=>\UART:BUART:rx_interrupt_out\);
+		interrupt=>Net_209);
 Rx:cy_psoc3_pins_v1_10
 	GENERIC MAP(id=>"a99a1df2-814a-470a-8c7c-f03939feb4bd",
 		drive_mode=>"001",
@@ -2781,76 +2780,10 @@ Tx:cy_psoc3_pins_v1_10
 		out_clock_en=>one,
 		out_reset=>zero,
 		interrupt=>tmpINTERRUPT_0__Tx_net_0);
-Pin_INT:cy_psoc3_pins_v1_10
-	GENERIC MAP(id=>"8d318d8b-cf7b-4b6b-b02c-ab1c5c49d0ba",
-		drive_mode=>"100",
-		ibuf_enabled=>"1",
-		init_dr_st=>"0",
-		input_sync=>"0",
-		input_clk_en=>'0',
-		input_sync_mode=>"0",
-		intr_mode=>"00",
-		invert_in_clock=>'0',
-		invert_in_clock_en=>'0',
-		invert_in_reset=>'0',
-		invert_out_clock=>'0',
-		invert_out_clock_en=>'0',
-		invert_out_reset=>'0',
-		io_voltage=>"",
-		layout_mode=>"CONTIGUOUS",
-		output_conn=>"0",
-		output_sync=>"0",
-		output_clk_en=>'0',
-		output_mode=>"0",
-		output_reset=>'0',
-		output_clock_mode=>"0",
-		oe_sync=>"0",
-		oe_conn=>"0",
-		oe_reset=>'0',
-		pin_aliases=>"",
-		pin_mode=>"B",
-		por_state=>4,
-		sio_group_cnt=>0,
-		sio_hifreq=>"00000000",
-		sio_hyst=>"1",
-		sio_ibuf=>"00000000",
-		sio_info=>"00",
-		sio_obuf=>"00000000",
-		sio_refsel=>"00000000",
-		sio_vtrip=>"00000000",
-		sio_vohsel=>"00000000",
-		slew_rate=>"0",
-		spanning=>'0',
-		sw_only=>'0',
-		vtrip=>"00",
-		width=>1,
-		port_alias_required=>'0',
-		port_alias_group=>"",
-		use_annotation=>"0",
-		pa_in_clock=>-1,
-		pa_in_clock_en=>-1,
-		pa_in_reset=>-1,
-		pa_out_clock=>-1,
-		pa_out_clock_en=>-1,
-		pa_out_reset=>-1,
-		ovt_needed=>"0",
-		ovt_slew_control=>"00",
-		ovt_hyst_trim=>"0",
-		input_buffer_sel=>"00")
-	PORT MAP(oe=>(one),
-		y=>(zero),
-		fb=>(tmpFB_0__Pin_INT_net_0),
-		analog=>(open),
-		io=>Net_280,
-		siovref=>(tmpSIOVREF__Pin_INT_net_0),
-		annotation=>(open),
-		in_clock=>zero,
-		in_clock_en=>one,
-		in_reset=>zero,
-		out_clock=>zero,
-		out_clock_en=>one,
-		out_reset=>zero,
-		interrupt=>tmpINTERRUPT_0__Pin_INT_net_0);
+isr_RX:cy_isr_v1_0
+	GENERIC MAP(int_type=>"10",
+		is_nmi=>'0')
+	PORT MAP(int_signal=>Net_209);
 \UART_BT:BUART:reset_reg\:cy_dff
 	PORT MAP(d=>zero,
 		clk=>\UART_BT:BUART:clock_op\,

@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 ARM GAS  C:\Users\Giorgio\AppData\Local\Temp\ccs0X5EW.s 			page 1
+=======
+ARM GAS  C:\Users\umber\AppData\Local\Temp\ccH4DmKe.s 			page 1
+>>>>>>> 040b500309df093adbafd37b4e49319d3f1a6083
 
 
    1              		.syntax unified
@@ -58,7 +62,11 @@ ARM GAS  C:\Users\Giorgio\AppData\Local\Temp\ccs0X5EW.s 			page 1
   28:Generated_Source\PSoC5/PWM_LED_PM.c **** *  Saves the current user configuration of the component.
   29:Generated_Source\PSoC5/PWM_LED_PM.c **** *
   30:Generated_Source\PSoC5/PWM_LED_PM.c **** * Parameters:
+<<<<<<< HEAD
 ARM GAS  C:\Users\Giorgio\AppData\Local\Temp\ccs0X5EW.s 			page 2
+=======
+ARM GAS  C:\Users\umber\AppData\Local\Temp\ccH4DmKe.s 			page 2
+>>>>>>> 040b500309df093adbafd37b4e49319d3f1a6083
 
 
   31:Generated_Source\PSoC5/PWM_LED_PM.c **** *  None
@@ -118,7 +126,11 @@ ARM GAS  C:\Users\Giorgio\AppData\Local\Temp\ccs0X5EW.s 			page 1
   64:Generated_Source\PSoC5/PWM_LED_PM.c ****             PWM_LED_backup.PWMControlRegister = PWM_LED_ReadControlRegister();
   49              		.loc 1 64 0
   50 0016 FFF7FEFF 		bl	PWM_LED_ReadControlRegister
+<<<<<<< HEAD
 ARM GAS  C:\Users\Giorgio\AppData\Local\Temp\ccs0X5EW.s 			page 3
+=======
+ARM GAS  C:\Users\umber\AppData\Local\Temp\ccH4DmKe.s 			page 3
+>>>>>>> 040b500309df093adbafd37b4e49319d3f1a6083
 
 
   51              	.LVL2:
@@ -128,7 +140,7 @@ ARM GAS  C:\Users\Giorgio\AppData\Local\Temp\ccs0X5EW.s 			page 1
   55 001e 00BF     		.align	2
   56              	.L3:
   57 0020 00000000 		.word	.LANCHOR0
-  58 0024 8C640040 		.word	1073767564
+  58 0024 8B640040 		.word	1073767563
   59              		.cfi_endproc
   60              	.LFE0:
   61              		.size	PWM_LED_SaveConfig, .-PWM_LED_SaveConfig
@@ -178,7 +190,11 @@ ARM GAS  C:\Users\Giorgio\AppData\Local\Temp\ccs0X5EW.s 			page 1
   92:Generated_Source\PSoC5/PWM_LED_PM.c ****                 PWM_LED_WritePeriod(PWM_LED_backup.PWMPeriod);
   78              		.loc 1 92 0
   79 0002 074C     		ldr	r4, .L7
+<<<<<<< HEAD
 ARM GAS  C:\Users\Giorgio\AppData\Local\Temp\ccs0X5EW.s 			page 4
+=======
+ARM GAS  C:\Users\umber\AppData\Local\Temp\ccH4DmKe.s 			page 4
+>>>>>>> 040b500309df093adbafd37b4e49319d3f1a6083
 
 
   80 0004 A078     		ldrb	r0, [r4, #2]	@ zero_extendqisi2
@@ -220,7 +236,7 @@ ARM GAS  C:\Users\Giorgio\AppData\Local\Temp\ccs0X5EW.s 			page 1
   97 001e 00BF     		.align	2
   98              	.L7:
   99 0020 00000000 		.word	.LANCHOR0
- 100 0024 8C640040 		.word	1073767564
+ 100 0024 8B640040 		.word	1073767563
  101              		.cfi_endproc
  102              	.LFE1:
  103              		.size	PWM_LED_RestoreConfig, .-PWM_LED_RestoreConfig
@@ -238,7 +254,11 @@ ARM GAS  C:\Users\Giorgio\AppData\Local\Temp\ccs0X5EW.s 			page 1
  115:Generated_Source\PSoC5/PWM_LED_PM.c **** 
  116:Generated_Source\PSoC5/PWM_LED_PM.c **** 
  117:Generated_Source\PSoC5/PWM_LED_PM.c **** /*******************************************************************************
+<<<<<<< HEAD
 ARM GAS  C:\Users\Giorgio\AppData\Local\Temp\ccs0X5EW.s 			page 5
+=======
+ARM GAS  C:\Users\umber\AppData\Local\Temp\ccH4DmKe.s 			page 5
+>>>>>>> 040b500309df093adbafd37b4e49319d3f1a6083
 
 
  118:Generated_Source\PSoC5/PWM_LED_PM.c **** * Function Name: PWM_LED_Sleep
@@ -298,7 +318,11 @@ ARM GAS  C:\Users\Giorgio\AppData\Local\Temp\ccs0X5EW.s 			page 1
  148:Generated_Source\PSoC5/PWM_LED_PM.c ****         }
  149:Generated_Source\PSoC5/PWM_LED_PM.c ****     #endif /* (PWM_LED_UseControl) */
  150:Generated_Source\PSoC5/PWM_LED_PM.c **** 
+<<<<<<< HEAD
 ARM GAS  C:\Users\Giorgio\AppData\Local\Temp\ccs0X5EW.s 			page 6
+=======
+ARM GAS  C:\Users\umber\AppData\Local\Temp\ccH4DmKe.s 			page 6
+>>>>>>> 040b500309df093adbafd37b4e49319d3f1a6083
 
 
  151:Generated_Source\PSoC5/PWM_LED_PM.c ****     /* Stop component */
@@ -358,7 +382,11 @@ ARM GAS  C:\Users\Giorgio\AppData\Local\Temp\ccs0X5EW.s 			page 1
  161              		@ args = 0, pretend = 0, frame = 0
  162              		@ frame_needed = 0, uses_anonymous_args = 0
  163 0000 08B5     		push	{r3, lr}
+<<<<<<< HEAD
 ARM GAS  C:\Users\Giorgio\AppData\Local\Temp\ccs0X5EW.s 			page 7
+=======
+ARM GAS  C:\Users\umber\AppData\Local\Temp\ccH4DmKe.s 			page 7
+>>>>>>> 040b500309df093adbafd37b4e49319d3f1a6083
 
 
  164              		.cfi_def_cfa_offset 8
@@ -409,15 +437,23 @@ ARM GAS  C:\Users\Giorgio\AppData\Local\Temp\ccs0X5EW.s 			page 1
  201 0006 00000000 		.4byte	.Ldebug_abbrev0
  202 000a 04       		.byte	0x4
  203 000b 01       		.uleb128 0x1
+<<<<<<< HEAD
  204 000c EF000000 		.4byte	.LASF34
  205 0010 0C       		.byte	0xc
  206 0011 23000000 		.4byte	.LASF35
  207 0015 B3010000 		.4byte	.LASF36
+=======
+ 204 000c 1E010000 		.4byte	.LASF34
+ 205 0010 0C       		.byte	0xc
+ 206 0011 23000000 		.4byte	.LASF35
+ 207 0015 A3000000 		.4byte	.LASF36
+>>>>>>> 040b500309df093adbafd37b4e49319d3f1a6083
  208 0019 00000000 		.4byte	.Ldebug_ranges0+0
  209 001d 00000000 		.4byte	0
  210 0021 00000000 		.4byte	.Ldebug_line0
  211 0025 02       		.uleb128 0x2
  212 0026 01       		.byte	0x1
+<<<<<<< HEAD
 ARM GAS  C:\Users\Giorgio\AppData\Local\Temp\ccs0X5EW.s 			page 8
 
 
@@ -431,6 +467,21 @@ ARM GAS  C:\Users\Giorgio\AppData\Local\Temp\ccs0X5EW.s 			page 1
  220 0034 02       		.byte	0x2
  221 0035 05       		.byte	0x5
  222 0036 CE020000 		.4byte	.LASF2
+=======
+ARM GAS  C:\Users\umber\AppData\Local\Temp\ccH4DmKe.s 			page 8
+
+
+ 213 0027 06       		.byte	0x6
+ 214 0028 E0020000 		.4byte	.LASF0
+ 215 002c 02       		.uleb128 0x2
+ 216 002d 01       		.byte	0x1
+ 217 002e 08       		.byte	0x8
+ 218 002f 10010000 		.4byte	.LASF1
+ 219 0033 02       		.uleb128 0x2
+ 220 0034 02       		.byte	0x2
+ 221 0035 05       		.byte	0x5
+ 222 0036 AE020000 		.4byte	.LASF2
+>>>>>>> 040b500309df093adbafd37b4e49319d3f1a6083
  223 003a 02       		.uleb128 0x2
  224 003b 02       		.byte	0x2
  225 003c 07       		.byte	0x7
@@ -438,6 +489,7 @@ ARM GAS  C:\Users\Giorgio\AppData\Local\Temp\ccs0X5EW.s 			page 1
  227 0041 02       		.uleb128 0x2
  228 0042 04       		.byte	0x4
  229 0043 05       		.byte	0x5
+<<<<<<< HEAD
  230 0044 D8020000 		.4byte	.LASF4
  231 0048 02       		.uleb128 0x2
  232 0049 04       		.byte	0x4
@@ -451,6 +503,21 @@ ARM GAS  C:\Users\Giorgio\AppData\Local\Temp\ccs0X5EW.s 			page 1
  240 0057 08       		.byte	0x8
  241 0058 07       		.byte	0x7
  242 0059 CA000000 		.4byte	.LASF7
+=======
+ 230 0044 B8020000 		.4byte	.LASF4
+ 231 0048 02       		.uleb128 0x2
+ 232 0049 04       		.byte	0x4
+ 233 004a 07       		.byte	0x7
+ 234 004b CA010000 		.4byte	.LASF5
+ 235 004f 02       		.uleb128 0x2
+ 236 0050 08       		.byte	0x8
+ 237 0051 05       		.byte	0x5
+ 238 0052 9B020000 		.4byte	.LASF6
+ 239 0056 02       		.uleb128 0x2
+ 240 0057 08       		.byte	0x8
+ 241 0058 07       		.byte	0x7
+ 242 0059 F9000000 		.4byte	.LASF7
+>>>>>>> 040b500309df093adbafd37b4e49319d3f1a6083
  243 005d 03       		.uleb128 0x3
  244 005e 04       		.byte	0x4
  245 005f 05       		.byte	0x5
@@ -458,15 +525,22 @@ ARM GAS  C:\Users\Giorgio\AppData\Local\Temp\ccs0X5EW.s 			page 1
  247 0064 02       		.uleb128 0x2
  248 0065 04       		.byte	0x4
  249 0066 07       		.byte	0x7
+<<<<<<< HEAD
  250 0067 1C020000 		.4byte	.LASF8
  251 006b 04       		.uleb128 0x4
  252 006c AD010000 		.4byte	.LASF12
+=======
+ 250 0067 FC010000 		.4byte	.LASF8
+ 251 006b 04       		.uleb128 0x4
+ 252 006c DC010000 		.4byte	.LASF12
+>>>>>>> 040b500309df093adbafd37b4e49319d3f1a6083
  253 0070 02       		.byte	0x2
  254 0071 E901     		.2byte	0x1e9
  255 0073 2C000000 		.4byte	0x2c
  256 0077 02       		.uleb128 0x2
  257 0078 04       		.byte	0x4
  258 0079 04       		.byte	0x4
+<<<<<<< HEAD
  259 007a C4000000 		.4byte	.LASF9
  260 007e 02       		.uleb128 0x2
  261 007f 08       		.byte	0x8
@@ -479,6 +553,20 @@ ARM GAS  C:\Users\Giorgio\AppData\Local\Temp\ccs0X5EW.s 			page 1
  268 008c 04       		.uleb128 0x4
  269 008d 9E020000 		.4byte	.LASF13
 ARM GAS  C:\Users\Giorgio\AppData\Local\Temp\ccs0X5EW.s 			page 9
+=======
+ 259 007a F3000000 		.4byte	.LASF9
+ 260 007e 02       		.uleb128 0x2
+ 261 007f 08       		.byte	0x8
+ 262 0080 04       		.byte	0x4
+ 263 0081 F5010000 		.4byte	.LASF10
+ 264 0085 02       		.uleb128 0x2
+ 265 0086 01       		.byte	0x1
+ 266 0087 08       		.byte	0x8
+ 267 0088 A9020000 		.4byte	.LASF11
+ 268 008c 04       		.uleb128 0x4
+ 269 008d 7E020000 		.4byte	.LASF13
+ARM GAS  C:\Users\umber\AppData\Local\Temp\ccH4DmKe.s 			page 9
+>>>>>>> 040b500309df093adbafd37b4e49319d3f1a6083
 
 
  270 0091 02       		.byte	0x2
@@ -489,18 +577,30 @@ ARM GAS  C:\Users\Giorgio\AppData\Local\Temp\ccs0X5EW.s 			page 1
  275 009d 02       		.uleb128 0x2
  276 009e 08       		.byte	0x8
  277 009f 04       		.byte	0x4
+<<<<<<< HEAD
  278 00a0 F4020000 		.4byte	.LASF14
  279 00a4 02       		.uleb128 0x2
  280 00a5 04       		.byte	0x4
  281 00a6 07       		.byte	0x7
  282 00a7 B2020000 		.4byte	.LASF15
+=======
+ 278 00a0 D4020000 		.4byte	.LASF14
+ 279 00a4 02       		.uleb128 0x2
+ 280 00a5 04       		.byte	0x4
+ 281 00a6 07       		.byte	0x7
+ 282 00a7 92020000 		.4byte	.LASF15
+>>>>>>> 040b500309df093adbafd37b4e49319d3f1a6083
  283 00ab 06       		.uleb128 0x6
  284 00ac 05       		.byte	0x5
  285 00ad 03       		.byte	0x3
  286 00ae 6B       		.byte	0x6b
  287 00af F0000000 		.4byte	0xf0
  288 00b3 07       		.uleb128 0x7
+<<<<<<< HEAD
  289 00b4 7D010000 		.4byte	.LASF16
+=======
+ 289 00b4 AC010000 		.4byte	.LASF16
+>>>>>>> 040b500309df093adbafd37b4e49319d3f1a6083
  290 00b8 03       		.byte	0x3
  291 00b9 6E       		.byte	0x6e
  292 00ba 6B000000 		.4byte	0x6b
@@ -518,27 +618,45 @@ ARM GAS  C:\Users\Giorgio\AppData\Local\Temp\ccs0X5EW.s 			page 1
  304 00d2 6B000000 		.4byte	0x6b
  305 00d6 02       		.byte	0x2
  306 00d7 07       		.uleb128 0x7
+<<<<<<< HEAD
  307 00d8 0C030000 		.4byte	.LASF19
+=======
+ 307 00d8 FA020000 		.4byte	.LASF19
+>>>>>>> 040b500309df093adbafd37b4e49319d3f1a6083
  308 00dc 03       		.byte	0x3
  309 00dd 76       		.byte	0x76
  310 00de 6B000000 		.4byte	0x6b
  311 00e2 03       		.byte	0x3
  312 00e3 07       		.uleb128 0x7
+<<<<<<< HEAD
  313 00e4 7B000000 		.4byte	.LASF20
+=======
+ 313 00e4 E2010000 		.4byte	.LASF20
+>>>>>>> 040b500309df093adbafd37b4e49319d3f1a6083
  314 00e8 03       		.byte	0x3
  315 00e9 86       		.byte	0x86
  316 00ea 6B000000 		.4byte	0x6b
  317 00ee 04       		.byte	0x4
  318 00ef 00       		.byte	0
  319 00f0 08       		.uleb128 0x8
+<<<<<<< HEAD
  320 00f1 38020000 		.4byte	.LASF21
+=======
+ 320 00f1 18020000 		.4byte	.LASF21
+>>>>>>> 040b500309df093adbafd37b4e49319d3f1a6083
  321 00f5 03       		.byte	0x3
  322 00f6 8B       		.byte	0x8b
  323 00f7 AB000000 		.4byte	0xab
  324 00fb 09       		.uleb128 0x9
+<<<<<<< HEAD
  325 00fc 61020000 		.4byte	.LASF22
  326 0100 01       		.byte	0x1
 ARM GAS  C:\Users\Giorgio\AppData\Local\Temp\ccs0X5EW.s 			page 10
+=======
+ 325 00fc 41020000 		.4byte	.LASF22
+ 326 0100 01       		.byte	0x1
+ARM GAS  C:\Users\umber\AppData\Local\Temp\ccH4DmKe.s 			page 10
+>>>>>>> 040b500309df093adbafd37b4e49319d3f1a6083
 
 
  327 0101 2A       		.byte	0x2a
@@ -577,7 +695,11 @@ ARM GAS  C:\Users\Giorgio\AppData\Local\Temp\ccs0X5EW.s 			page 1
  360 0158 F5010000 		.4byte	0x1f5
  361 015c 00       		.byte	0
  362 015d 09       		.uleb128 0x9
+<<<<<<< HEAD
  363 015e B6000000 		.4byte	.LASF24
+=======
+ 363 015e EC020000 		.4byte	.LASF24
+>>>>>>> 040b500309df093adbafd37b4e49319d3f1a6083
  364 0162 01       		.byte	0x1
  365 0163 88       		.byte	0x88
  366 0164 00000000 		.4byte	.LFB2
@@ -593,12 +715,20 @@ ARM GAS  C:\Users\Giorgio\AppData\Local\Temp\ccs0X5EW.s 			page 1
  376 0180 FB000000 		.4byte	0xfb
  377 0184 00       		.byte	0
  378 0185 09       		.uleb128 0x9
+<<<<<<< HEAD
  379 0186 29020000 		.4byte	.LASF25
+=======
+ 379 0186 09020000 		.4byte	.LASF25
+>>>>>>> 040b500309df093adbafd37b4e49319d3f1a6083
  380 018a 01       		.byte	0x1
  381 018b B2       		.byte	0xb2
  382 018c 00000000 		.4byte	.LFB3
  383 0190 18000000 		.4byte	.LFE3-.LFB3
+<<<<<<< HEAD
 ARM GAS  C:\Users\Giorgio\AppData\Local\Temp\ccs0X5EW.s 			page 11
+=======
+ARM GAS  C:\Users\umber\AppData\Local\Temp\ccH4DmKe.s 			page 11
+>>>>>>> 040b500309df093adbafd37b4e49319d3f1a6083
 
 
  384 0194 01       		.uleb128 0x1
@@ -612,7 +742,11 @@ ARM GAS  C:\Users\Giorgio\AppData\Local\Temp\ccs0X5EW.s 			page 1
  392 01a8 0B020000 		.4byte	0x20b
  393 01ac 00       		.byte	0
  394 01ad 0B       		.uleb128 0xb
+<<<<<<< HEAD
  395 01ae A3020000 		.4byte	.LASF37
+=======
+ 395 01ae 83020000 		.4byte	.LASF37
+>>>>>>> 040b500309df093adbafd37b4e49319d3f1a6083
  396 01b2 01       		.byte	0x1
  397 01b3 14       		.byte	0x14
  398 01b4 F0000000 		.4byte	0xf0
@@ -620,8 +754,13 @@ ARM GAS  C:\Users\Giorgio\AppData\Local\Temp\ccs0X5EW.s 			page 1
  400 01b9 03       		.byte	0x3
  401 01ba 00000000 		.4byte	PWM_LED_backup
  402 01be 0C       		.uleb128 0xc
+<<<<<<< HEAD
  403 01bf E1020000 		.4byte	.LASF26
  404 01c3 E1020000 		.4byte	.LASF26
+=======
+ 403 01bf C1020000 		.4byte	.LASF26
+ 404 01c3 C1020000 		.4byte	.LASF26
+>>>>>>> 040b500309df093adbafd37b4e49319d3f1a6083
  405 01c7 03       		.byte	0x3
  406 01c8 C0       		.byte	0xc0
  407 01c9 0C       		.uleb128 0xc
@@ -635,8 +774,13 @@ ARM GAS  C:\Users\Giorgio\AppData\Local\Temp\ccs0X5EW.s 			page 1
  415 01dd 03       		.byte	0x3
  416 01de 9D       		.byte	0x9d
  417 01df 0C       		.uleb128 0xc
+<<<<<<< HEAD
  418 01e0 4D020000 		.4byte	.LASF29
  419 01e4 4D020000 		.4byte	.LASF29
+=======
+ 418 01e0 2D020000 		.4byte	.LASF29
+ 419 01e4 2D020000 		.4byte	.LASF29
+>>>>>>> 040b500309df093adbafd37b4e49319d3f1a6083
  420 01e8 03       		.byte	0x3
  421 01e9 BE       		.byte	0xbe
  422 01ea 0C       		.uleb128 0xc
@@ -645,6 +789,7 @@ ARM GAS  C:\Users\Giorgio\AppData\Local\Temp\ccs0X5EW.s 			page 1
  425 01f3 03       		.byte	0x3
  426 01f4 BA       		.byte	0xba
  427 01f5 0C       		.uleb128 0xc
+<<<<<<< HEAD
  428 01f6 74020000 		.4byte	.LASF31
  429 01fa 74020000 		.4byte	.LASF31
  430 01fe 03       		.byte	0x3
@@ -659,6 +804,22 @@ ARM GAS  C:\Users\Giorgio\AppData\Local\Temp\ccs0X5EW.s 			page 1
  439 0210 8C010000 		.4byte	.LASF33
  440 0214 03       		.byte	0x3
 ARM GAS  C:\Users\Giorgio\AppData\Local\Temp\ccs0X5EW.s 			page 12
+=======
+ 428 01f6 54020000 		.4byte	.LASF31
+ 429 01fa 54020000 		.4byte	.LASF31
+ 430 01fe 03       		.byte	0x3
+ 431 01ff 9E       		.byte	0x9e
+ 432 0200 0C       		.uleb128 0xc
+ 433 0201 71020000 		.4byte	.LASF32
+ 434 0205 71020000 		.4byte	.LASF32
+ 435 0209 03       		.byte	0x3
+ 436 020a 93       		.byte	0x93
+ 437 020b 0C       		.uleb128 0xc
+ 438 020c BB010000 		.4byte	.LASF33
+ 439 0210 BB010000 		.4byte	.LASF33
+ 440 0214 03       		.byte	0x3
+ARM GAS  C:\Users\umber\AppData\Local\Temp\ccH4DmKe.s 			page 12
+>>>>>>> 040b500309df093adbafd37b4e49319d3f1a6083
 
 
  441 0215 DB       		.byte	0xdb
@@ -718,7 +879,11 @@ ARM GAS  C:\Users\Giorgio\AppData\Local\Temp\ccs0X5EW.s 			page 1
  495 0032 49       		.uleb128 0x49
  496 0033 13       		.uleb128 0x13
  497 0034 00       		.byte	0
+<<<<<<< HEAD
 ARM GAS  C:\Users\Giorgio\AppData\Local\Temp\ccs0X5EW.s 			page 13
+=======
+ARM GAS  C:\Users\umber\AppData\Local\Temp\ccH4DmKe.s 			page 13
+>>>>>>> 040b500309df093adbafd37b4e49319d3f1a6083
 
 
  498 0035 00       		.byte	0
@@ -778,7 +943,11 @@ ARM GAS  C:\Users\Giorgio\AppData\Local\Temp\ccs0X5EW.s 			page 1
  552 006b 03       		.uleb128 0x3
  553 006c 0E       		.uleb128 0xe
  554 006d 3A       		.uleb128 0x3a
+<<<<<<< HEAD
 ARM GAS  C:\Users\Giorgio\AppData\Local\Temp\ccs0X5EW.s 			page 14
+=======
+ARM GAS  C:\Users\umber\AppData\Local\Temp\ccH4DmKe.s 			page 14
+>>>>>>> 040b500309df093adbafd37b4e49319d3f1a6083
 
 
  555 006e 0B       		.uleb128 0xb
@@ -838,7 +1007,11 @@ ARM GAS  C:\Users\Giorgio\AppData\Local\Temp\ccs0X5EW.s 			page 1
  609 00a7 3B       		.uleb128 0x3b
  610 00a8 0B       		.uleb128 0xb
  611 00a9 00       		.byte	0
+<<<<<<< HEAD
 ARM GAS  C:\Users\Giorgio\AppData\Local\Temp\ccs0X5EW.s 			page 15
+=======
+ARM GAS  C:\Users\umber\AppData\Local\Temp\ccH4DmKe.s 			page 15
+>>>>>>> 040b500309df093adbafd37b4e49319d3f1a6083
 
 
  612 00aa 00       		.byte	0
@@ -898,7 +1071,11 @@ ARM GAS  C:\Users\Giorgio\AppData\Local\Temp\ccs0X5EW.s 			page 1
  653              	.LASF18:
  654 0047 50574D50 		.ascii	"PWMPeriod\000"
  654      6572696F 
+<<<<<<< HEAD
 ARM GAS  C:\Users\Giorgio\AppData\Local\Temp\ccs0X5EW.s 			page 16
+=======
+ARM GAS  C:\Users\umber\AppData\Local\Temp\ccH4DmKe.s 			page 16
+>>>>>>> 040b500309df093adbafd37b4e49319d3f1a6083
 
 
  654      6400
@@ -914,6 +1091,7 @@ ARM GAS  C:\Users\Giorgio\AppData\Local\Temp\ccs0X5EW.s 			page 1
  658      52657374 
  658      6F726543 
  658      6F6E6669 
+<<<<<<< HEAD
  659              	.LASF20:
  660 007b 50574D43 		.ascii	"PWMControlRegister\000"
  660      6F6E7472 
@@ -1098,3 +1276,188 @@ ARM GAS  C:\Users\Giorgio\AppData\Local\Temp\ccs0X5EW.s 			page 1
  726      6B56616C 
  726      756500
  727              		.ident	"GCC: (GNU Tools for ARM Embedded Processors) 5.4.1 20160609 (release) [ARM/embedded-5-bran
+=======
+ 659              	.LASF3:
+ 660 007b 73686F72 		.ascii	"short unsigned int\000"
+ 660      7420756E 
+ 660      7369676E 
+ 660      65642069 
+ 660      6E7400
+ 661              	.LASF30:
+ 662 008e 50574D5F 		.ascii	"PWM_LED_WriteCounter\000"
+ 662      4C45445F 
+ 662      57726974 
+ 662      65436F75 
+ 662      6E746572 
+ 663              	.LASF36:
+ 664 00a3 443A5C44 		.ascii	"D:\\Download\\Progetto Lab\\AY2122_II_Project-4\\PS"
+ 664      6F776E6C 
+ 664      6F61645C 
+ 664      50726F67 
+ 664      6574746F 
+ 665 00d2 6F432043 		.ascii	"oC Code\\AY2122_II\\Project4.cydsn\000"
+ 665      6F64655C 
+ 665      41593231 
+ 665      32325F49 
+ 665      495C5072 
+ 666              	.LASF9:
+ 667 00f3 666C6F61 		.ascii	"float\000"
+ 667      7400
+ 668              	.LASF7:
+ 669 00f9 6C6F6E67 		.ascii	"long long unsigned int\000"
+ 669      206C6F6E 
+ 669      6720756E 
+ 669      7369676E 
+ 669      65642069 
+ 670              	.LASF1:
+ 671 0110 756E7369 		.ascii	"unsigned char\000"
+ 671      676E6564 
+ 671      20636861 
+ 671      7200
+ 672              	.LASF34:
+ 673 011e 474E5520 		.ascii	"GNU C11 5.4.1 20160609 (release) [ARM/embedded-5-br"
+ 673      43313120 
+ 673      352E342E 
+ 673      31203230 
+ 673      31363036 
+ 674 0151 616E6368 		.ascii	"anch revision 237715] -mcpu=cortex-m3 -mthumb -g -O"
+ARM GAS  C:\Users\umber\AppData\Local\Temp\ccH4DmKe.s 			page 17
+
+
+ 674      20726576 
+ 674      6973696F 
+ 674      6E203233 
+ 674      37373135 
+ 675 0184 67202D66 		.ascii	"g -ffunction-sections -ffat-lto-objects\000"
+ 675      66756E63 
+ 675      74696F6E 
+ 675      2D736563 
+ 675      74696F6E 
+ 676              	.LASF16:
+ 677 01ac 50574D45 		.ascii	"PWMEnableState\000"
+ 677      6E61626C 
+ 677      65537461 
+ 677      746500
+ 678              	.LASF33:
+ 679 01bb 50574D5F 		.ascii	"PWM_LED_Enable\000"
+ 679      4C45445F 
+ 679      456E6162 
+ 679      6C6500
+ 680              	.LASF5:
+ 681 01ca 6C6F6E67 		.ascii	"long unsigned int\000"
+ 681      20756E73 
+ 681      69676E65 
+ 681      6420696E 
+ 681      7400
+ 682              	.LASF12:
+ 683 01dc 75696E74 		.ascii	"uint8\000"
+ 683      3800
+ 684              	.LASF20:
+ 685 01e2 50574D43 		.ascii	"PWMControlRegister\000"
+ 685      6F6E7472 
+ 685      6F6C5265 
+ 685      67697374 
+ 685      657200
+ 686              	.LASF10:
+ 687 01f5 646F7562 		.ascii	"double\000"
+ 687      6C6500
+ 688              	.LASF8:
+ 689 01fc 756E7369 		.ascii	"unsigned int\000"
+ 689      676E6564 
+ 689      20696E74 
+ 689      00
+ 690              	.LASF25:
+ 691 0209 50574D5F 		.ascii	"PWM_LED_Wakeup\000"
+ 691      4C45445F 
+ 691      57616B65 
+ 691      757000
+ 692              	.LASF21:
+ 693 0218 50574D5F 		.ascii	"PWM_LED_backupStruct\000"
+ 693      4C45445F 
+ 693      6261636B 
+ 693      75705374 
+ 693      72756374 
+ 694              	.LASF29:
+ 695 022d 50574D5F 		.ascii	"PWM_LED_WritePeriod\000"
+ 695      4C45445F 
+ 695      57726974 
+ARM GAS  C:\Users\umber\AppData\Local\Temp\ccH4DmKe.s 			page 18
+
+
+ 695      65506572 
+ 695      696F6400 
+ 696              	.LASF22:
+ 697 0241 50574D5F 		.ascii	"PWM_LED_SaveConfig\000"
+ 697      4C45445F 
+ 697      53617665 
+ 697      436F6E66 
+ 697      696700
+ 698              	.LASF31:
+ 699 0254 50574D5F 		.ascii	"PWM_LED_WriteControlRegister\000"
+ 699      4C45445F 
+ 699      57726974 
+ 699      65436F6E 
+ 699      74726F6C 
+ 700              	.LASF32:
+ 701 0271 50574D5F 		.ascii	"PWM_LED_Stop\000"
+ 701      4C45445F 
+ 701      53746F70 
+ 701      00
+ 702              	.LASF13:
+ 703 027e 72656738 		.ascii	"reg8\000"
+ 703      00
+ 704              	.LASF37:
+ 705 0283 50574D5F 		.ascii	"PWM_LED_backup\000"
+ 705      4C45445F 
+ 705      6261636B 
+ 705      757000
+ 706              	.LASF15:
+ 707 0292 73697A65 		.ascii	"sizetype\000"
+ 707      74797065 
+ 707      00
+ 708              	.LASF6:
+ 709 029b 6C6F6E67 		.ascii	"long long int\000"
+ 709      206C6F6E 
+ 709      6720696E 
+ 709      7400
+ 710              	.LASF11:
+ 711 02a9 63686172 		.ascii	"char\000"
+ 711      00
+ 712              	.LASF2:
+ 713 02ae 73686F72 		.ascii	"short int\000"
+ 713      7420696E 
+ 713      7400
+ 714              	.LASF4:
+ 715 02b8 6C6F6E67 		.ascii	"long int\000"
+ 715      20696E74 
+ 715      00
+ 716              	.LASF26:
+ 717 02c1 50574D5F 		.ascii	"PWM_LED_ReadPeriod\000"
+ 717      4C45445F 
+ 717      52656164 
+ 717      50657269 
+ 717      6F6400
+ 718              	.LASF14:
+ 719 02d4 6C6F6E67 		.ascii	"long double\000"
+ 719      20646F75 
+ 719      626C6500 
+ARM GAS  C:\Users\umber\AppData\Local\Temp\ccH4DmKe.s 			page 19
+
+
+ 720              	.LASF0:
+ 721 02e0 7369676E 		.ascii	"signed char\000"
+ 721      65642063 
+ 721      68617200 
+ 722              	.LASF24:
+ 723 02ec 50574D5F 		.ascii	"PWM_LED_Sleep\000"
+ 723      4C45445F 
+ 723      536C6565 
+ 723      7000
+ 724              	.LASF19:
+ 725 02fa 496E7465 		.ascii	"InterruptMaskValue\000"
+ 725      72727570 
+ 725      744D6173 
+ 725      6B56616C 
+ 725      756500
+ 726              		.ident	"GCC: (GNU Tools for ARM Embedded Processors) 5.4.1 20160609 (release) [ARM/embedded-5-bran
+>>>>>>> 040b500309df093adbafd37b4e49319d3f1a6083

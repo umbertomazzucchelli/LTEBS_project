@@ -10,27 +10,18 @@
  * ========================================
 */
 #ifndef __INTERRUPT_ROUTINES_H
-    
     #define __INTERRUPT_ROUTINES_H
     
-    #include "project.h"
     #include "cytypes.h"
     #include "stdio.h"
     
-    #define SAMPLE 1 
-    #define WAIT 0
-    #define HOLD 2
     
-    //CY_ISR_PROTO(Custom_ISR_TIMER);
-    CY_ISR_PROTO(Custom_ISR_RX);
-    CY_ISR_PROTO(Custom_ISR_read);
-    CY_ISR_PROTO(Custom_ISR_LED);
     
-   
-    char dataReady;
+    uint8_t status;
     
-    char status;
-        
+    CY_ISR_PROTO (Custom_ISR_RX);
+    
+    volatile uint8 PacketReadyFlag;
 #endif
 
 /* [] END OF FILE */

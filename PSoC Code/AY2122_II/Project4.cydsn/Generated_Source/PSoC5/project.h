@@ -33,9 +33,13 @@
 #include "SCL_aliases.h"
 #include "SCL.h"
 #include "UART.h"
+<<<<<<< HEAD
 #include "Pin_INT_aliases.h"
 #include "Pin_INT.h"
 #include "EEPROM.h"
+=======
+#include "isr_RX.h"
+>>>>>>> 040b500309df093adbafd37b4e49319d3f1a6083
 #include "UART_BT_IntClock.h"
 #include "UART_IntClock.h"
 #include "core_cm3_psoc5.h"
