@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 --------------- Build Started: 05/19/2022 17:43:30 Project: Project4, Configuration: ARM GCC 5.4-2016-q2-update Debug ---------------
 The code generation step is up to date.
 arm-none-eabi-gcc.exe -mcpu=cortex-m3 -mthumb -I. -IGenerated_Source\PSoC5 -Wa,-alh=.\CortexM3\ARM_GCC_541\Debug/main.lst -g -D DEBUG -D CY_CORE_ID=0 -Wall -ffunction-sections -ffat-lto-objects -Og -c main.c -o .\CortexM3\ARM_GCC_541\Debug\main.o
@@ -13,7 +12,6 @@ cyelftool.exe -S "C:\Users\Giorgio\Desktop\LAB_FINAL_PROJECT\AY2122_II_Project-4
 Flash used: 8208 of 262144 bytes (3.1%).
 SRAM used: 2641 of 65536 bytes (4.0%). Stack: 2048 bytes. Heap: 128 bytes.
 --------------- Build Succeeded: 05/19/2022 17:43:32 ---------------
-=======
 --------------- Build Started: 05/18/2022 22:27:35 Project: Project4, Configuration: ARM GCC 5.4-2016-q2-update Debug ---------------
 The code generation step is up to date.
 arm-none-eabi-gcc.exe -mcpu=cortex-m3 -mthumb -I. -IGenerated_Source\PSoC5 -Wa,-alh=.\CortexM3\ARM_GCC_541\Debug/main.lst -g -D DEBUG -D CY_CORE_ID=0 -Wall -ffunction-sections -ffat-lto-objects -Og -c main.c -o .\CortexM3\ARM_GCC_541\Debug\main.o
@@ -29,4 +27,3 @@ cyelftool.exe -S "D:\Download\Progetto Lab\AY2122_II_Project-4\PSoC Code\AY2122_
 Flash used: 7464 of 262144 bytes (2,8%).
 SRAM used: 2617 of 65536 bytes (4,0%). Stack: 2048 bytes. Heap: 128 bytes.
 --------------- Build Succeeded: 05/18/2022 22:27:35 ---------------
->>>>>>> 040b500309df093adbafd37b4e49319d3f1a6083

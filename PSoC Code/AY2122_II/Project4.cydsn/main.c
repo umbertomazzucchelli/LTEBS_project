@@ -13,11 +13,8 @@
 #include "project.h"
 #include "I2C_Interface.h"
 #include "LIS3DH.h"
-<<<<<<< HEAD
 #include "EEPROM_Custom.h"
-=======
 #include "InterruptRoutines.h"
->>>>>>> 040b500309df093adbafd37b4e49319d3f1a6083
 
 // Set this to 1 to send byte data for the Bridge Control Panel
 // Otherwise set it to 0 to send temperature data as int16_t
@@ -44,12 +41,9 @@ int main(void)
     I2C_Peripheral_Start();
     UART_BT_Start();
     UART_Start();
-<<<<<<< HEAD
     EEPROM_Custom_Start();
     
-=======
     isr_RX_StartEx(Custom_ISR_RX);
->>>>>>> 040b500309df093adbafd37b4e49319d3f1a6083
     
     CyDelay(5); //"The boot procedure is complete about 5 ms after device power-up."
     
@@ -187,7 +181,6 @@ int main(void)
     
     for(;;)
     {
-<<<<<<< HEAD
         
         if (init == 0) //system just initialized
         {
@@ -226,17 +219,9 @@ int main(void)
             setReg((new_So[1]<<3)|control_reg_4), LIS3DH_REG4);
         }
             */
-           
-            
+  
         
-        CyDelay(500); //to get stable data, just a try
-        error=I2C_Peripheral_ReadRegister(LIS3DH_DEVICE_ADDRESS, LIS3DH_FIFO_SRC_REG, &fifoFull); 
-        sprintf(message,"\r\novrn value: %d \r\n",(fifoFull & 0x40)>>6);
-        UART_PutString(message);
-        if(error == NO_ERROR && (fifoFull & 0x40)>>6)
-=======
         if(status==1)
->>>>>>> 040b500309df093adbafd37b4e49319d3f1a6083
         {
             CyDelay(500); //to get stable data, just a try
             error=I2C_Peripheral_ReadRegister(LIS3DH_DEVICE_ADDRESS, LIS3DH_FIFO_SRC_REG, &fifoFull); 
