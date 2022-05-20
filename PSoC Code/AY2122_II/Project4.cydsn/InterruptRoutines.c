@@ -31,14 +31,31 @@ CY_ISR(Custom_ISR_RX)
     // Set flags based on UART command
     switch(ch_received)
     {
+        //start recording
         case 'A':
         case 'a':
-            status=1;
+            status = 2;
             break;
+        
+        //connection
         case 'T':
         case 't':
             UART_PutString("HR/RR sensor");
             break;
+            
+        //initialization
+        case 'I':
+        case 'i':
+            status = 1;
+            break;
+            
+            
+        //turn off
+        case 'X':
+        case 'x':
+            status = 4;
+            break;
+            
         default:
             break;    
     }
