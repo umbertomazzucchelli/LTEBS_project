@@ -12,6 +12,9 @@
 
 #ifndef __LIS3DH_H
     #define __LIS3DH_H
+    
+    #include "cytypes.h"
+    #include "stdio.h"
 
     /**
     *   \brief 7-bit I2C address of the slave device.
@@ -54,12 +57,6 @@
     #define LIS3DH_TEMP_CFG_REG 0x1F 
 
     #define LIS3DH_TEMP_CFG_REG_ACTIVE 0xC0
-    
-    /**
-    * \brief FS bits and So settings:
-    * - FS = [-2, 2]g       -->  FS_bits = 00 -- DEFAULT VALUE
-    * - So = normal mode    -->  4mg/digits   -- NORMAL MODE
-    */
    
     /////////////////////////////////////////////////
     //EX.3
@@ -92,7 +89,7 @@
     #define LIS3DH_FIFO_BYP 0x00
     
     #define LIS3DH_CTRL_REG3 0x22
-    #define LIS3DH_CTRL_REG3_INT 0x00
+    #define LIS3DH_CTRL_REG3_INT 0x02 
     
     #define LIS3DH_CTRL_REG5 0x24
     #define LIS3DH_CTRL_REG5_FIFO_ON 0x40
@@ -100,7 +97,20 @@
     #define LIS3DH_FIFO_SRC_REG 0x2F
     #define LIS3DH_FIFO_SRC_OVRN 0b01000000
     
+    //FS = CTRL_REG4[5:4]
+    #define FS2     0x00
+    #define FS4     0x01
+    #define FS8     0x02
+    #define FS16    0x03
     
+    //So = CTRL_REG1[3]+CTRL_REG4[3]
+    #define Normal  0x00 //00
+    #define HR      0x01 //01
+    #define LP      0x02 //10
+    #define NA      0x03 //11
+    
+    uint8 So[2];
+    uint8 FS;
     
 #endif
 

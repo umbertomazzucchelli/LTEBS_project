@@ -1,10 +1,10 @@
 /* ========================================
  *
- *  Source code for EEPROM writing/reading functions.
+ * This file includes all the required source code to interface
+ * the EEPROM
  *
  * ========================================
 */
-
 
 #include "EEPROM_Custom.h" 
 #include "project.h"
@@ -95,7 +95,5 @@ uint8 EEPROM_retrieve_So_msb(void)
     
     return So_read;
 } 
-
-    
 
 /* [] END OF FILE */

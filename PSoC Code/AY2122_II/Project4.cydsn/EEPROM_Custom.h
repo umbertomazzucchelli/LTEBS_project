@@ -5,8 +5,6 @@
  * ========================================
 */
 
-/* [] END OF FILE */
-
 #ifndef __EEPROM_Custom_H
     #define __EEPROM_Custom_H
     
@@ -61,3 +59,5 @@
     uint8 EEPROM_retrieve_So_msb(void); // data goes in CTRL_REG_1[3]
    
 #endif
+
+/* [] END OF FILE */

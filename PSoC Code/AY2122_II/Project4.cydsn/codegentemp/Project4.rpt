@@ -1,26 +1,13 @@
-<<<<<<< HEAD
-Loading plugins phase: Elapsed time ==> 0s.330ms
+Loading plugins phase: Elapsed time ==> 0s.238ms
 <CYPRESSTAG name="CyDsfit arguments...">
-cydsfit arguments: -.fdsnotice -.fdswarpdepfile=warp_dependencies.txt -.fdselabdepfile=elab_dependencies.txt -.fdsbldfile=generated_files.txt -.fdsreffile=referenced_files.txt -p C:\Users\Giorgio\Desktop\LAB_FINAL_PROJECT\AY2122_II_Project-4\PSoC Code\AY2122_II\Project4.cydsn\Project4.cyprj -d CY8C5888LTI-LP097 -s C:\Users\Giorgio\Desktop\LAB_FINAL_PROJECT\AY2122_II_Project-4\PSoC Code\AY2122_II\Project4.cydsn\Generated_Source\PSoC5 -- -yv2 -q10 -ygs -o2 -v3 -.fftcfgtype=LE
+cydsfit arguments: -.fdsnotice -.fdswarpdepfile=warp_dependencies.txt -.fdselabdepfile=elab_dependencies.txt -.fdsbldfile=generated_files.txt -.fdsreffile=referenced_files.txt -p C:\Users\Giorgio\Desktop\try\try\PSoC Code\AY2122_II\Project4.cydsn\Project4.cyprj -d CY8C5888LTI-LP097 -s C:\Users\Giorgio\Desktop\try\try\PSoC Code\AY2122_II\Project4.cydsn\Generated_Source\PSoC5 -- -yv2 -q10 -ygs -o2 -v3 -.fftcfgtype=LE
 </CYPRESSTAG>
 <CYPRESSTAG name="Design elaboration results...">
 </CYPRESSTAG>
-Elaboration phase: Elapsed time ==> 3s.863ms
+Elaboration phase: Elapsed time ==> 2s.617ms
 <CYPRESSTAG name="HDL generation results...">
 </CYPRESSTAG>
-HDL generation phase: Elapsed time ==> 0s.089ms
-=======
-Loading plugins phase: Elapsed time ==> 0s.125ms
-<CYPRESSTAG name="CyDsfit arguments...">
-cydsfit arguments: -.fdsnotice -.fdswarpdepfile=warp_dependencies.txt -.fdselabdepfile=elab_dependencies.txt -.fdsbldfile=generated_files.txt -.fdsreffile=referenced_files.txt -p D:\Download\Progetto Lab\AY2122_II_Project-4\PSoC Code\AY2122_II\Project4.cydsn\Project4.cyprj -d CY8C5888LTI-LP097 -s D:\Download\Progetto Lab\AY2122_II_Project-4\PSoC Code\AY2122_II\Project4.cydsn\Generated_Source\PSoC5 -- -yv2 -q10 -ygs -o2 -v3 -.fftcfgtype=LE
-</CYPRESSTAG>
-<CYPRESSTAG name="Design elaboration results...">
-</CYPRESSTAG>
-Elaboration phase: Elapsed time ==> 1s.364ms
-<CYPRESSTAG name="HDL generation results...">
-</CYPRESSTAG>
-HDL generation phase: Elapsed time ==> 0s.029ms
->>>>>>> 040b500309df093adbafd37b4e49319d3f1a6083
+HDL generation phase: Elapsed time ==> 0s.085ms
 <CYPRESSTAG name="Synthesis results...">
 
      | | | | | | |
@@ -37,42 +24,24 @@ HDL generation phase: Elapsed time ==> 0s.029ms
 
 ======================================================================
 Compiling:  Project4.v
-<<<<<<< HEAD
 Program  :   C:\Program Files (x86)\Cypress\PSoC Creator\4.4\PSoC Creator\warp\bin\warp.exe
-Options  :    -yv2 -q10 -ygs -o2 -v3 -.fftcfgtype=LE -ya -.fftprj=C:\Users\Giorgio\Desktop\LAB_FINAL_PROJECT\AY2122_II_Project-4\PSoC Code\AY2122_II\Project4.cydsn\Project4.cyprj -dcpsoc3 Project4.v -verilog
-=======
-Program  :   K:\Programmi\Cypress\PSoC Creator\4.4\PSoC Creator\warp\bin\warp.exe
-Options  :    -yv2 -q10 -ygs -o2 -v3 -.fftcfgtype=LE -ya -.fftprj=D:\Download\Progetto Lab\AY2122_II_Project-4\PSoC Code\AY2122_II\Project4.cydsn\Project4.cyprj -dcpsoc3 Project4.v -verilog
->>>>>>> 040b500309df093adbafd37b4e49319d3f1a6083
+Options  :    -yv2 -q10 -ygs -o2 -v3 -.fftcfgtype=LE -ya -.fftprj=C:\Users\Giorgio\Desktop\try\try\PSoC Code\AY2122_II\Project4.cydsn\Project4.cyprj -dcpsoc3 Project4.v -verilog
 ======================================================================
 
 ======================================================================
 Compiling:  Project4.v
-<<<<<<< HEAD
 Program  :   C:\Program Files (x86)\Cypress\PSoC Creator\4.4\PSoC Creator\warp\bin\warp.exe
-Options  :    -yv2 -q10 -ygs -o2 -v3 -.fftcfgtype=LE -ya -.fftprj=C:\Users\Giorgio\Desktop\LAB_FINAL_PROJECT\AY2122_II_Project-4\PSoC Code\AY2122_II\Project4.cydsn\Project4.cyprj -dcpsoc3 Project4.v -verilog
-=======
-Program  :   K:\Programmi\Cypress\PSoC Creator\4.4\PSoC Creator\warp\bin\warp.exe
-Options  :    -yv2 -q10 -ygs -o2 -v3 -.fftcfgtype=LE -ya -.fftprj=D:\Download\Progetto Lab\AY2122_II_Project-4\PSoC Code\AY2122_II\Project4.cydsn\Project4.cyprj -dcpsoc3 Project4.v -verilog
->>>>>>> 040b500309df093adbafd37b4e49319d3f1a6083
+Options  :    -yv2 -q10 -ygs -o2 -v3 -.fftcfgtype=LE -ya -.fftprj=C:\Users\Giorgio\Desktop\try\try\PSoC Code\AY2122_II\Project4.cydsn\Project4.cyprj -dcpsoc3 Project4.v -verilog
 ======================================================================
 
 ======================================================================
 Compiling:  Project4.v
 Program  :   vlogfe
-<<<<<<< HEAD
-Options  :    -yv2 -q10 -ygs -o2 -v3 -.fftcfgtype=LE -ya -.fftprj=C:\Users\Giorgio\Desktop\LAB_FINAL_PROJECT\AY2122_II_Project-4\PSoC Code\AY2122_II\Project4.cydsn\Project4.cyprj -dcpsoc3 -verilog Project4.v
+Options  :    -yv2 -q10 -ygs -o2 -v3 -.fftcfgtype=LE -ya -.fftprj=C:\Users\Giorgio\Desktop\try\try\PSoC Code\AY2122_II\Project4.cydsn\Project4.cyprj -dcpsoc3 -verilog Project4.v
 ======================================================================
 
 vlogfe V6.3 IR 41:  Verilog parser
-Thu May 19 14:43:22 2022
-=======
-Options  :    -yv2 -q10 -ygs -o2 -v3 -.fftcfgtype=LE -ya -.fftprj=D:\Download\Progetto Lab\AY2122_II_Project-4\PSoC Code\AY2122_II\Project4.cydsn\Project4.cyprj -dcpsoc3 -verilog Project4.v
-======================================================================
-
-vlogfe V6.3 IR 41:  Verilog parser
-Wed May 18 22:25:43 2022
->>>>>>> 040b500309df093adbafd37b4e49319d3f1a6083
+Fri May 20 14:26:23 2022
 
 
 ======================================================================
@@ -82,11 +51,7 @@ Options  :    -yv2 -q10 Project4.v
 ======================================================================
 
 vpp V6.3 IR 41:  Verilog Pre-Processor
-<<<<<<< HEAD
-Thu May 19 14:43:22 2022
-=======
-Wed May 18 22:25:43 2022
->>>>>>> 040b500309df093adbafd37b4e49319d3f1a6083
+Fri May 20 14:26:24 2022
 
 Flattening file 'C:\Program Files (x86)\Cypress\PSoC Creator\4.4\PSoC Creator\psoc\content\CyPrimitives\cyprimitives.cylib\cy_virtualmux_v1_0\cy_virtualmux_v1_0.v'
 Flattening file 'C:\Program Files (x86)\Cypress\PSoC Creator\4.4\PSoC Creator\psoc\content\CyComponentLibrary\CyComponentLibrary.cylib\B_UART_v2_50\B_UART_v2_50.v'
@@ -132,12 +97,11 @@ vlogfe:  No errors.
 ======================================================================
 Compiling:  Project4.v
 Program  :   tovif
-<<<<<<< HEAD
-Options  :    -yv2 -q10 -ygs -o2 -v3 -.fftcfgtype=LE -ya -.fftprj=C:\Users\Giorgio\Desktop\LAB_FINAL_PROJECT\AY2122_II_Project-4\PSoC Code\AY2122_II\Project4.cydsn\Project4.cyprj -dcpsoc3 -verilog Project4.v
+Options  :    -yv2 -q10 -ygs -o2 -v3 -.fftcfgtype=LE -ya -.fftprj=C:\Users\Giorgio\Desktop\try\try\PSoC Code\AY2122_II\Project4.cydsn\Project4.cyprj -dcpsoc3 -verilog Project4.v
 ======================================================================
 
 tovif V6.3 IR 41:  High-level synthesis
-Thu May 19 14:43:22 2022
+Fri May 20 14:26:24 2022
 
 Linking 'C:\Program Files (x86)\Cypress\PSoC Creator\4.4\PSoC Creator\warp\lib\common\std.vhd'.
 Linking 'C:\Program Files (x86)\Cypress\PSoC Creator\4.4\PSoC Creator\warp\lib\common\cypress.vhd'.
@@ -148,9 +112,9 @@ Linking 'C:\Program Files (x86)\Cypress\PSoC Creator\4.4\PSoC Creator\warp\lib\c
 Linking 'C:\Program Files (x86)\Cypress\PSoC Creator\4.4\PSoC Creator\warp\lib\common\stdlogic\mod_cnst.vif'.
 Linking 'C:\Program Files (x86)\Cypress\PSoC Creator\4.4\PSoC Creator\warp\lib\common\stdlogic\mod_mthv.vif'.
 Linking 'C:\Program Files (x86)\Cypress\PSoC Creator\4.4\PSoC Creator\warp\lib\common\stdlogic\mod_genv.vif'.
-Linking 'C:\Users\Giorgio\Desktop\LAB_FINAL_PROJECT\AY2122_II_Project-4\PSoC Code\AY2122_II\Project4.cydsn\codegentemp\Project4.ctl'.
+Linking 'C:\Users\Giorgio\Desktop\try\try\PSoC Code\AY2122_II\Project4.cydsn\codegentemp\Project4.ctl'.
 Linking 'C:\Program Files (x86)\Cypress\PSoC Creator\4.4\PSoC Creator\psoc\content\CyPrimitives\cyprimitives.cylib\cy_virtualmux_v1_0\cy_virtualmux_v1_0.v'.
-Linking 'C:\Users\Giorgio\Desktop\LAB_FINAL_PROJECT\AY2122_II_Project-4\PSoC Code\AY2122_II\Project4.cydsn\codegentemp\Project4.v'.
+Linking 'C:\Users\Giorgio\Desktop\try\try\PSoC Code\AY2122_II\Project4.cydsn\codegentemp\Project4.v'.
 Linking 'C:\Program Files (x86)\Cypress\PSoC Creator\4.4\PSoC Creator\psoc\content\CyComponentLibrary\CyComponentLibrary.cylib\B_UART_v2_50\B_UART_v2_50.v'.
 Linking 'C:\Program Files (x86)\Cypress\PSoC Creator\4.4\PSoC Creator\warp\lib\common\cypress.v'.
 Linking 'C:\Program Files (x86)\Cypress\PSoC Creator\4.4\PSoC Creator\warp\lib\common\cy_psoc3_inc.v'.
@@ -162,37 +126,6 @@ Linking 'C:\Program Files (x86)\Cypress\PSoC Creator\4.4\PSoC Creator\warp\lib\c
 Linking 'C:\Program Files (x86)\Cypress\PSoC Creator\4.4\PSoC Creator\warp\lib\common\stdlogic\cy_psoc3.vif'.
 Linking 'C:\Program Files (x86)\Cypress\PSoC Creator\4.4\PSoC Creator\warp\lib\lcpsoc3\stdlogic\mod_cnst.vif'.
 Linking 'C:\Program Files (x86)\Cypress\PSoC Creator\4.4\PSoC Creator\warp\lib\common\stdlogic\mcompare.vif'.
-=======
-Options  :    -yv2 -q10 -ygs -o2 -v3 -.fftcfgtype=LE -ya -.fftprj=D:\Download\Progetto Lab\AY2122_II_Project-4\PSoC Code\AY2122_II\Project4.cydsn\Project4.cyprj -dcpsoc3 -verilog Project4.v
-======================================================================
-
-tovif V6.3 IR 41:  High-level synthesis
-Wed May 18 22:25:43 2022
-
-Linking 'K:\Programmi\Cypress\PSoC Creator\4.4\PSoC Creator\warp\lib\common\std.vhd'.
-Linking 'K:\Programmi\Cypress\PSoC Creator\4.4\PSoC Creator\warp\lib\common\cypress.vhd'.
-Linking 'K:\Programmi\Cypress\PSoC Creator\4.4\PSoC Creator\warp\lib\common\work\cypress.vif'.
-Linking 'K:\Programmi\Cypress\PSoC Creator\4.4\PSoC Creator\warp\lib\ieee\work\stdlogic.vif'.
-Linking 'K:\Programmi\Cypress\PSoC Creator\4.4\PSoC Creator\warp\lib\common\stdlogic\lpmpkg.vif'.
-Linking 'K:\Programmi\Cypress\PSoC Creator\4.4\PSoC Creator\warp\lib\common\stdlogic\rtlpkg.vif'.
-Linking 'K:\Programmi\Cypress\PSoC Creator\4.4\PSoC Creator\warp\lib\common\stdlogic\mod_cnst.vif'.
-Linking 'K:\Programmi\Cypress\PSoC Creator\4.4\PSoC Creator\warp\lib\common\stdlogic\mod_mthv.vif'.
-Linking 'K:\Programmi\Cypress\PSoC Creator\4.4\PSoC Creator\warp\lib\common\stdlogic\mod_genv.vif'.
-Linking 'D:\Download\Progetto Lab\AY2122_II_Project-4\PSoC Code\AY2122_II\Project4.cydsn\codegentemp\Project4.ctl'.
-Linking 'K:\Programmi\Cypress\PSoC Creator\4.4\PSoC Creator\psoc\content\CyPrimitives\cyprimitives.cylib\cy_virtualmux_v1_0\cy_virtualmux_v1_0.v'.
-Linking 'D:\Download\Progetto Lab\AY2122_II_Project-4\PSoC Code\AY2122_II\Project4.cydsn\codegentemp\Project4.v'.
-Linking 'K:\Programmi\Cypress\PSoC Creator\4.4\PSoC Creator\psoc\content\CyComponentLibrary\CyComponentLibrary.cylib\B_UART_v2_50\B_UART_v2_50.v'.
-Linking 'K:\Programmi\Cypress\PSoC Creator\4.4\PSoC Creator\warp\lib\common\cypress.v'.
-Linking 'K:\Programmi\Cypress\PSoC Creator\4.4\PSoC Creator\warp\lib\common\cy_psoc3_inc.v'.
-Linking 'K:\Programmi\Cypress\PSoC Creator\4.4\PSoC Creator\psoc\content\CyPrimitives\cyprimitives.cylib\ZeroTerminal\ZeroTerminal.v'.
-Linking 'K:\Programmi\Cypress\PSoC Creator\4.4\PSoC Creator\psoc\content\CyPrimitives\cyprimitives.cylib\OneTerminal\OneTerminal.v'.
-Linking 'K:\Programmi\Cypress\PSoC Creator\4.4\PSoC Creator\psoc\content\CyComponentLibrary\CyComponentLibrary.cylib\B_PWM_v3_30\B_PWM_v3_30.v'.
-Linking 'K:\Programmi\Cypress\PSoC Creator\4.4\PSoC Creator\psoc\content\CyPrimitives\cyprimitives.cylib\or_v1_0\or_v1_0.v'.
-Linking 'K:\Programmi\Cypress\PSoC Creator\4.4\PSoC Creator\warp\lib\common\stdlogic\cy_psoc3pkg.vif'.
-Linking 'K:\Programmi\Cypress\PSoC Creator\4.4\PSoC Creator\warp\lib\common\stdlogic\cy_psoc3.vif'.
-Linking 'K:\Programmi\Cypress\PSoC Creator\4.4\PSoC Creator\warp\lib\lcpsoc3\stdlogic\mod_cnst.vif'.
-Linking 'K:\Programmi\Cypress\PSoC Creator\4.4\PSoC Creator\warp\lib\common\stdlogic\mcompare.vif'.
->>>>>>> 040b500309df093adbafd37b4e49319d3f1a6083
 
 tovif:  No errors.
 
@@ -200,12 +133,11 @@ tovif:  No errors.
 ======================================================================
 Compiling:  Project4.v
 Program  :   topld
-<<<<<<< HEAD
-Options  :    -yv2 -q10 -ygs -o2 -v3 -.fftcfgtype=LE -ya -.fftprj=C:\Users\Giorgio\Desktop\LAB_FINAL_PROJECT\AY2122_II_Project-4\PSoC Code\AY2122_II\Project4.cydsn\Project4.cyprj -dcpsoc3 -verilog Project4.v
+Options  :    -yv2 -q10 -ygs -o2 -v3 -.fftcfgtype=LE -ya -.fftprj=C:\Users\Giorgio\Desktop\try\try\PSoC Code\AY2122_II\Project4.cydsn\Project4.cyprj -dcpsoc3 -verilog Project4.v
 ======================================================================
 
 topld V6.3 IR 41:  Synthesis and optimization
-Thu May 19 14:43:24 2022
+Fri May 20 14:26:25 2022
 
 Linking 'C:\Program Files (x86)\Cypress\PSoC Creator\4.4\PSoC Creator\warp\lib\common\std.vhd'.
 Linking 'C:\Program Files (x86)\Cypress\PSoC Creator\4.4\PSoC Creator\warp\lib\common\cypress.vhd'.
@@ -216,9 +148,9 @@ Linking 'C:\Program Files (x86)\Cypress\PSoC Creator\4.4\PSoC Creator\warp\lib\c
 Linking 'C:\Program Files (x86)\Cypress\PSoC Creator\4.4\PSoC Creator\warp\lib\common\stdlogic\mod_cnst.vif'.
 Linking 'C:\Program Files (x86)\Cypress\PSoC Creator\4.4\PSoC Creator\warp\lib\common\stdlogic\mod_mthv.vif'.
 Linking 'C:\Program Files (x86)\Cypress\PSoC Creator\4.4\PSoC Creator\warp\lib\common\stdlogic\mod_genv.vif'.
-Linking 'C:\Users\Giorgio\Desktop\LAB_FINAL_PROJECT\AY2122_II_Project-4\PSoC Code\AY2122_II\Project4.cydsn\codegentemp\Project4.ctl'.
+Linking 'C:\Users\Giorgio\Desktop\try\try\PSoC Code\AY2122_II\Project4.cydsn\codegentemp\Project4.ctl'.
 Linking 'C:\Program Files (x86)\Cypress\PSoC Creator\4.4\PSoC Creator\psoc\content\CyPrimitives\cyprimitives.cylib\cy_virtualmux_v1_0\cy_virtualmux_v1_0.v'.
-Linking 'C:\Users\Giorgio\Desktop\LAB_FINAL_PROJECT\AY2122_II_Project-4\PSoC Code\AY2122_II\Project4.cydsn\codegentemp\Project4.v'.
+Linking 'C:\Users\Giorgio\Desktop\try\try\PSoC Code\AY2122_II\Project4.cydsn\codegentemp\Project4.v'.
 Linking 'C:\Program Files (x86)\Cypress\PSoC Creator\4.4\PSoC Creator\psoc\content\CyComponentLibrary\CyComponentLibrary.cylib\B_UART_v2_50\B_UART_v2_50.v'.
 Linking 'C:\Program Files (x86)\Cypress\PSoC Creator\4.4\PSoC Creator\warp\lib\common\cypress.v'.
 Linking 'C:\Program Files (x86)\Cypress\PSoC Creator\4.4\PSoC Creator\warp\lib\common\cy_psoc3_inc.v'.
@@ -231,38 +163,6 @@ Linking 'C:\Program Files (x86)\Cypress\PSoC Creator\4.4\PSoC Creator\warp\lib\c
 Linking 'C:\Program Files (x86)\Cypress\PSoC Creator\4.4\PSoC Creator\warp\lib\lcpsoc3\stdlogic\mod_cnst.vif'.
 Linking 'C:\Program Files (x86)\Cypress\PSoC Creator\4.4\PSoC Creator\warp\lib\common\stdlogic\mcompare.vif'.
 Linking 'C:\Program Files (x86)\Cypress\PSoC Creator\4.4\PSoC Creator\warp\lib\lcpsoc3\stdlogic\cpsoc3.vif'.
-=======
-Options  :    -yv2 -q10 -ygs -o2 -v3 -.fftcfgtype=LE -ya -.fftprj=D:\Download\Progetto Lab\AY2122_II_Project-4\PSoC Code\AY2122_II\Project4.cydsn\Project4.cyprj -dcpsoc3 -verilog Project4.v
-======================================================================
-
-topld V6.3 IR 41:  Synthesis and optimization
-Wed May 18 22:25:43 2022
-
-Linking 'K:\Programmi\Cypress\PSoC Creator\4.4\PSoC Creator\warp\lib\common\std.vhd'.
-Linking 'K:\Programmi\Cypress\PSoC Creator\4.4\PSoC Creator\warp\lib\common\cypress.vhd'.
-Linking 'K:\Programmi\Cypress\PSoC Creator\4.4\PSoC Creator\warp\lib\common\work\cypress.vif'.
-Linking 'K:\Programmi\Cypress\PSoC Creator\4.4\PSoC Creator\warp\lib\ieee\work\stdlogic.vif'.
-Linking 'K:\Programmi\Cypress\PSoC Creator\4.4\PSoC Creator\warp\lib\common\stdlogic\lpmpkg.vif'.
-Linking 'K:\Programmi\Cypress\PSoC Creator\4.4\PSoC Creator\warp\lib\common\stdlogic\rtlpkg.vif'.
-Linking 'K:\Programmi\Cypress\PSoC Creator\4.4\PSoC Creator\warp\lib\common\stdlogic\mod_cnst.vif'.
-Linking 'K:\Programmi\Cypress\PSoC Creator\4.4\PSoC Creator\warp\lib\common\stdlogic\mod_mthv.vif'.
-Linking 'K:\Programmi\Cypress\PSoC Creator\4.4\PSoC Creator\warp\lib\common\stdlogic\mod_genv.vif'.
-Linking 'D:\Download\Progetto Lab\AY2122_II_Project-4\PSoC Code\AY2122_II\Project4.cydsn\codegentemp\Project4.ctl'.
-Linking 'K:\Programmi\Cypress\PSoC Creator\4.4\PSoC Creator\psoc\content\CyPrimitives\cyprimitives.cylib\cy_virtualmux_v1_0\cy_virtualmux_v1_0.v'.
-Linking 'D:\Download\Progetto Lab\AY2122_II_Project-4\PSoC Code\AY2122_II\Project4.cydsn\codegentemp\Project4.v'.
-Linking 'K:\Programmi\Cypress\PSoC Creator\4.4\PSoC Creator\psoc\content\CyComponentLibrary\CyComponentLibrary.cylib\B_UART_v2_50\B_UART_v2_50.v'.
-Linking 'K:\Programmi\Cypress\PSoC Creator\4.4\PSoC Creator\warp\lib\common\cypress.v'.
-Linking 'K:\Programmi\Cypress\PSoC Creator\4.4\PSoC Creator\warp\lib\common\cy_psoc3_inc.v'.
-Linking 'K:\Programmi\Cypress\PSoC Creator\4.4\PSoC Creator\psoc\content\CyPrimitives\cyprimitives.cylib\ZeroTerminal\ZeroTerminal.v'.
-Linking 'K:\Programmi\Cypress\PSoC Creator\4.4\PSoC Creator\psoc\content\CyPrimitives\cyprimitives.cylib\OneTerminal\OneTerminal.v'.
-Linking 'K:\Programmi\Cypress\PSoC Creator\4.4\PSoC Creator\psoc\content\CyComponentLibrary\CyComponentLibrary.cylib\B_PWM_v3_30\B_PWM_v3_30.v'.
-Linking 'K:\Programmi\Cypress\PSoC Creator\4.4\PSoC Creator\psoc\content\CyPrimitives\cyprimitives.cylib\or_v1_0\or_v1_0.v'.
-Linking 'K:\Programmi\Cypress\PSoC Creator\4.4\PSoC Creator\warp\lib\common\stdlogic\cy_psoc3pkg.vif'.
-Linking 'K:\Programmi\Cypress\PSoC Creator\4.4\PSoC Creator\warp\lib\common\stdlogic\cy_psoc3.vif'.
-Linking 'K:\Programmi\Cypress\PSoC Creator\4.4\PSoC Creator\warp\lib\lcpsoc3\stdlogic\mod_cnst.vif'.
-Linking 'K:\Programmi\Cypress\PSoC Creator\4.4\PSoC Creator\warp\lib\common\stdlogic\mcompare.vif'.
-Linking 'K:\Programmi\Cypress\PSoC Creator\4.4\PSoC Creator\warp\lib\lcpsoc3\stdlogic\cpsoc3.vif'.
->>>>>>> 040b500309df093adbafd37b4e49319d3f1a6083
 
 ----------------------------------------------------------
 Detecting unused logic.
@@ -1351,33 +1251,18 @@ Circuit simplification results:
 
 topld:  No errors.
 
-<<<<<<< HEAD
 CYPRESS_DIR    : C:\Program Files (x86)\Cypress\PSoC Creator\4.4\PSoC Creator\warp
 Warp Program   : C:\Program Files (x86)\Cypress\PSoC Creator\4.4\PSoC Creator\warp\bin\warp.exe
-Warp Arguments : -yv2 -q10 -ygs -o2 -v3 -.fftcfgtype=LE -ya "-.fftprj=C:\Users\Giorgio\Desktop\LAB_FINAL_PROJECT\AY2122_II_Project-4\PSoC Code\AY2122_II\Project4.cydsn\Project4.cyprj" -dcpsoc3 Project4.v -verilog
+Warp Arguments : -yv2 -q10 -ygs -o2 -v3 -.fftcfgtype=LE -ya "-.fftprj=C:\Users\Giorgio\Desktop\try\try\PSoC Code\AY2122_II\Project4.cydsn\Project4.cyprj" -dcpsoc3 Project4.v -verilog
 </CYPRESSTAG>
-Warp synthesis phase: Elapsed time ==> 5s.442ms
+Warp synthesis phase: Elapsed time ==> 3s.390ms
 <CYPRESSTAG name="Fitter results...">
 <CYPRESSTAG name="Fitter startup details...">
-cyp3fit: V4.4.0.80, Family: PSoC3, Started at: Thursday, 19 May 2022 14:43:26
-Options: -yv2 -q10 -ygs -o2 -v3 -.fftcfgtype=LE -ya -.fftprj=C:\Users\Giorgio\Desktop\LAB_FINAL_PROJECT\AY2122_II_Project-4\PSoC Code\AY2122_II\Project4.cydsn\Project4.cyprj -d CY8C5888LTI-LP097 Project4.v -verilog
+cyp3fit: V4.4.0.80, Family: PSoC3, Started at: Friday, 20 May 2022 14:26:26
+Options: -yv2 -q10 -ygs -o2 -v3 -.fftcfgtype=LE -ya -.fftprj=C:\Users\Giorgio\Desktop\try\try\PSoC Code\AY2122_II\Project4.cydsn\Project4.cyprj -d CY8C5888LTI-LP097 Project4.v -verilog
 </CYPRESSTAG>
 <CYPRESSTAG name="Design parsing">
-Design parsing phase: Elapsed time ==> 0s.041ms
-=======
-CYPRESS_DIR    : K:\Programmi\Cypress\PSoC Creator\4.4\PSoC Creator\warp
-Warp Program   : K:\Programmi\Cypress\PSoC Creator\4.4\PSoC Creator\warp\bin\warp.exe
-Warp Arguments : -yv2 -q10 -ygs -o2 -v3 -.fftcfgtype=LE -ya "-.fftprj=D:\Download\Progetto Lab\AY2122_II_Project-4\PSoC Code\AY2122_II\Project4.cydsn\Project4.cyprj" -dcpsoc3 Project4.v -verilog
-</CYPRESSTAG>
-Warp synthesis phase: Elapsed time ==> 0s.906ms
-<CYPRESSTAG name="Fitter results...">
-<CYPRESSTAG name="Fitter startup details...">
-cyp3fit: V4.4.0.80, Family: PSoC3, Started at: Wednesday, 18 May 2022 22:25:43
-Options: -yv2 -q10 -ygs -o2 -v3 -.fftcfgtype=LE -ya -.fftprj=D:\Download\Progetto Lab\AY2122_II_Project-4\PSoC Code\AY2122_II\Project4.cydsn\Project4.cyprj -d CY8C5888LTI-LP097 Project4.v -verilog
-</CYPRESSTAG>
-<CYPRESSTAG name="Design parsing">
-Design parsing phase: Elapsed time ==> 0s.018ms
->>>>>>> 040b500309df093adbafd37b4e49319d3f1a6083
+Design parsing phase: Elapsed time ==> 0s.051ms
 </CYPRESSTAG>
 <CYPRESSTAG name="Tech Mapping">
 <CYPRESSTAG name="Initial Mapping" icon="FILE_RPT_TECHM">
@@ -3229,13 +3114,8 @@ Analog (SC/CT) Blocks         :    0 :    4 :    4 :  0.00 %
 DAC                           :      :      :      :        
   VIDAC                       :    0 :    4 :    4 :  0.00 %
 </CYPRESSTAG>
-<<<<<<< HEAD
-Technology Mapping: Elapsed time ==> 0s.309ms
-Tech Mapping phase: Elapsed time ==> 0s.448ms
-=======
-Technology Mapping: Elapsed time ==> 0s.095ms
-Tech Mapping phase: Elapsed time ==> 0s.151ms
->>>>>>> 040b500309df093adbafd37b4e49319d3f1a6083
+Technology Mapping: Elapsed time ==> 0s.299ms
+Tech Mapping phase: Elapsed time ==> 0s.507ms
 </CYPRESSTAG>
 <CYPRESSTAG name="Analog Placement">
 Initial Analog Placement Results:
@@ -3246,11 +3126,7 @@ IO_0@[IOP=(12)][IoId=(0)] : SCL(0) (fixed)
 IO_1@[IOP=(12)][IoId=(1)] : SDA(0) (fixed)
 IO_7@[IOP=(12)][IoId=(7)] : Tx(0) (fixed)
 IO_4@[IOP=(2)][IoId=(4)] : Tx_BT(0) (fixed)
-<<<<<<< HEAD
-Analog Placement phase: Elapsed time ==> 0s.116ms
-=======
-Analog Placement phase: Elapsed time ==> 0s.023ms
->>>>>>> 040b500309df093adbafd37b4e49319d3f1a6083
+Analog Placement phase: Elapsed time ==> 0s.100ms
 </CYPRESSTAG>
 <CYPRESSTAG name="Analog Routing">
 Analog Routing phase: Elapsed time ==> 0s.000ms
@@ -3268,19 +3144,11 @@ Dump of CyP35AnalogRoutingResultsDB
 IsVddaHalfUsedForComp = False
 IsVddaHalfUsedForSar0 = False
 IsVddaHalfUsedForSar1 = False
-<<<<<<< HEAD
-Analog Code Generation phase: Elapsed time ==> 0s.464ms
+Analog Code Generation phase: Elapsed time ==> 0s.849ms
 </CYPRESSTAG>
 <CYPRESSTAG name="Digital Placement">
 <CYPRESSTAG name="Detailed placement messages">
-I2076: Total run-time: 1.7 sec.
-=======
-Analog Code Generation phase: Elapsed time ==> 0s.200ms
-</CYPRESSTAG>
-<CYPRESSTAG name="Digital Placement">
-<CYPRESSTAG name="Detailed placement messages">
-I2076: Total run-time: 0.9 sec.
->>>>>>> 040b500309df093adbafd37b4e49319d3f1a6083
+I2076: Total run-time: 2.1 sec.
 
 </CYPRESSTAG>
 <CYPRESSTAG name="PLD Packing">
@@ -3311,7 +3179,7 @@ PLD Packing: Elapsed time ==> 0s.005ms
 Initial Partitioning Summary not displayed at this verbose level.</CYPRESSTAG>
 <CYPRESSTAG name="Final Partitioning Summary">
 Final Partitioning Summary not displayed at this verbose level.</CYPRESSTAG>
-Partitioning: Elapsed time ==> 0s.066ms
+Partitioning: Elapsed time ==> 0s.082ms
 </CYPRESSTAG>
 <CYPRESSTAG name="Final Placement Summary">
 
@@ -5245,62 +5113,33 @@ Port | Pin | Fixed |      Type |       Drive Mode |       Name | Connections
 </CYPRESSTAG>
 </CYPRESSTAG>
 </CYPRESSTAG>
-<<<<<<< HEAD
-Digital component placer commit/Report: Elapsed time ==> 0s.081ms
-Digital Placement phase: Elapsed time ==> 2s.373ms
-=======
-Digital component placer commit/Report: Elapsed time ==> 0s.040ms
-Digital Placement phase: Elapsed time ==> 1s.116ms
->>>>>>> 040b500309df093adbafd37b4e49319d3f1a6083
+Digital component placer commit/Report: Elapsed time ==> 0s.089ms
+Digital Placement phase: Elapsed time ==> 2s.959ms
 </CYPRESSTAG>
 <CYPRESSTAG name="Digital Routing">
 "C:\Program Files (x86)\Cypress\PSoC Creator\4.4\PSoC Creator\bin/sjrouter.exe" --xml-path "C:\Program Files (x86)\Cypress\PSoC Creator\4.4\PSoC Creator\dev\psoc5/psoc5lp/route_arch-rrg.cydata" --vh2-path "Project4_r.vh2" --pcf-path "Project4.pco" --des-name "Project4" --dsf-path "Project4.dsf" --sdc-path "Project4.sdc" --lib-path "Project4_r.lib"
 Routing successful.
-<<<<<<< HEAD
-Digital Routing phase: Elapsed time ==> 3s.994ms
+Digital Routing phase: Elapsed time ==> 3s.801ms
 </CYPRESSTAG>
 <CYPRESSTAG name="Bitstream Generation">
-Bitstream Generation phase: Elapsed time ==> 0s.262ms
+Bitstream Generation phase: Elapsed time ==> 0s.313ms
 </CYPRESSTAG>
 <CYPRESSTAG name="Bitstream Verification">
-Bitstream Verification phase: Elapsed time ==> 0s.062ms
+Bitstream Verification phase: Elapsed time ==> 0s.078ms
 </CYPRESSTAG>
 <CYPRESSTAG name="Static timing analysis">
 Timing report is in Project4_timing.html.
-Static timing analysis phase: Elapsed time ==> 0s.685ms
-=======
-Digital Routing phase: Elapsed time ==> 1s.560ms
-</CYPRESSTAG>
-<CYPRESSTAG name="Bitstream Generation">
-Bitstream Generation phase: Elapsed time ==> 0s.111ms
-</CYPRESSTAG>
-<CYPRESSTAG name="Bitstream Verification">
-Bitstream Verification phase: Elapsed time ==> 0s.025ms
-</CYPRESSTAG>
-<CYPRESSTAG name="Static timing analysis">
-Timing report is in Project4_timing.html.
-Static timing analysis phase: Elapsed time ==> 0s.282ms
->>>>>>> 040b500309df093adbafd37b4e49319d3f1a6083
+Static timing analysis phase: Elapsed time ==> 0s.663ms
 </CYPRESSTAG>
 <CYPRESSTAG name="Data reporting">
 Data reporting phase: Elapsed time ==> 0s.000ms
 </CYPRESSTAG>
 <CYPRESSTAG name="Database update...">
-<<<<<<< HEAD
-Design database save phase: Elapsed time ==> 0s.467ms
+Design database save phase: Elapsed time ==> 0s.387ms
 </CYPRESSTAG>
-cydsfit: Elapsed time ==> 9s.016ms
+cydsfit: Elapsed time ==> 9s.824ms
 </CYPRESSTAG>
-Fitter phase: Elapsed time ==> 9s.022ms
-API generation phase: Elapsed time ==> 2s.060ms
-Dependency generation phase: Elapsed time ==> 0s.019ms
-=======
-Design database save phase: Elapsed time ==> 0s.171ms
-</CYPRESSTAG>
-cydsfit: Elapsed time ==> 3s.687ms
-</CYPRESSTAG>
-Fitter phase: Elapsed time ==> 3s.687ms
-API generation phase: Elapsed time ==> 0s.858ms
-Dependency generation phase: Elapsed time ==> 0s.006ms
->>>>>>> 040b500309df093adbafd37b4e49319d3f1a6083
+Fitter phase: Elapsed time ==> 9s.826ms
+API generation phase: Elapsed time ==> 2s.327ms
+Dependency generation phase: Elapsed time ==> 0s.026ms
 Cleanup phase: Elapsed time ==> 0s.000ms

@@ -1,9 +1,5 @@
 -- Project:   Project4
-<<<<<<< HEAD
--- Generated: 05/19/2022 14:43:29
-=======
--- Generated: 05/18/2022 22:25:45
->>>>>>> 040b500309df093adbafd37b4e49319d3f1a6083
+-- Generated: 05/20/2022 14:26:31
 -- PSoC Creator  4.4
 
 ENTITY Project4 IS

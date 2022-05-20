@@ -1,9 +1,5 @@
 # Project4
-<<<<<<< HEAD
-# 2022-05-19 12:43:27Z
-=======
-# 2022-05-18 20:25:44Z
->>>>>>> 040b500309df093adbafd37b4e49319d3f1a6083
+# 2022-05-20 12:26:28Z
 
 # IO_0@[IOP=(1)][IoId=(0)] is reserved: SWDDebugEnabled
 dont_use_io iocell 1 0
