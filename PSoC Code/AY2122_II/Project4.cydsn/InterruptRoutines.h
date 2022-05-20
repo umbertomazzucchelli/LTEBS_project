@@ -15,7 +15,9 @@
     #include "cytypes.h"
     #include "stdio.h"
     
-    
+    uint8_t status;
+    uint8_t flag_FS;
+    uint8_t flag_So;
     
     uint8_t status;
     
