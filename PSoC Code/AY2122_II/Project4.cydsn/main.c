@@ -193,6 +193,8 @@ int main(void)
                 setReg(((So[1]<<3)|control_reg), LIS3DH_CTRL_REG1);     //msb in CTRL_REG_1[3]
                 
                 UART_PutString("\r\nFull Scale and Sensitivity settings retrieved and set\r\n");
+                
+                status = 0;
    
                 break;
             
@@ -228,11 +230,15 @@ int main(void)
             case TURNOFF: //save status
                 
                 EEPROM_save_status(FS, So);
-                EEPROM_Stop();
-                I2C_Peripheral_Stop();
-                UART_BT_Stop();
-                UART_Stop();
+//                EEPROM_Stop();
+////                I2C_Peripheral_Stop();
+////                UART_BT_Stop();
+////                UART_Stop();
+                status = 0;
                 
+                break;
+                
+            default:
                 break;
                 
         }

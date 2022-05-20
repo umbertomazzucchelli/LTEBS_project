@@ -39,7 +39,7 @@ void UART_message(cystatus return_value)
     switch(return_value) {
     // messaggi che sarebbero da mandare via GUI?
         case CYRET_SUCCESS:
-            UART_PutString("Saving successfull\r\n");
+            UART_PutString("Saving successfull \r\n");
             break;
         case CYRET_BAD_PARAM:
             UART_PutString("Bad parameter error\r\n");

@@ -55,7 +55,7 @@ CY_ISR(Custom_ISR_RX)
         case 'x':
             status = 4;
             break;
-            //...
+            
         default:
             break;    
     }
