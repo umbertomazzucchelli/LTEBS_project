@@ -15,6 +15,7 @@
 #include "LIS3DH.h"
 #include "InterruptRoutines.h"
 #include "EEPROM_Custom.h"
+#include "Defines.h"
 
 // Set this to 1 to send byte data for the Bridge Control Panel
 // Otherwise set it to 0 to send temperature data as int16_t
@@ -23,8 +24,6 @@ uint8_t ovrnReady;
 uint8_t emptyBit;
 uint8_t reg;
 ErrorCode error;
-
-char init = 0; //initializatio flag
 
 char message[50] = {'\0'};
 
@@ -173,6 +172,71 @@ int main(void)
     
     for(;;)
     {
+        switch (status)
+        {
+            case INITIALIZATION:
+            
+                // retrieve from EEPROM memory
+                FS = EEPROM_retrieve_FS();
+                So[0] = EEPROM_retrieve_So_lsb();
+                So[1] = EEPROM_retrieve_So_msb();
+                
+                // read registers 
+                readReg(control_reg_4, LIS3DH_CTRL_REG4);   //for both So[1] and FS[1:0]
+                readReg(control_reg, LIS3DH_CTRL_REG1);     //for So[0]
+     
+                //writes FS in register CTRL_REG_4[5:4]
+                setReg(((FS<<4)|control_reg_4), LIS3DH_CTRL_REG4);   //CTRL_REG4[5:4] contain FS
+                
+                // writes So[1:0] bits in reg1[3] and reg4[3]
+                setReg(((So[0]<<3)|control_reg_4), LIS3DH_CTRL_REG4);   //lsb in CTRL_REG_4[3]
+                setReg(((So[1]<<3)|control_reg), LIS3DH_CTRL_REG1);     //msb in CTRL_REG_1[3]
+                
+                UART_PutString("\r\nFull Scale and Sensitivity settings retrieved and set\r\n");
+   
+                break;
+            
+            case READING:
+            
+                CyDelay(500); //to get stable data, just a try
+                error=I2C_Peripheral_ReadRegister(LIS3DH_DEVICE_ADDRESS, LIS3DH_FIFO_SRC_REG, &fifoFull); 
+                sprintf(message,"\r\novrn value: %d \r\n",(fifoFull & 0x40)>>6);
+                UART_PutString(message);
+                if(error == NO_ERROR && (fifoFull & 0x40)>>6)
+                {
+                    I2C_Peripheral_ReadRegisterMulti(LIS3DH_DEVICE_ADDRESS,LIS3DH_OUT_X_L,regCount,data);
+                    for(int i = 0; i<32;i++)
+                    {
+                        xData[i] = (int16) (data[i*6] | (data[i*6+1]<<8))>>6;
+                        yData[i] = (int16) (data[i*6+2] | (data[i*6+3]<<8))>>6;
+                        zData[i] = (int16) (data[i*6+4] | (data[i*6+5]<<8))>>6;
+                        sprintf(message, "xData: %d\n",xData[i]);
+                        UART_PutString(message);
+                        sprintf(message, "yData: %d\n",yData[i]);
+                        UART_PutString(message);
+                        sprintf(message, "zData: %d\n",zData[i]);
+                        UART_PutString(message);
+                    }
+                    regSetting=0x00;
+                    error = I2C_Peripheral_WriteRegister(LIS3DH_DEVICE_ADDRESS,LIS3DH_FIFO_CTRL_REG,regSetting);
+                    regSetting=0x40;
+                    error = I2C_Peripheral_WriteRegister(LIS3DH_DEVICE_ADDRESS,LIS3DH_FIFO_CTRL_REG,regSetting);
+                }
+                
+                break;
+                
+            case TURNOFF: //save status
+                
+                EEPROM_save_status(FS, So);
+                EEPROM_Stop();
+                I2C_Peripheral_Stop();
+                UART_BT_Stop();
+                UART_Stop();
+                
+                break;
+                
+        }
+        /*
         if(status==1)
         {
             CyDelay(500); //to get stable data, just a try
@@ -219,8 +283,10 @@ int main(void)
             UART_PutString("\r\nFull Scale and Sensitivity settings retrieved and set\r\n");
             
         }
-        
+        */
+//        
         // at any cycle check if there were changes from GUI in the FS and So registers and save in EEPROM
+        
         if ((flag_FS == 1)||(flag_So == 1)) // FS value stored in FS
         {
             // save in EEPROM
