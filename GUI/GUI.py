@@ -1,3 +1,4 @@
+from email.errors import FirstHeaderLineIsContinuationDefect
 import sys
 
 import time
@@ -21,6 +22,7 @@ from PyQt5.QtWidgets import (
     QComboBox,
     QHBoxLayout,
     QVBoxLayout,
+    QMessageBox,
     QWidget
 )
 
@@ -86,9 +88,13 @@ class SerialWorker(QRunnable):
                 self.port = serial.Serial(port=self.port_name, baudrate=self.baudrate,
                                         write_timeout=0, timeout=2)                
                 if self.port.is_open:
-                    CONN_STATUS = True
-                    self.signals.status.emit(self.port_name, 1)
-                    time.sleep(0.01) #just for compatibility reasons    
+                    self.send('t')
+                    time.sleep(1)
+
+                    if(self.read()=="HR/RR sensor"):
+                        CONN_STATUS = True
+                        self.signals.status.emit(self.port_name, 1)
+                        time.sleep(0.1) #just for compatibility reasons    
                     
             except serial.SerialException:
                 logging.info("Error with port {}.".format(self.port_name))
@@ -115,8 +121,7 @@ class SerialWorker(QRunnable):
         try:
             while(self.port.in_waiting>0):
                 testString+=self.port.read().decode('utf-8', errors='replace')
-                logging.info("Received: {}".format(testString))
-
+            logging.info("Received: {}".format(testString))
             return testString
         except:
             logging.info("Could not receive {} on port {}.".format(testString, self.port_name))
@@ -137,6 +142,7 @@ class SerialWorker(QRunnable):
         logging.info("Killing the process")
 
 
+
 ###############
 # MAIN WINDOW #
 ###############
@@ -153,8 +159,8 @@ class MainWindow(QMainWindow):
 
         # title and geometry
         self.setWindowTitle("GUI")
-        width = 720
-        height = 480
+        width = 1280
+        height = 720
         self.setMinimumSize(width, height)
 
         #create thread handler
@@ -184,17 +190,35 @@ class MainWindow(QMainWindow):
             clicked=self.draw
         )
 
+        self.modeSelect = QComboBox()
+        self.modeSelect.addItems(["None","HR only", "RR only","Both"])
+
+        '''
+        #mostra dialog di errore se il psoc è stato disconnesso per sbaglio
+        self.dlg3 = QMessageBox(self)
+        self.dlg3.setWindowTitle("WARNING")
+        self.dlg3.setText("Connection lost, reconnect the device before proceeding")
+        self.dlg3.setStandardButtons(QMessageBox.Ok)
+        self.dlg3.setIcon(QMessageBox.Critical)
+        button=self.dlg3.exec_()
+        if(button==QMessageBox.Ok):
+            self.dlg3.accept()
+        '''
+
         # layout
-        serialButtons = QHBoxLayout()
+        serialButton = QHBoxLayout()
         #serialButtons.addWidget(self.com_list_widget)
-        serialButtons.addWidget(self.conn_btn)
-        graphButtons = QHBoxLayout()
-        graphButtons.addWidget(self.clear_btn)
-        graphButtons.addWidget(self.draw_btn)
+        serialButton.addWidget(self.conn_btn)
+        modeSelection = QHBoxLayout()
+        modeSelection.addWidget(self.modeSelect)
+        modeSelection.addWidget(self.graphWidget)
+        RRHRgraphs = QHBoxLayout()
+        RRHRgraphs.addWidget(self.graphWidget)
+        RRHRgraphs.addWidget(self.graphWidget)
         vlay = QVBoxLayout()
-        vlay.addLayout(serialButtons)
-        vlay.addWidget(self.graphWidget)
-        vlay.addLayout(graphButtons)
+        vlay.addLayout(serialButton)
+        vlay.addLayout(modeSelection)
+        vlay.addLayout(RRHRgraphs)
         widget = QWidget()
         widget.setLayout(vlay)
         self.setCentralWidget(widget)
@@ -253,8 +277,6 @@ class MainWindow(QMainWindow):
             toggled=self.on_toggle
         )
 
-        
-        
 
     '''
     def serialscan(self):
@@ -301,37 +323,34 @@ class MainWindow(QMainWindow):
         @brief Allow connection and disconnection from selected serial port.
         """
         if checked:
-            #acquire list of serial ports 
+            #acquire list of serial ports
+            self.conn_btn.setText("Searching device...") 
             serial_ports = [
                 p.name
                 for p in serial.tools.list_ports.comports()
             ]
-            for i in serial_ports:
+            for i in range(len(serial_ports)):
 
-                self.port_text=
+                self.port_text=serial_ports[i]
 
             #setup reading worker
                 self.serial_worker = SerialWorker(self.port_text) #needs to be re defined
-           
-                self.serial_worker.send('t')
-                time.sleep(0.25)
-                if(self.serial_worker.read()=="HR/RR sensor"):
-                     # connect worker signals to functions
-                    self.serial_worker.signals.status.connect(self.check_serialport_status)
-                    self.serial_worker.signals.device_port.connect(self.connected_device)
-                    # execute the worker
-                    self.threadpool.start(self.serial_worker)
+
+               
+                # connect worker signals to functions
+                self.serial_worker.signals.status.connect(self.check_serialport_status)
+                self.serial_worker.signals.device_port.connect(self.connected_device)
+                # execute the worker
+                self.threadpool.start(self.serial_worker)
                 break
+            #self.checkToggle = bool(True)
             
         else:
             # kill thread
             self.serial_worker.is_killed = True
             self.serial_worker.killed()
-            self.com_list_widget.setDisabled(False) # enable the possibility to change port
-            self.conn_btn.setText(
-                "Device search"
-                #"Connect to port {}".format(self.port_text)
-            )
+            #self.com_list_widget.setDisabled(False) # enable the possibility to change port
+            self.conn_btn.setText("Device search")
 
     def check_serialport_status(self, port_name, status):
         """!
