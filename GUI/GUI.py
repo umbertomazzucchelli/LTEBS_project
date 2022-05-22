@@ -1,9 +1,7 @@
-from email.errors import FirstHeaderLineIsContinuationDefect
 import sys
-
 import time
-
 import logging
+import numpy as np
 
 from PyQt5 import QtCore
 
@@ -35,6 +33,13 @@ import serial.tools.list_ports
 
 #Global
 CONN_STATUS = False
+PORT = ""
+TRANSMITTING = False
+DIRECTION = 0
+dataSize = 32
+xData = np.zeros(dataSize)
+yData = np.zeros(dataSize)
+zData = np.zeros(dataSize)
 
 #Logging config
 logging.basicConfig(format="%(message)s", level=logging.INFO)
@@ -82,6 +87,8 @@ class SerialWorker(QRunnable):
         @brief Estabilish connection with desired serial port.
         """
         global CONN_STATUS
+        global PORT
+        
 
         if not CONN_STATUS:
             try:
@@ -89,17 +96,44 @@ class SerialWorker(QRunnable):
                                         write_timeout=0, timeout=2)                
                 if self.port.is_open:
                     self.send('t')
-                    time.sleep(1)
+                    time.sleep(0.5)
 
                     if(self.read()=="HR/RR sensor"):
                         CONN_STATUS = True
                         self.signals.status.emit(self.port_name, 1)
-                        time.sleep(0.1) #just for compatibility reasons    
+                        PORT = self.port_name
+                        time.sleep(0.5) #just for compatibility reasons    
+                        
                     
             except serial.SerialException:
                 logging.info("Error with port {}.".format(self.port_name))
                 self.signals.status.emit(self.port_name, 0)
                 time.sleep(0.01)
+
+        if CONN_STATUS:
+            if TRANSMITTING:
+                self.readData()
+
+    def readData(self):
+        global DIRECTION
+        global xData, yData, zData
+
+        if(self.read()=="xData: \n"):
+            DIRECTION = 1
+        if(self.read()=="yData: \n"):
+            DIRECTION = 2
+        if(self.read()=="zData: \n"):
+            DIRECTION = 3
+        if(DIRECTION==1):
+            for i in len(dataSize):
+                xData[i] = self.read()
+        if(DIRECTION==2):
+            for i in len(dataSize):
+                yData[i] = self.read()
+        if(DIRECTION==3):
+            for i in len(dataSize):
+                zData[i] = self.read()
+
 
     @pyqtSlot()
     def send(self, char):
@@ -121,6 +155,7 @@ class SerialWorker(QRunnable):
         try:
             while(self.port.in_waiting>0):
                 testString+=self.port.read().decode('utf-8', errors='replace')
+                logging.info( self.port.in_waiting )
             logging.info("Received: {}".format(testString))
             return testString
         except:
@@ -133,14 +168,19 @@ class SerialWorker(QRunnable):
         @brief Close the serial port before closing the app.
         """
         global CONN_STATUS
+
         if self.is_killed and CONN_STATUS:
             self.port.close()
             time.sleep(0.01)
             CONN_STATUS = False
             self.signals.device_port.emit(self.port_name)
 
+
         logging.info("Killing the process")
 
+class UpdateGraphicSignals(QObject):
+    plot_values = pyqtSignal(int,int)
+    data_ready_signal = pyqtSignal(object)
 
 
 ###############
@@ -168,7 +208,7 @@ class MainWindow(QMainWindow):
         
         self.connected = CONN_STATUS
         #self.serialscan()
-        self.serialSearch()
+  
         self.initUI()
 
     #####################
@@ -190,8 +230,18 @@ class MainWindow(QMainWindow):
             clicked=self.draw
         )
 
+        self.conn_btn = QPushButton(
+            #text=("Connect to port {}".format(self.port_text)), 
+            text=("Device search"), 
+            checkable=True,
+            toggled=self.on_toggle)
+
+        self.updateBtn = QPushButton(
+            text = "Start", checkable= True, toggled = self.dataUpdate
+        )
+
         self.modeSelect = QComboBox()
-        self.modeSelect.addItems(["None","HR only", "RR only","Both"])
+        self.modeSelect.addItems(["HR only", "RR only","Both"])
 
         '''
         #mostra dialog di errore se il psoc è stato disconnesso per sbaglio
@@ -211,6 +261,7 @@ class MainWindow(QMainWindow):
         serialButton.addWidget(self.conn_btn)
         modeSelection = QHBoxLayout()
         modeSelection.addWidget(self.modeSelect)
+        modeSelection.addWidget(self.updateBtn)
         modeSelection.addWidget(self.graphWidget)
         RRHRgraphs = QHBoxLayout()
         RRHRgraphs.addWidget(self.graphWidget)
@@ -261,49 +312,6 @@ class MainWindow(QMainWindow):
         line = graph.plot(x, y, name=curve_name, pen=pen)
         return line
 
-    ####################
-    # SERIAL INTERFACE #
-    ####################
-    def serialSearch(self):
-        """!
-        @brief Scans all serial ports and create a list.
-        """
-        self.deviceList = ""
-        # create the connection button
-        self.conn_btn = QPushButton(
-            #text=("Connect to port {}".format(self.port_text)), 
-            text=("Device search"), 
-            checkable=True,
-            toggled=self.on_toggle
-        )
-
-
-    '''
-    def serialscan(self):
-        """!
-        @brief Scans all serial ports and create a list.
-        """
-        # create the combo box to host port list
-        self.port_text = ""
-        self.com_list_widget = QComboBox()
-        self.com_list_widget.currentTextChanged.connect(self.port_changed)
-        
-        # create the connection button
-        self.conn_btn = QPushButton(
-            #text=("Connect to port {}".format(self.port_text)), 
-            text=("Device search"), 
-            checkable=True,
-            toggled=self.on_toggle
-        )
-
-        # acquire list of serial ports and add it to the combo box
-        serial_ports = [
-                p.name
-                for p in serial.tools.list_ports.comports()
-            ]
-        self.com_list_widget.addItems(serial_ports)
-    '''
-
     ##################
     # SERIAL SIGNALS #
     ##################
@@ -324,25 +332,24 @@ class MainWindow(QMainWindow):
         """
         if checked:
             #acquire list of serial ports
-            self.conn_btn.setText("Searching device...") 
             serial_ports = [
                 p.name
                 for p in serial.tools.list_ports.comports()
             ]
-            for i in range(len(serial_ports)):
 
+            for i in range(len(serial_ports)):
                 self.port_text=serial_ports[i]
 
-            #setup reading worker
+                #setup reading worker
                 self.serial_worker = SerialWorker(self.port_text) #needs to be re defined
 
-               
                 # connect worker signals to functions
                 self.serial_worker.signals.status.connect(self.check_serialport_status)
                 self.serial_worker.signals.device_port.connect(self.connected_device)
                 # execute the worker
                 self.threadpool.start(self.serial_worker)
-                break
+            self.conn_btn.setText("Searching device...") 
+            
             #self.checkToggle = bool(True)
             
         else:
@@ -383,9 +390,20 @@ class MainWindow(QMainWindow):
         self.serial_worker.is_killed = True
         self.serial_worker.killed()
 
-    
+    def dataUpdate(self,checked):
+        global PORT
+        global TRANSMITTING
+        
 
-    
+        self.serial_worker = SerialWorker(PORT)
+        if checked:
+            SerialWorker.send('a')
+            self.updateBtn.setText("Stop")
+            TRANSMITTING = True
+
+        else:
+            self.updateBtn.setText("Start")
+
 #############
 #  RUN APP  #
 #############

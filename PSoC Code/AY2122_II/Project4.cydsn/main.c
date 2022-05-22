@@ -202,8 +202,8 @@ int main(void)
             
                 CyDelay(500); //to get stable data, just a try
                 error=I2C_Peripheral_ReadRegister(LIS3DH_DEVICE_ADDRESS, LIS3DH_FIFO_SRC_REG, &fifoFull); 
-                sprintf(message,"\r\novrn value: %d \r\n",(fifoFull & 0x40)>>6);
-                UART_PutString(message);
+                //sprintf(message,"\r\novrn value: %d \r\n",(fifoFull & 0x40)>>6);
+                //UART_PutString(message);
                 if(error == NO_ERROR && (fifoFull & 0x40)>>6)
                 {
                     I2C_Peripheral_ReadRegisterMulti(LIS3DH_DEVICE_ADDRESS,LIS3DH_OUT_X_L,regCount,data);
@@ -212,12 +212,27 @@ int main(void)
                         xData[i] = (int16) (data[i*6] | (data[i*6+1]<<8))>>6;
                         yData[i] = (int16) (data[i*6+2] | (data[i*6+3]<<8))>>6;
                         zData[i] = (int16) (data[i*6+4] | (data[i*6+5]<<8))>>6;
-                        sprintf(message, "xData: %d\n",xData[i]);
+                    }
+                    UART_PutString("xData:\n");
+                    for(int j = 0; j<32;j++)
+                    {
+                        sprintf(message, "%d",xData[j]);
                         UART_PutString(message);
-                        sprintf(message, "yData: %d\n",yData[i]);
+                        //UART_PutString("\n");
+                    }
+                    UART_PutString("yData:\n");
+                    for(int j = 0; j<32;j++)
+                    {
+                        sprintf(message, "%d",yData[j]);
                         UART_PutString(message);
-                        sprintf(message, "zData: %d\n",zData[i]);
+                        //UART_PutString("\n");
+                    }
+                    UART_PutString("zData:\n");
+                    for(int j = 0; j<32;j++)
+                    {
+                        sprintf(message, "%d",zData[j]);
                         UART_PutString(message);
+                       //UART_PutString("\n");
                     }
                     regSetting=0x00;
                     error = I2C_Peripheral_WriteRegister(LIS3DH_DEVICE_ADDRESS,LIS3DH_FIFO_CTRL_REG,regSetting);
