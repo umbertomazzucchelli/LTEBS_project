@@ -35,6 +35,8 @@
 #include "UART.h"
 #include "isr_RX.h"
 #include "EEPROM.h"
+#include "Pin_LED_info_aliases.h"
+#include "Pin_LED_info.h"
 #include "UART_BT_IntClock.h"
 #include "UART_IntClock.h"
 #include "core_cm3_psoc5.h"

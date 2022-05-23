@@ -4108,9 +4108,9 @@ You are welcome to use this library for commercial purposes. For attribution, we
 <part name="PSOC_PINS_2" library="SparkFun-Connectors" deviceset="CONN_25" device=""/>
 <part name="PSOC_PINS_1" library="SparkFun-Connectors" deviceset="CONN_13" device=""/>
 <part name="RED" library="SparkFun-LED" deviceset="LED" device="3MM"/>
+<part name="SUPPLY1" library="SparkFun-PowerSymbols" deviceset="5V" device=""/>
 <part name="GND3" library="SparkFun-PowerSymbols" deviceset="GND" device=""/>
 <part name="R3" library="SparkFun-Resistors" deviceset="330OHM" device="-HORIZ-1/10W-5%" value="330"/>
-<part name="LED" library="SparkFun-Connectors" deviceset="CONN_01" device=""/>
 </parts>
 <sheets>
 <sheet>
@@ -4201,16 +4201,15 @@ You are welcome to use this library for commercial purposes. For attribution, we
 <attribute name="NAME" x="74.93" y="164.719" size="1.778" layer="95" font="vector" rot="R180"/>
 <attribute name="VALUE" x="70.485" y="160.528" size="1.778" layer="96" font="vector" rot="R90" align="top-left"/>
 </instance>
+<instance part="SUPPLY1" gate="G$1" x="68.58" y="170.18" smashed="yes" grouprefs="LED_INFO">
+<attribute name="VALUE" x="68.58" y="172.974" size="1.778" layer="96" align="bottom-center"/>
+</instance>
 <instance part="GND3" gate="1" x="68.58" y="142.24" smashed="yes" grouprefs="LED_INFO">
 <attribute name="VALUE" x="68.58" y="141.986" size="1.778" layer="96" align="top-center"/>
 </instance>
 <instance part="R3" gate="G$1" x="68.58" y="152.4" smashed="yes" rot="R90" grouprefs="LED_INFO">
 <attribute name="NAME" x="65.532" y="152.4" size="1.778" layer="95" font="vector" align="bottom-center"/>
 <attribute name="VALUE" x="72.136" y="152.4" size="1.778" layer="96" font="vector" rot="R180" align="top-center"/>
-</instance>
-<instance part="LED" gate="G$1" x="81.28" y="50.8" smashed="yes" rot="R90">
-<attribute name="VALUE" x="86.106" y="48.26" size="1.778" layer="96" font="vector" rot="R90"/>
-<attribute name="NAME" x="83.566" y="47.752" size="1.778" layer="95" font="vector" rot="R180"/>
 </instance>
 </instances>
 <busses>
@@ -4392,24 +4391,17 @@ You are welcome to use this library for commercial purposes. For attribution, we
 <wire x1="50.8" y1="160.02" x2="55.88" y2="160.02" width="0.1524" layer="91" grouprefs="9V_TO_5V"/>
 <label x="51.308" y="160.528" size="1.778" layer="95" grouprefs="9V_TO_5V"/>
 </segment>
+<segment>
+<pinref part="RED" gate="G$1" pin="A"/>
+<pinref part="SUPPLY1" gate="G$1" pin="5V"/>
+<wire x1="68.58" y1="170.18" x2="68.58" y2="167.64" width="0.1524" layer="91" grouprefs="LED_INFO"/>
+</segment>
 </net>
 <net name="N$1" class="0">
 <segment>
 <pinref part="R3" gate="G$1" pin="2"/>
 <pinref part="RED" gate="G$1" pin="C"/>
 <wire x1="68.58" y1="160.02" x2="68.58" y2="157.48" width="0.1524" layer="91" grouprefs="LED_INFO"/>
-</segment>
-</net>
-<net name="LED" class="0">
-<segment>
-<pinref part="LED" gate="G$1" pin="1"/>
-<wire x1="81.28" y1="58.42" x2="81.28" y2="63.5" width="0.1524" layer="91"/>
-<label x="81.026" y="58.674" size="1.778" layer="95" rot="R90"/>
-</segment>
-<segment>
-<pinref part="RED" gate="G$1" pin="A"/>
-<wire x1="68.58" y1="172.72" x2="68.58" y2="167.64" width="0.1524" layer="91" grouprefs="LED_INFO"/>
-<label x="68.072" y="167.64" size="1.778" layer="95" rot="R90"/>
 </segment>
 </net>
 </nets>
