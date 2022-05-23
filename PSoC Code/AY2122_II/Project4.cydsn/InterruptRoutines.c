@@ -36,6 +36,10 @@ CY_ISR(Custom_ISR_RX)
         case 'a':
             status = 2;
             break;
+        case 'S':
+        case 's':
+            status = 0;
+            break;
         
         //connection
         case 'T':

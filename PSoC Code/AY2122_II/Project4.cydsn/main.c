@@ -207,27 +207,27 @@ int main(void)
                 if(error == NO_ERROR && (fifoFull & 0x40)>>6)
                 {
                     I2C_Peripheral_ReadRegisterMulti(LIS3DH_DEVICE_ADDRESS,LIS3DH_OUT_X_L,regCount,data);
+                    UART_PutString("Data ready\n");
                     for(int i = 0; i<32;i++)
                     {
                         xData[i] = (int16) (data[i*6] | (data[i*6+1]<<8))>>6;
                         yData[i] = (int16) (data[i*6+2] | (data[i*6+3]<<8))>>6;
                         zData[i] = (int16) (data[i*6+4] | (data[i*6+5]<<8))>>6;
                     }
-                    UART_PutString("xData:\n");
                     for(int j = 0; j<32;j++)
                     {
                         sprintf(message, "%d",xData[j]);
                         UART_PutString(message);
                         //UART_PutString("\n");
                     }
-                    UART_PutString("yData:\n");
+                    UART_PutString("\n");
                     for(int j = 0; j<32;j++)
                     {
                         sprintf(message, "%d",yData[j]);
                         UART_PutString(message);
                         //UART_PutString("\n");
                     }
-                    UART_PutString("zData:\n");
+                    UART_PutString("\n");
                     for(int j = 0; j<32;j++)
                     {
                         sprintf(message, "%d",zData[j]);
