@@ -1,6 +1,6 @@
 (DELAYFILE
  (SDFVERSION "IEEE 1497 4.0")
- (DATE "2022-05-22T13:51:02Z")
+ (DATE "2022-05-23T15:45:37Z")
  (DESIGN "Project4")
  (VENDOR "Cypress Semiconductor")
  (PROGRAM "PSoC Creator")
@@ -382,6 +382,7 @@
     (INTERCONNECT Rx\(0\)_PAD Rx\(0\).pad_in (0.000:0.000:0.000))
     (INTERCONNECT Tx\(0\).pad_out Tx\(0\)_PAD (0.000:0.000:0.000))
     (INTERCONNECT Tx\(0\)_PAD Tx\(0\).pad_in (0.000:0.000:0.000))
+    (INTERCONNECT Pin_LED_info\(0\)_PAD Pin_LED_info\(0\).pad_in (0.000:0.000:0.000))
    )
   )
  )

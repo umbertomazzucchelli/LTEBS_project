@@ -2,7 +2,7 @@
 --	Conversion of Project4.v to vh2:
 --
 --	Cypress Semiconductor - WARP Version 6.3 IR 41
---	Sun May 22 15:50:59 2022
+--	Mon May 23 17:45:28 2022
 --
 
 USE cypress.cypress.all;
@@ -28,7 +28,7 @@ TERMINAL Net_232 : bit;
 TERMINAL Net_233 : bit;
 TERMINAL Net_234 : bit;
 TERMINAL Net_235 : bit;
-TERMINAL Net_236 : bit;
+TERMINAL Net_293 : bit;
 TERMINAL Net_237 : bit;
 TERMINAL Net_238 : bit;
 TERMINAL Net_239 : bit;
@@ -48,8 +48,8 @@ TERMINAL Net_252 : bit;
 TERMINAL Net_253 : bit;
 TERMINAL Net_254 : bit;
 TERMINAL Net_255 : bit;
-TERMINAL Net_256 : bit;
-TERMINAL Net_257 : bit;
+TERMINAL Net_295 : bit;
+TERMINAL Net_297 : bit;
 TERMINAL Net_258 : bit;
 TERMINAL Net_259 : bit;
 TERMINAL Net_260 : bit;
@@ -1168,6 +1168,11 @@ SIGNAL tmpFB_0__Tx_net_0 : bit;
 SIGNAL tmpIO_0__Tx_net_0 : bit;
 TERMINAL tmpSIOVREF__Tx_net_0 : bit;
 SIGNAL tmpINTERRUPT_0__Tx_net_0 : bit;
+SIGNAL tmpOE__Pin_LED_info_net_0 : bit;
+SIGNAL tmpFB_0__Pin_LED_info_net_0 : bit;
+SIGNAL tmpIO_0__Pin_LED_info_net_0 : bit;
+TERMINAL tmpSIOVREF__Pin_LED_info_net_0 : bit;
+SIGNAL tmpINTERRUPT_0__Pin_LED_info_net_0 : bit;
 SIGNAL \UART_BT:BUART:reset_reg\\D\ : bit;
 SIGNAL \UART_BT:BUART:txn\\D\ : bit;
 SIGNAL \UART_BT:BUART:tx_state_1\\D\ : bit;
@@ -1489,12 +1494,12 @@ KIT_059_1:cy_annotation_universal_v1_0
 			Net_224, Net_225, Net_226, Net_227,
 			Net_228, Net_229, Net_230, Net_231,
 			Net_232, Net_233, Net_234, Net_235,
-			Net_236, Net_237, Net_238, Net_239,
+			Net_293, Net_237, Net_238, Net_239,
 			Net_240, Net_241, Net_242, Net_243,
 			Net_244, Net_245, Net_246, Net_247,
 			Net_248, Net_249, Net_250, Net_251,
 			Net_252, Net_253, Net_254, Net_255,
-			Net_256, Net_257, Net_258, Net_259,
+			Net_295, Net_297, Net_258, Net_259,
 			Net_260, Net_261, Net_262, Net_263,
 			Net_264, Net_265, Net_266, Net_267,
 			Net_268, Net_269, Net_270, Net_271,
@@ -2780,6 +2785,76 @@ isr_RX:cy_isr_v1_0
 	GENERIC MAP(int_type=>"10",
 		is_nmi=>'0')
 	PORT MAP(int_signal=>Net_209);
+Pin_LED_info:cy_psoc3_pins_v1_10
+	GENERIC MAP(id=>"c084b515-3709-4439-aee6-aebf27fe4374",
+		drive_mode=>"110",
+		ibuf_enabled=>"1",
+		init_dr_st=>"0",
+		input_sync=>"1",
+		input_clk_en=>'0',
+		input_sync_mode=>"0",
+		intr_mode=>"00",
+		invert_in_clock=>'0',
+		invert_in_clock_en=>'0',
+		invert_in_reset=>'0',
+		invert_out_clock=>'0',
+		invert_out_clock_en=>'0',
+		invert_out_reset=>'0',
+		io_voltage=>"",
+		layout_mode=>"CONTIGUOUS",
+		output_conn=>"0",
+		output_sync=>"0",
+		output_clk_en=>'0',
+		output_mode=>"0",
+		output_reset=>'0',
+		output_clock_mode=>"0",
+		oe_sync=>"0",
+		oe_conn=>"0",
+		oe_reset=>'0',
+		pin_aliases=>"",
+		pin_mode=>"O",
+		por_state=>4,
+		sio_group_cnt=>0,
+		sio_hifreq=>"00000000",
+		sio_hyst=>"1",
+		sio_ibuf=>"00000000",
+		sio_info=>"00",
+		sio_obuf=>"00000000",
+		sio_refsel=>"00000000",
+		sio_vtrip=>"00000000",
+		sio_vohsel=>"00000000",
+		slew_rate=>"0",
+		spanning=>'0',
+		sw_only=>'0',
+		vtrip=>"10",
+		width=>1,
+		port_alias_required=>'0',
+		port_alias_group=>"",
+		use_annotation=>"1",
+		pa_in_clock=>-1,
+		pa_in_clock_en=>-1,
+		pa_in_reset=>-1,
+		pa_out_clock=>-1,
+		pa_out_clock_en=>-1,
+		pa_out_reset=>-1,
+		ovt_needed=>"0",
+		ovt_slew_control=>"00",
+		ovt_hyst_trim=>"0",
+		input_buffer_sel=>"00")
+	PORT MAP(oe=>(one),
+		y=>(zero),
+		fb=>(tmpFB_0__Pin_LED_info_net_0),
+		analog=>(open),
+		io=>(tmpIO_0__Pin_LED_info_net_0),
+		siovref=>(tmpSIOVREF__Pin_LED_info_net_0),
+		annotation=>Net_297,
+		in_clock=>zero,
+		in_clock_en=>one,
+		in_reset=>zero,
+		out_clock=>zero,
+		out_clock_en=>one,
+		out_reset=>zero,
+		interrupt=>tmpINTERRUPT_0__Pin_LED_info_net_0);
 \UART_BT:BUART:reset_reg\:cy_dff
 	PORT MAP(d=>zero,
 		clk=>\UART_BT:BUART:clock_op\,
