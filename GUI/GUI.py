@@ -3,26 +3,10 @@ import time
 import logging
 import numpy as np
 
-from PyQt5 import QtCore
-
-from PyQt5.QtCore import(
-    QObject,
-    QThreadPool, 
-    QRunnable, 
-    pyqtSignal, 
-    pyqtSlot
-)
-
-from PyQt5.QtWidgets import (
-    QApplication,
-    QMainWindow,
-    QPushButton,
-    QComboBox,
-    QHBoxLayout,
-    QVBoxLayout,
-    QMessageBox,
-    QWidget
-)
+from PyQt5.QtWidgets import * 
+from PyQt5 import QtCore, QtGui
+from PyQt5.QtGui import * 
+from PyQt5.QtCore import * 
 
 # We import library dedicated to data plot
 import pyqtgraph as pg
@@ -35,11 +19,12 @@ import serial.tools.list_ports
 CONN_STATUS = False
 PORT = ""
 TRANSMITTING = False
-DIRECTION = 0
+STARTED = False
 dataSize = 32
 xData = np.zeros(dataSize)
 yData = np.zeros(dataSize)
 zData = np.zeros(dataSize)
+dataBuffer = np.zeros(96+3)#96 data + 3 separator values
 
 #Logging config
 logging.basicConfig(format="%(message)s", level=logging.INFO)
@@ -87,8 +72,8 @@ class SerialWorker(QRunnable):
         @brief Estabilish connection with desired serial port.
         """
         global CONN_STATUS
+        global TRANSMITTING
         global PORT
-        
 
         if not CONN_STATUS:
             try:
@@ -111,29 +96,26 @@ class SerialWorker(QRunnable):
                 time.sleep(0.01)
 
         if CONN_STATUS:
+            print("Prova, entro in conn status")
             if TRANSMITTING:
+                print("prova, entro in transmitting")
                 self.readData()
 
     def readData(self):
-        global DIRECTION
+        global STARTED
         global xData, yData, zData
-
-        if(self.read()=="xData: \n"):
-            DIRECTION = 1
-        if(self.read()=="yData: \n"):
-            DIRECTION = 2
-        if(self.read()=="zData: \n"):
-            DIRECTION = 3
-        if(DIRECTION==1):
-            for i in len(dataSize):
-                xData[i] = self.read()
-        if(DIRECTION==2):
-            for i in len(dataSize):
-                yData[i] = self.read()
-        if(DIRECTION==3):
-            for i in len(dataSize):
-                zData[i] = self.read()
-
+        count = 0
+        
+        if(self.read()=="Data ready\n"):
+            STARTED = True
+        
+        if STARTED:
+            dataBuffer[count]=self.read()
+            count += count
+            if(count==99):
+                STARTED = False
+                for i in len(dataBuffer):
+                    print(dataBuffer[i])
 
     @pyqtSlot()
     def send(self, char):
@@ -187,6 +169,7 @@ class UpdateGraphicSignals(QObject):
 # MAIN WINDOW #
 ###############
 class MainWindow(QMainWindow):
+
     def __init__(self):
         """!
         @brief Init MainWindow.
@@ -201,7 +184,7 @@ class MainWindow(QMainWindow):
         self.setWindowTitle("GUI")
         width = 1280
         height = 720
-        self.setMinimumSize(width, height)
+        self.setFixedSize(width, height)
 
         #create thread handler
         self.threadpool = QThreadPool()
@@ -241,7 +224,9 @@ class MainWindow(QMainWindow):
         )
 
         self.modeSelect = QComboBox()
+        self.modeSelect.setEditable(False)
         self.modeSelect.addItems(["HR only", "RR only","Both"])
+
 
         '''
         #mostra dialog di errore se il psoc è stato disconnesso per sbaglio
@@ -262,17 +247,22 @@ class MainWindow(QMainWindow):
         modeSelection = QHBoxLayout()
         modeSelection.addWidget(self.modeSelect)
         modeSelection.addWidget(self.updateBtn)
-        modeSelection.addWidget(self.graphWidget)
+        dataGraph = QHBoxLayout()
+        dataGraph.addWidget(self.graphWidget)
         RRHRgraphs = QHBoxLayout()
         RRHRgraphs.addWidget(self.graphWidget)
         RRHRgraphs.addWidget(self.graphWidget)
         vlay = QVBoxLayout()
         vlay.addLayout(serialButton)
         vlay.addLayout(modeSelection)
+        vlay.addLayout(dataGraph)
         vlay.addLayout(RRHRgraphs)
         widget = QWidget()
         widget.setLayout(vlay)
         self.setCentralWidget(widget)
+
+        modeSelection.setContentsMargins(20,20,20,20)
+        modeSelection.setSpacing(20)
 
         # Some random data
         self.hour = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
@@ -393,16 +383,17 @@ class MainWindow(QMainWindow):
     def dataUpdate(self,checked):
         global PORT
         global TRANSMITTING
-        
 
-        self.serial_worker = SerialWorker(PORT)
         if checked:
-            SerialWorker.send('a')
+            self.serial_worker.send('a')
             self.updateBtn.setText("Stop")
             TRANSMITTING = True
 
         else:
+            self.serial_worker.send('s')
             self.updateBtn.setText("Start")
+            TRANSMITTING = False
+
 
 #############
 #  RUN APP  #
