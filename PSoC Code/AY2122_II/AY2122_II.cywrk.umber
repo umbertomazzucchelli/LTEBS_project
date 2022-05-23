@@ -168,6 +168,7 @@
 <name v=".\Project4.cydsn\main.c" />
 <name v=".\Project4.cydsn\TopDesign\TopDesign.cysch" />
 <name v=".\Project4.cydsn\InterruptRoutines.c" />
+<name v=".\Project4.cydsn\I2C_Interface.c" />
 </OpenDocs>
 <OpenDocsLayout><![CDATA[<?xml version="1.0"?><!--
 
@@ -175,7 +176,7 @@
   Copyright (c) 2001-2016 Actipro Software LLC.  All rights reserved.
   http://www.actiprosoftware.com
 
---><DocumentLayout Version="1.0"><LayoutData><TabbedMdiRootContainer Orientation="Horizontal"><TabbedMdiContainer Size="2039, 1089" SelectedTabbedMdiWindow="8c68f903-63cd-4fd5-a40b-796b48062416"><ToolWindow Key="Start Page:bd4649ab-da6b-4d04-a663-c722b8bf99db:Start Page" Guid="8ab056a0-50af-48b3-9a46-63a501067250" /><DocumentWindow Key="D:\Download\Progetto Lab\AY2122_II_Project-4\PSoC Code\AY2122_II\Project4.cydsn\main.c" Guid="8c68f903-63cd-4fd5-a40b-796b48062416" /><DocumentWindow Key="D:\Download\Progetto Lab\AY2122_II_Project-4\PSoC Code\AY2122_II\Project4.cydsn\TopDesign\TopDesign.cysch" Guid="6e554c40-fcbb-441c-8ce3-99665ed366a8" /><DocumentWindow Key="D:\Download\Progetto Lab\AY2122_II_Project-4\PSoC Code\AY2122_II\Project4.cydsn\InterruptRoutines.c" Guid="2c838c68-4ca0-496d-9481-dfc1281487a6" /></TabbedMdiContainer></TabbedMdiRootContainer><FloatingContainers /></LayoutData></DocumentLayout>]]></OpenDocsLayout>
+--><DocumentLayout Version="1.0"><LayoutData><TabbedMdiRootContainer Orientation="Horizontal"><TabbedMdiContainer Size="2039, 1089" SelectedTabbedMdiWindow="8c68f903-63cd-4fd5-a40b-796b48062416"><ToolWindow Key="Start Page:bd4649ab-da6b-4d04-a663-c722b8bf99db:Start Page" Guid="8ab056a0-50af-48b3-9a46-63a501067250" /><DocumentWindow Key="D:\Download\Progetto Lab\AY2122_II_Project-4\PSoC Code\AY2122_II\Project4.cydsn\main.c" Guid="8c68f903-63cd-4fd5-a40b-796b48062416" /><DocumentWindow Key="D:\Download\Progetto Lab\AY2122_II_Project-4\PSoC Code\AY2122_II\Project4.cydsn\TopDesign\TopDesign.cysch" Guid="6e554c40-fcbb-441c-8ce3-99665ed366a8" /><DocumentWindow Key="D:\Download\Progetto Lab\AY2122_II_Project-4\PSoC Code\AY2122_II\Project4.cydsn\InterruptRoutines.c" Guid="2c838c68-4ca0-496d-9481-dfc1281487a6" /><DocumentWindow Key="D:\Download\Progetto Lab\AY2122_II_Project-4\PSoC Code\AY2122_II\Project4.cydsn\I2C_Interface.c" Guid="d00e8d3d-306f-473c-aa29-4bb02d7ee2a1" /></TabbedMdiContainer></TabbedMdiRootContainer><FloatingContainers /></LayoutData></DocumentLayout>]]></OpenDocsLayout>
 <config v="" />
 <AutoUpdate v="true" />
 </CyGuid_843a90a4-0c4b-4e44-991d-05e7fb117a21>

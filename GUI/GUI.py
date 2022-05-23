@@ -169,6 +169,8 @@ class UpdateGraphicSignals(QObject):
 # MAIN WINDOW #
 ###############
 class MainWindow(QMainWindow):
+    global TRANSMITTING
+    TRANSMITTING = False
 
     def __init__(self):
         """!
@@ -343,11 +345,13 @@ class MainWindow(QMainWindow):
             #self.checkToggle = bool(True)
             
         else:
+            self.updateBtn.setChecked(False)
             # kill thread
             self.serial_worker.is_killed = True
             self.serial_worker.killed()
             #self.com_list_widget.setDisabled(False) # enable the possibility to change port
             self.conn_btn.setText("Device search")
+            
 
     def check_serialport_status(self, port_name, status):
         """!
