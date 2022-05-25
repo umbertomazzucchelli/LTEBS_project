@@ -1,4 +1,5 @@
 from array import array
+from pickle import GLOBAL
 import sys
 import time
 import logging
@@ -88,7 +89,7 @@ class SerialWorker(QRunnable):
                         CONN_STATUS = True
                         self.signals.status.emit(self.port_name, 1)
                         PORT = self.port_name
-                        time.sleep(0.5) #just for compatibility reasons    
+                        time.sleep(1) #just for compatibility reasons    
                         
                     
             except serial.SerialException:
@@ -149,31 +150,25 @@ class SerialWorker(QRunnable):
 
         logging.info("Killing the process")
 
-
+'''
 class dataRead(QRunnable):
     
     @pyqtSlot()
     def readData(self):
 
         global STARTED
-
+        global TRANSMITTING
         #self.serial_worker = SerialWorker(PORT)
-        
-        if(SerialWorker.readArray(1)==0x0A):
-            STARTED = True
-        
-        while(STARTED==True):
-            accData=SerialWorker.readArray(192)
-            if(SerialWorker.readArray(1)==0x0B):
-                STARTED=False
-
+        if(TRANSMITTING==True):
+            accData=SerialWorker.readArray(194)
+            if(accData[0]==0x0A & accData[193]==0x0B):
+                #salvo dati
+'''
 
 ###############
 # MAIN WINDOW #
 ###############
 class MainWindow(QMainWindow):
-    global TRANSMITTING
-    TRANSMITTING = False
 
     def __init__(self):
         """!
@@ -231,11 +226,6 @@ class MainWindow(QMainWindow):
         self.modeSelect = QComboBox()
         self.modeSelect.setEditable(False)
         self.modeSelect.addItems(["HR only", "RR only","Both"])
-
-        self.timer = QtCore.QTimer()
-        self.timer.setInterval(500)
-        self.timer.timeout.connect(self.update_interface)
-        self.timer.start()
 
 
         '''
@@ -327,6 +317,7 @@ class MainWindow(QMainWindow):
 
     @pyqtSlot(bool)
     def on_toggle(self, checked):
+        global CONN_STATUS
         """!
         @brief Allow connection and disconnection from selected serial port.
         """
@@ -336,19 +327,22 @@ class MainWindow(QMainWindow):
                 p.name
                 for p in serial.tools.list_ports.comports()
             ]
-
+            self.conn_btn.setText("Searching device...") 
             for i in range(len(serial_ports)):
                 self.port_text=serial_ports[i]
 
                 #setup reading worker
                 self.serial_worker = SerialWorker(self.port_text) #needs to be re defined
-
+                print("Porta attiva ", self.port_text)
                 # connect worker signals to functions
                 self.serial_worker.signals.status.connect(self.check_serialport_status)
                 self.serial_worker.signals.device_port.connect(self.connected_device)
                 # execute the worker
                 self.threadpool.start(self.serial_worker)
-            self.conn_btn.setText("Searching device...") 
+                time.sleep(1)
+                if(CONN_STATUS==True):
+                    break
+            
             
             #self.checkToggle = bool(True)
             
@@ -391,6 +385,7 @@ class MainWindow(QMainWindow):
         """
         self.serial_worker.is_killed = True
         self.serial_worker.killed()
+
 
     def dataUpdate(self,checked):
         global PORT
