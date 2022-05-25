@@ -1,6 +1,6 @@
-from array import array
-from pickle import GLOBAL
+import struct
 import sys
+from telnetlib import STATUS
 import time
 import logging
 import numpy as np
@@ -19,6 +19,7 @@ import serial.tools.list_ports
 
 #Global
 CONN_STATUS = False
+STATUS=True
 PORT = ""
 TRANSMITTING = False
 STARTED = False
@@ -126,9 +127,12 @@ class SerialWorker(QRunnable):
 
     @pyqtSlot()
     def readArray(self,size):
+        retArray=[]
         try:
             while(self.port.in_waiting>0):
-                retArray = self.port.read(size)
+                retArray += self.port.read(size).decode('utf-8', errors='replace')
+                if(len(retArray)==size):
+                    break
                 logging.info(self.port.in_waiting)
             logging.info("Array received")
             return retArray
@@ -143,27 +147,45 @@ class SerialWorker(QRunnable):
         global CONN_STATUS
 
         if self.is_killed and CONN_STATUS:
+            self.send('s')
             self.port.close()
             time.sleep(0.01)
             CONN_STATUS = False
             self.signals.device_port.emit(self.port_name)
+            
 
         logging.info("Killing the process")
 
-'''
-class dataRead(QRunnable):
-    
+
     @pyqtSlot()
     def readData(self):
-
-        global STARTED
         global TRANSMITTING
+        global STATUS
+        
         #self.serial_worker = SerialWorker(PORT)
-        if(TRANSMITTING==True):
-            accData=SerialWorker.readArray(194)
-            if(accData[0]==0x0A & accData[193]==0x0B):
-                #salvo dati
-'''
+        
+        dataArray = self.port.read(194)
+        dataArray = struct.unpack('194B',dataArray)
+        print(dataArray)
+            
+            
+        #print(dataArray)
+        '''
+        while(TRANSMITTING==True):
+    
+            header = self.port.read(1)
+            header = struct.unpack('1B',header)[0]
+            print("Header ",header)
+            if(header==0x0A):
+                dataArray = self.port.read(192)
+                dataArray = struct.unpack('192B',dataArray)
+                if
+
+            dataArray = self.port.read(194)
+            dataArray = struct.unpack('194B',dataArray)
+            print(dataArray)
+        '''
+
 
 ###############
 # MAIN WINDOW #
@@ -227,6 +249,9 @@ class MainWindow(QMainWindow):
         self.modeSelect.setEditable(False)
         self.modeSelect.addItems(["HR only", "RR only","Both"])
 
+        self.timer = QtCore.QTimer()
+        self.timer.setInterval(1000)
+        
 
         '''
         #mostra dialog di errore se il psoc è stato disconnesso per sbaglio
@@ -395,11 +420,15 @@ class MainWindow(QMainWindow):
             self.serial_worker.send('a')
             self.updateBtn.setText("Stop")
             TRANSMITTING = True
+            self.timer.timeout.connect(lambda: self.serial_worker.readData())
+            self.timer.start()
+            
 
         else:
             self.serial_worker.send('s')
             self.updateBtn.setText("Start")
             TRANSMITTING = False
+            self.timer.stop()
 
 
 #############
