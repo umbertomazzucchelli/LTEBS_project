@@ -1,3 +1,4 @@
+from array import array
 import sys
 import time
 import logging
@@ -60,10 +61,10 @@ class SerialWorker(QRunnable):
         """
         self.is_killed = False
         super().__init__()
-        # init port, params and signals
+        #init port, params and signals
         self.port = serial.Serial()
         self.port_name = serial_port_name
-        self.baudrate = 9600 # hard coded but can be a global variable, or an input param
+        self.baudrate = 9600 #hard coded but can be a global variable, or an input param
         self.signals = SerialWorkerSignals()
 
     @pyqtSlot()
@@ -95,27 +96,6 @@ class SerialWorker(QRunnable):
                 self.signals.status.emit(self.port_name, 0)
                 time.sleep(0.01)
 
-        if CONN_STATUS:
-            print("Prova, entro in conn status")
-            if TRANSMITTING:
-                print("prova, entro in transmitting")
-                self.readData()
-
-    def readData(self):
-        global STARTED
-        global xData, yData, zData
-        count = 0
-        
-        if(self.read()=="Data ready\n"):
-            STARTED = True
-        
-        if STARTED:
-            dataBuffer[count]=self.read()
-            count += count
-            if(count==99):
-                STARTED = False
-                for i in len(dataBuffer):
-                    print(dataBuffer[i])
 
     @pyqtSlot()
     def send(self, char):
@@ -137,12 +117,22 @@ class SerialWorker(QRunnable):
         try:
             while(self.port.in_waiting>0):
                 testString+=self.port.read().decode('utf-8', errors='replace')
-                logging.info( self.port.in_waiting )
+                logging.info(self.port.in_waiting)
             logging.info("Received: {}".format(testString))
             return testString
         except:
             logging.info("Could not receive {} on port {}.".format(testString, self.port_name))
 
+    @pyqtSlot()
+    def readArray(self,size):
+        try:
+            while(self.port.in_waiting>0):
+                retArray = self.port.read(size)
+                logging.info(self.port.in_waiting)
+            logging.info("Array received")
+            return retArray
+        except:
+            logging.info("Could not receive the array")
    
     @pyqtSlot()
     def killed(self):
@@ -157,12 +147,25 @@ class SerialWorker(QRunnable):
             CONN_STATUS = False
             self.signals.device_port.emit(self.port_name)
 
-
         logging.info("Killing the process")
 
-class UpdateGraphicSignals(QObject):
-    plot_values = pyqtSignal(int,int)
-    data_ready_signal = pyqtSignal(object)
+
+class dataRead(QRunnable):
+    
+    @pyqtSlot()
+    def readData(self):
+
+        global STARTED
+
+        #self.serial_worker = SerialWorker(PORT)
+        
+        if(SerialWorker.readArray(1)==0x0A):
+            STARTED = True
+        
+        while(STARTED==True):
+            accData=SerialWorker.readArray(192)
+            if(SerialWorker.readArray(1)==0x0B):
+                STARTED=False
 
 
 ###############
@@ -228,6 +231,11 @@ class MainWindow(QMainWindow):
         self.modeSelect = QComboBox()
         self.modeSelect.setEditable(False)
         self.modeSelect.addItems(["HR only", "RR only","Both"])
+
+        self.timer = QtCore.QTimer()
+        self.timer.setInterval(500)
+        self.timer.timeout.connect(self.update_interface)
+        self.timer.start()
 
 
         '''

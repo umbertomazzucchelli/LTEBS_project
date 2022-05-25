@@ -158,6 +158,7 @@ int main(void)
     int16 xData[32];
     int16 yData[32];
     int16 zData[32];
+    uint8_t dataSend[194];
 
     uint8_t regSetting;
 
@@ -207,13 +208,24 @@ int main(void)
                 if(error == NO_ERROR && (fifoFull & 0x40)>>6)
                 {
                     I2C_Peripheral_ReadRegisterMulti(LIS3DH_DEVICE_ADDRESS,LIS3DH_OUT_X_L,regCount,data);
-                    UART_PutString("Data ready\n");
+                    //UART_PutString("Data ready\n");
+                    dataSend[0]= 0x0A;
+                    dataSend[97]=0x0B;
                     for(int i = 0; i<32;i++)
                     {
                         xData[i] = (int16) (data[i*6] | (data[i*6+1]<<8))>>6;
                         yData[i] = (int16) (data[i*6+2] | (data[i*6+3]<<8))>>6;
                         zData[i] = (int16) (data[i*6+4] | (data[i*6+5]<<8))>>6;
                     }
+                    dataSend[0]=0x0A;
+                    dataSend[193]=0x0B;
+                    for(int i=1;i<193;i++)
+                    {
+                        dataSend[i]=data[i-1];
+                    }
+                    UART_PutArray(dataSend,194);
+                    
+                    /*
                     for(int j = 0; j<32;j++)
                     {
                         sprintf(message, "%d",xData[j]);
@@ -234,6 +246,9 @@ int main(void)
                         UART_PutString(message);
                        //UART_PutString("\n");
                     }
+                    */
+                    
+                    
                     regSetting=0x00;
                     error = I2C_Peripheral_WriteRegister(LIS3DH_DEVICE_ADDRESS,LIS3DH_FIFO_CTRL_REG,regSetting);
                     regSetting=0x40;
