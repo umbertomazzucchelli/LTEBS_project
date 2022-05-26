@@ -153,14 +153,15 @@ int main(void)
    
     
     int16 regCount = 192;
-    uint8_t data[192];
+    int8_t data[192];
     uint8_t fifoFull;
     int16 xData[32];
     int16 yData[32];
     int16 zData[32];
-    uint8_t dataSend[194];
+    int8_t dataSend[194];
 
     uint8_t regSetting;
+    char arrayToSend[194];
 
     status=0;
     
@@ -223,28 +224,37 @@ int main(void)
                     {
                         dataSend[i]=data[i-1];
                     }
-                    UART_PutArray(dataSend,194);
-                    
                     /*
+                    for(int i=0;i<194;i++)
+                    {
+                        sprintf(message, "%d,",dataSend[i]);
+                        UART_PutString(message);
+                        //UART_PutString("\n");
+                    }
+                    */
+                    UART_PutArray(dataSend,194);
+            
+                    /*
+                    UART_PutString("x data \n");
                     for(int j = 0; j<32;j++)
                     {
                         sprintf(message, "%d",xData[j]);
                         UART_PutString(message);
-                        //UART_PutString("\n");
+                        UART_PutString("\n");
                     }
-                    UART_PutString("\n");
+                    UART_PutString("y data \n");
                     for(int j = 0; j<32;j++)
                     {
                         sprintf(message, "%d",yData[j]);
                         UART_PutString(message);
-                        //UART_PutString("\n");
+                        UART_PutString("\n");
                     }
-                    UART_PutString("\n");
+                    UART_PutString("z data \n");
                     for(int j = 0; j<32;j++)
                     {
                         sprintf(message, "%d",zData[j]);
                         UART_PutString(message);
-                       //UART_PutString("\n");
+                        UART_PutString("\n");
                     }
                     */
                     

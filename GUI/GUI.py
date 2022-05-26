@@ -23,12 +23,21 @@ STATUS=True
 PORT = ""
 TRANSMITTING = False
 STARTED = False
-dataSize = 32
-xData = np.zeros(dataSize)
-yData = np.zeros(dataSize)
-zData = np.zeros(dataSize)
+dataSize = 192
+accData = []
+axisSize = dataSize//6
+xData = np.full(axisSize,0,dtype=np.int16)
+yData = np.full(axisSize,0,dtype=np.int16)
+zData = np.full(axisSize,0,dtype=np.int16)
+'''
+xData = np.zeros(axisSize)
+xData = xData.astype("int16")
+yData = np.zeros(axisSize)
+yData = yData.astype("int16")
+zData = np.zeros(axisSize)
+zData = zData.astype("int16")
 dataBuffer = np.zeros(96+3)#96 data + 3 separator values
-
+'''
 #Logging config
 logging.basicConfig(format="%(message)s", level=logging.INFO)
 
@@ -119,7 +128,7 @@ class SerialWorker(QRunnable):
         try:
             while(self.port.in_waiting>0):
                 testString+=self.port.read().decode('utf-8', errors='replace')
-                logging.info(self.port.in_waiting)
+                #logging.info(self.port.in_waiting)
             logging.info("Received: {}".format(testString))
             return testString
         except:
@@ -161,15 +170,43 @@ class SerialWorker(QRunnable):
     def readData(self):
         global TRANSMITTING
         global STATUS
+        global accData, xData, yData, zData
+
+  
         
         #self.serial_worker = SerialWorker(PORT)
-        
-        dataArray = self.port.read(194)
-        dataArray = struct.unpack('194B',dataArray)
-        print(dataArray)
-            
-            
-        #print(dataArray)
+        try:
+            dataArray = self.port.read(194)
+            dataArray = struct.unpack('194B',dataArray)
+            lastIndex = len(dataArray)-1
+            if(dataArray[0]==10 and dataArray[lastIndex]==11):
+                accData = dataArray[1:193]
+                for i in range(axisSize):
+                    xData[i] =  (accData[i*6] | (accData[i*6+1]<<8))>>6
+                    yData[i] =  (accData[i*6+2] | (accData[i*6+3]<<8))>>6
+                    zData[i] =  (accData[i*6+4] | (accData[i*6+5]<<8))>>6
+            '''
+            print(dataArray)
+            print(accData)
+            print("X data:")
+            print(xData)
+            print("Y data:")
+            print(yData)
+            print("Z data:")   
+            print(zData)
+            #print(dataArray)
+            '''
+        except:
+            self.killed()
+            self.dlg3 = QMessageBox(self)
+            self.dlg3.setWindowTitle("WARNING")
+            self.dlg3.setText("Connection lost, reconnect the device before proceeding")
+            self.dlg3.setStandardButtons(QMessageBox.Ok)
+            self.dlg3.setIcon(QMessageBox.Critical)
+            button=self.dlg3.exec_()
+            if(button==QMessageBox.Ok):
+                self.dlg3.accept()
+
         '''
         while(TRANSMITTING==True):
     
@@ -352,7 +389,7 @@ class MainWindow(QMainWindow):
                 p.name
                 for p in serial.tools.list_ports.comports()
             ]
-            self.conn_btn.setText("Searching device...") 
+            
             for i in range(len(serial_ports)):
                 self.port_text=serial_ports[i]
 
@@ -367,7 +404,7 @@ class MainWindow(QMainWindow):
                 time.sleep(1)
                 if(CONN_STATUS==True):
                     break
-            
+            self.conn_btn.setText("Searching device...") 
             
             #self.checkToggle = bool(True)
             
@@ -378,6 +415,7 @@ class MainWindow(QMainWindow):
             self.serial_worker.killed()
             #self.com_list_widget.setDisabled(False) # enable the possibility to change port
             self.conn_btn.setText("Device search")
+            self.updateBtn.setDisabled
             
 
     def check_serialport_status(self, port_name, status):
