@@ -185,7 +185,7 @@ class SerialWorker(QRunnable):
                     xData[i] =  (accData[i*6] | (accData[i*6+1]<<8))>>6
                     yData[i] =  (accData[i*6+2] | (accData[i*6+3]<<8))>>6
                     zData[i] =  (accData[i*6+4] | (accData[i*6+5]<<8))>>6
-            '''
+            
             print(dataArray)
             print(accData)
             print("X data:")
@@ -195,7 +195,7 @@ class SerialWorker(QRunnable):
             print("Z data:")   
             print(zData)
             #print(dataArray)
-            '''
+            
         except:
             self.killed()
             self.dlg3 = QMessageBox(self)

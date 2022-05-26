@@ -2,7 +2,7 @@
 --	Conversion of Project4.v to vh2:
 --
 --	Cypress Semiconductor - WARP Version 6.3 IR 41
---	Thu May 26 10:33:12 2022
+--	Thu May 26 15:33:59 2022
 --
 
 USE cypress.cypress.all;
@@ -1809,7 +1809,7 @@ KIT_059_1:cy_annotation_universal_v1_0
 		clock=>\UART_BT:BUART:clock_op\,
 		status=>(zero, \UART_BT:BUART:rx_status_5\, \UART_BT:BUART:rx_status_4\, \UART_BT:BUART:rx_status_3\,
 			\UART_BT:BUART:rx_status_2\, zero, zero),
-		interrupt=>\UART_BT:BUART:rx_interrupt_out\);
+		interrupt=>Net_66);
 Rx_BT:cy_psoc3_pins_v1_10
 	GENERIC MAP(id=>"1425177d-0d0e-4468-8bcc-e638e5509a9b",
 		drive_mode=>"001",
@@ -2855,6 +2855,10 @@ Pin_LED_info:cy_psoc3_pins_v1_10
 		out_clock_en=>one,
 		out_reset=>zero,
 		interrupt=>tmpINTERRUPT_0__Pin_LED_info_net_0);
+isr_RX_BT:cy_isr_v1_0
+	GENERIC MAP(int_type=>"10",
+		is_nmi=>'0')
+	PORT MAP(int_signal=>Net_66);
 \UART_BT:BUART:reset_reg\:cy_dff
 	PORT MAP(d=>zero,
 		clk=>\UART_BT:BUART:clock_op\,

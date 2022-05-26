@@ -10,7 +10,7 @@
  * ========================================
 */
 // Include header
-#include "InterruptRoutines.h"
+#include "InterruptRoutinesBT.h"
 
 // Include required header files
 #include "project.h"
@@ -20,12 +20,12 @@ uint8 ch_received;
 uint16_t FS_received;
 uint16_t So_received;
 
-CY_ISR(Custom_ISR_RX)
+CY_ISR(Custom_ISR_RX_BT)
 {
     // Non-blocking call to get the latest data recieved
-    ch_received = UART_GetChar();
-    FS_received = UART_GetByte();   // byte contains FS values
-    So_received = UART_GetByte();   // byte contains So values
+    ch_received = UART_BT_GetChar();
+    FS_received = UART_BT_GetByte();   // byte contains FS values
+    So_received = UART_BT_GetByte();   // byte contains So values
 
         
     // Set flags based on UART command
@@ -45,8 +45,8 @@ CY_ISR(Custom_ISR_RX)
         //connection
         case 'T':
         case 't':
-            //UART_BT_PutString("HR/RR sensor");
-            UART_PutString("HR/RR sensor");
+            UART_BT_PutString("HR/RR sensor");
+            //UART_PutString("HR/RR sensor");
             break;
             
         //initialization

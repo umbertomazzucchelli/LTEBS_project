@@ -14,6 +14,7 @@
 #include "I2C_Interface.h"
 #include "LIS3DH.h"
 #include "InterruptRoutines.h"
+#include "InterruptRoutinesBT.h"
 #include "EEPROM_Custom.h"
 #include "Defines.h"
 
@@ -36,6 +37,7 @@ int main(void)
     UART_BT_Start();
     UART_Start();
     isr_RX_StartEx(Custom_ISR_RX);
+    isr_RX_BT_StartEx(Custom_ISR_RX_BT);
     EEPROM_Custom_Start();
     
     CyDelay(5); //"The boot procedure is complete about 5 ms after device power-up."
@@ -53,32 +55,38 @@ int main(void)
     
     /*      I2C Master Read - STATUS Register       */
     UART_PutString("\r\nStatus reg \r\n");
+    UART_BT_PutString("\r\nStatus reg \r\n");
     uint8_t status_reg=0x00;
     readReg(status_reg,LIS3DH_STATUS_REG);
 
     
     /*      I2C Master Read - CTRL Register 1       */
     UART_PutString("\r\nCTRL reg1 \r\n");
+    UART_BT_PutString("\r\nCTRL reg1 \r\n");
     uint8_t control_reg=0x00;
     readReg(control_reg, LIS3DH_CTRL_REG1);
 
     /*      I2C Master Read - CTRL Register 3      */
     UART_PutString("\r\nCTRL reg3 \r\n");
+    UART_BT_PutString("\r\nCTRL reg3 \r\n");
     uint8_t control_reg_3=0x00;
     readReg(control_reg_3, LIS3DH_CTRL_REG3);
     
     /*      I2C Master Read - CTRL Register 4      */
     UART_PutString("\r\nCTRL reg4 \r\n");
+    UART_BT_PutString("\r\nCTRL reg4 \r\n");
     uint8_t control_reg_4=0x00;
     readReg(control_reg_4, LIS3DH_CTRL_REG4);
     
     /*      I2C Master Read - CTRL Register 5       */
     UART_PutString("\r\nCTRL reg5 \r\n");
+    UART_BT_PutString("\r\nCTRL reg5 \r\n");
     uint8_t control_reg_5=0x00;
     readReg(control_reg_5, LIS3DH_CTRL_REG5);
 
     /*      I2C Master Read - FIFO CTRL Register     */
     UART_PutString("\r\nFIFO REG \r\n");
+    UART_BT_PutString("\r\nFIFO REG \r\n");
     uint8_t FIFO_control_reg=0x00;
     readReg(FIFO_control_reg, LIS3DH_FIFO_CTRL_REG);
    
@@ -88,6 +96,8 @@ int main(void)
     /******************************************/
     
     UART_PutString("\r\nSetting ctrl reg1 \r\n");
+    UART_BT_PutString("\r\nSetting ctrl reg1 \r\n");
+    
     if (control_reg != LIS3DH_NORMAL_MODE_CTRL_REG1)
     {
         control_reg = LIS3DH_NORMAL_MODE_CTRL_REG1;
@@ -166,6 +176,7 @@ int main(void)
     status=0;
     
     UART_PutString("\r\nConfiguration complete\r\n");
+    UART_BT_PutString("\r\nConfiguration complete\r\n");
     
     regSetting=0x00;
     error = I2C_Peripheral_WriteRegister(LIS3DH_DEVICE_ADDRESS,LIS3DH_FIFO_CTRL_REG,regSetting);
@@ -195,6 +206,7 @@ int main(void)
                 setReg(((So[1]<<3)|control_reg), LIS3DH_CTRL_REG1);     //msb in CTRL_REG_1[3]
                 
                 UART_PutString("\r\nFull Scale and Sensitivity settings retrieved and set\r\n");
+                UART_BT_PutString("\r\nFull Scale and Sensitivity settings retrieved and set\r\n");
                 
                 status = 0;
    
@@ -233,6 +245,7 @@ int main(void)
                     }
                     */
                     UART_PutArray(dataSend,194);
+                    UART_BT_PutArray(dataSend, 194); //send data via BT
             
                     /*
                     UART_PutString("x data \n");
@@ -274,6 +287,8 @@ int main(void)
 ////                I2C_Peripheral_Stop();
 ////                UART_BT_Stop();
 ////                UART_Stop();
+                UART_BT_PutString("turn off device");
+                UART_PutString("turn off device");
                 status = 0;
                 
                 break;

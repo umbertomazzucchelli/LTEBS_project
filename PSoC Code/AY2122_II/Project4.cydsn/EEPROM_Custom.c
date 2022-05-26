@@ -60,12 +60,14 @@ void EEPROM_save_status(uint8_t FullScale, uint8_t Sensitivity[])
     // saves Full Scale value
     cystatus return_value = EEPROM_WriteByte(FullScale, EEPROM_BASE_ADDRESS_0);
     UART_PutString("Saving FULL SCALE ... \r\n");
+    UART_BT_PutString("Saving FULL SCALE ... \r\n");
     UART_message(return_value);
     
     // Saves Sensitivity value
     return_value = EEPROM_WriteByte(Sensitivity[0], EEPROM_BASE_ADDRESS_0+1);
     return_value = EEPROM_WriteByte(Sensitivity[1], EEPROM_BASE_ADDRESS_0+2);
     UART_PutString("Saving SENSITIVTY ... \r\n");
+    UART_BT_PutString("Saving SENSITIVTY ... \r\n");
     UART_message(return_value);
     
 }

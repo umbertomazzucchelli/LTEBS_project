@@ -1,5 +1,5 @@
 -- Project:   Project4
--- Generated: 05/26/2022 10:33:13
+-- Generated: 05/26/2022 15:34:01
 -- PSoC Creator  4.4
 
 ENTITY Project4 IS
@@ -46,6 +46,7 @@ ARCHITECTURE __DEFAULT__ OF Project4 IS
     SIGNAL Net_209 : bit;
     SIGNAL Net_210 : bit;
     SIGNAL Net_63 : bit;
+    SIGNAL Net_66 : bit;
     SIGNAL Net_67 : bit;
     SIGNAL Net_72 : bit;
     ATTRIBUTE udbclken_assigned OF Net_72 : SIGNAL IS "True";
@@ -1719,7 +1720,8 @@ BEGIN
             status_3 => \UART_BT:BUART:rx_status_3\,
             status_2 => open,
             status_1 => open,
-            status_0 => open);
+            status_0 => open,
+            interrupt => Net_66);
 
     \Timer_LED:TimerHW\:timercell
         GENERIC MAP(
@@ -2015,6 +2017,14 @@ BEGIN
             is_nmi => 0)
         PORT MAP(
             interrupt => Net_209,
+            clock => ClockBlock_BUS_CLK);
+
+    isr_RX_BT:interrupt
+        GENERIC MAP(
+            int_type => "10",
+            is_nmi => 0)
+        PORT MAP(
+            interrupt => Net_66,
             clock => ClockBlock_BUS_CLK);
 
     \UART_BT:BUART:txn\:macrocell
