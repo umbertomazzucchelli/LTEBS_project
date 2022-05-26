@@ -29,6 +29,7 @@ axisSize = dataSize//6
 xData = np.full(axisSize,0,dtype=np.int16)
 yData = np.full(axisSize,0,dtype=np.int16)
 zData = np.full(axisSize,0,dtype=np.int16)
+clock = np.zeros(axisSize)
 '''
 xData = np.zeros(axisSize)
 xData = xData.astype("int16")
@@ -185,7 +186,10 @@ class SerialWorker(QRunnable):
                     xData[i] =  (accData[i*6] | (accData[i*6+1]<<8))>>6
                     yData[i] =  (accData[i*6+2] | (accData[i*6+3]<<8))>>6
                     zData[i] =  (accData[i*6+4] | (accData[i*6+5]<<8))>>6
-            
+                    clock[i]= i+1
+
+            print('clock data:')
+            print(clock)
             print(dataArray)
             print(accData)
             print("X data:")
@@ -326,11 +330,6 @@ class MainWindow(QMainWindow):
         modeSelection.setContentsMargins(20,20,20,20)
         modeSelection.setSpacing(20)
 
-        # Some random data
-        self.hour = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
-        self.temperature1 = [30, 32, 34, 32, 33, 31, 29, 32, 35, 45]
-        self.temperature2 = [16, 20, 17, 23, 30, 25, 28, 26, 22, 32]
-
         # Plot settings
             # Add grid
         self.graphWidget.showGrid(x=True, y=True)
@@ -353,8 +352,9 @@ class MainWindow(QMainWindow):
         """!
         @brief Draw the plots.
         """
-        self.temp1line = self.plot(self.graphWidget, self.hour, self.temperature1, 'Temp 1', 'r')
-        self.temp2line = self.plot(self.graphWidget, self.hour, self.temperature2, 'Temp 2', 'b')
+        self.xasis = self.plot(self.graphWidget,clock,xData,'x axis','g')
+        self.yaxis = self.plot(self.graphWidget,clock,yData,'y axis','b')
+        self.zaxis = self.plot(self.graphWidget,clock,zData,'z axis','m')
 
     def plot(self, graph, x, y, curve_name, color):
         """!
