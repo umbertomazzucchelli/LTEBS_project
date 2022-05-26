@@ -186,8 +186,10 @@ class SerialWorker(QRunnable):
                     xData[i] =  (accData[i*6] | (accData[i*6+1]<<8))>>6
                     yData[i] =  (accData[i*6+2] | (accData[i*6+3]<<8))>>6
                     zData[i] =  (accData[i*6+4] | (accData[i*6+5]<<8))>>6
-                    clock[i]= i+1
-
+                    clock[i] = i+1
+            
+            
+            
             print('clock data:')
             print(clock)
             print(dataArray)
@@ -233,6 +235,7 @@ class SerialWorker(QRunnable):
 ###############
 class MainWindow(QMainWindow):
 
+    global clock
     def __init__(self):
         """!
         @brief Init MainWindow.
@@ -244,7 +247,7 @@ class MainWindow(QMainWindow):
         super(MainWindow, self).__init__()
 
         # title and geometry
-        self.setWindowTitle("GUI")
+        self.setWindowTitle("Respiratory / Heart Rate Measurement")
         width = 1280
         height = 720
         self.setFixedSize(width, height)
@@ -336,18 +339,23 @@ class MainWindow(QMainWindow):
             # Set background color
         self.graphWidget.setBackground('w')
             # Add title
-        self.graphWidget.setTitle("Temperature measurement")
+        self.graphWidget.setTitle("Accelerometer data")
             # Add axis labels
         styles = {'color':'k', 'font-size':'15px'}
-        self.graphWidget.setLabel('left', 'Temperature [°C]', **styles)
-        self.graphWidget.setLabel('bottom', 'Time [h]', **styles)
+        self.graphWidget.setLabel('left', 'Acc data', **styles)
+        self.graphWidget.setLabel('bottom', 'Time [s]', **styles)
             # Add legend
         self.graphWidget.addLegend()
 
         # Plot data: x, y values
         self.draw()
+        self.timer= QtCore.QTimer()
+        # self.timer.setInterval(50)
+        self.timer.timeout.connect(self.draw)
+        self.timer.start()
         
-
+       
+        
     def draw(self):
         """!
         @brief Draw the plots.
@@ -356,6 +364,20 @@ class MainWindow(QMainWindow):
         self.yaxis = self.plot(self.graphWidget,clock,yData,'y axis','b')
         self.zaxis = self.plot(self.graphWidget,clock,zData,'z axis','m')
 
+
+        '''
+        def update_plot_data(self):
+        global clock
+
+        clock=clock[1:]
+        self.clock.append(clock[-1] + 1)
+
+        self.xData = self.xData[1:]
+        self.xData.append(self.xData)
+
+        self.line.setData(clock,self.xData)
+        '''
+
     def plot(self, graph, x, y, curve_name, color):
         """!
         @brief Draw graph.
@@ -363,6 +385,18 @@ class MainWindow(QMainWindow):
         pen = pg.mkPen(color=color)
         line = graph.plot(x, y, name=curve_name, pen=pen)
         return line
+
+    '''
+    # function to scroll the plot
+
+
+    def update(self, line):
+    self.data_segment[self.ptr] = line[1] # gets new line from a Plot-Manager which updates all plots
+    self.ptr += 1 # counts the amount of samples
+    self.line_plot.setData(self.data_segment[:self.ptr]) # displays all read samples
+    self.line_plot.setPos(-self.ptr, 0) # shifts the plot to the left so it scrolls
+
+    '''
 
     ##################
     # SERIAL SIGNALS #
