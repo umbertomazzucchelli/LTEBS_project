@@ -4,6 +4,7 @@ from telnetlib import STATUS
 import time
 import logging
 import numpy as np
+import matplotlib 
 
 from PyQt5.QtWidgets import * 
 from PyQt5 import QtCore, QtGui
@@ -184,7 +185,7 @@ class SerialWorker(QRunnable):
                     xData[i] =  (accData[i*6] | (accData[i*6+1]<<8))>>6
                     yData[i] =  (accData[i*6+2] | (accData[i*6+3]<<8))>>6
                     zData[i] =  (accData[i*6+4] | (accData[i*6+5]<<8))>>6
-                    #clock[i] = i+1         
+                        
             '''
             print('clock data:')
             print(clock)
@@ -254,7 +255,7 @@ class MainWindow(QMainWindow):
         #self.serialscan()
   
         self.initUI()
-
+    
     #####################
     # GRAPHIC INTERFACE #
     #####################
@@ -269,43 +270,64 @@ class MainWindow(QMainWindow):
             # Add grid
         self.graphWidget.showGrid(x=True, y=True)
             # Set background color
-        self.graphWidget.setBackground('w')
+        self.graphWidget.setBackground('bbccdd')   #color in exa
             # Add title
-        self.graphWidget.setTitle("Accelerometer data")
+        self.graphWidget.setTitle("Accelerometer data",color="b", size="15pt",italic=True)
             # Add axis labels
         styles = {'color':'k', 'font-size':'15px'}
         self.graphWidget.setLabel('left', 'Acc data', **styles)
         self.graphWidget.setLabel('bottom', 'Time [s]', **styles)
             # Add legend
 
-        penx = pg.mkPen(color=(255,0,0))
-        peny = pg.mkPen(color=(0,255,0))
-        penz = pg.mkPen(color=(0,0,255))
+        #pen = pg.mkPen(color=(255,255,255))
 
         self.h = list(range(320))  #100 time points
         self.x = [0]*320
         self.y = [0]*320
         self.z = [0]*320
         self.count = 0
-
+        self.draw()
+        '''
         self.dataLinex = self.graphWidget.plot(self.h,self.x)
         self.dataLiney = self.graphWidget.plot(self.h,self.y)
         self.dataLinez = self.graphWidget.plot(self.h,self.z)
+        '''
         #self.graphWidget.setYRange(0,1024)
         self.graphWidget.addLegend()
 
         # Plot data: x, y values
         self.drawGeneralGraph()
+        self.graphWidget.addLegend()
 
+        # Toolbar
+        toolbar = QToolBar("My main toolbar")   #my toolbar
+        toolbar.setIconSize(QSize(16, 16))
+        self.addToolBar(toolbar)
+        #button_action = QAction("File", self)       # name of the toolbar
+
+        button_action=QAction(QIcon("disk_return_black.png"),"Save Data", self)  #home icon
+        button_action.setStatusTip("My botton")
+        button_action.setCheckable(True)    #now I can press it
+        toolbar.addAction(button_action)
+        toolbar.addSeparator()
+        button_action2 = QAction(QIcon("home.png"), "Your &button2",self)
+        toolbar.addAction(button_action2)
+        menu = self.menuBar()
+        file_menu = menu.addMenu("&File")
+        file_menu.addAction(button_action)
+
+    
         self.conn_btn = QPushButton(
             #text=("Connect to port {}".format(self.port_text)), 
             text=("Device search"), 
             checkable=True,
             toggled=self.on_toggle)
-
+        
         self.updateBtn = QPushButton(
             text = "Start", checkable= True, toggled = self.dataUpdate
         )
+        self.updateBtn.setIcon(QtGui.QIcon('application-monitor.png'))
+        self.updateBtn.setIconSize(QtCore.QSize(25,25))
 
         self.modeSelect = QComboBox()
         self.modeSelect.setEditable(False)
@@ -421,12 +443,22 @@ class MainWindow(QMainWindow):
 
         self.line.setData(clock,self.xData)
         '''
+    def draw(self):
+        """!
+             @brief Draw the plots.
+        """
+        global accData, xData, yData, zData
 
+        self.dataLinex = self.plot(self.graphWidget,clock,xData,'x-axis','r')
+        self.dataLiney = self.plot(self.graphWidget,clock,yData,'y-axis','g')
+        self.dataLinez = self.plot(self.graphWidget,clock,zData,'z-axis','b')
+
+    
     def plot(self, graph, x, y, curve_name, color):
         """!
         @brief Draw graph.
         """
-        pen = pg.mkPen(color=color)
+        pen = pg.mkPen(color=color,width=3)
         line = graph.plot(x, y, name=curve_name, pen=pen)
         return line
 
