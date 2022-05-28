@@ -173,8 +173,6 @@ class SerialWorker(QRunnable):
         global STATUS
         global accData, xData, yData, zData
 
-  
-        
         #self.serial_worker = SerialWorker(PORT)
         try:
             dataArray = self.port.read(194)
@@ -186,8 +184,8 @@ class SerialWorker(QRunnable):
                     xData[i] =  (accData[i*6] | (accData[i*6+1]<<8))>>6
                     yData[i] =  (accData[i*6+2] | (accData[i*6+3]<<8))>>6
                     zData[i] =  (accData[i*6+4] | (accData[i*6+5]<<8))>>6
-                    clock[i] = i+1         
-            
+                    #clock[i] = i+1         
+            '''
             print('clock data:')
             print(clock)
             print(dataArray)
@@ -199,7 +197,7 @@ class SerialWorker(QRunnable):
             print("Z data:")   
             print(zData)
             #print(dataArray)
-            
+            '''
         except:
             self.killed()
             self.dlg3 = QMessageBox(self)
@@ -238,7 +236,6 @@ class MainWindow(QMainWindow):
         """!
         @brief Init MainWindow.
         """
-
         #Define worker
         self.serial_worker = SerialWorker(None)
 
@@ -283,11 +280,15 @@ class MainWindow(QMainWindow):
 
         pen = pg.mkPen(color=(255,255,255))
 
-        self.x = list(range(320))  #100 time points
+        self.h = list(range(320))  #100 time points
+        self.x = [0]*320
         self.y = [0]*320
+        self.z = [0]*320
         self.count = 0
 
-        self.dataLine = self.graphWidget.plot(self.x,self.y)
+        self.dataLinex = self.graphWidget.plot(self.h,self.x)
+        self.dataLiney = self.graphWidget.plot(self.h,self.y)
+        self.dataLinez = self.graphWidget.plot(self.h,self.z)
         #self.graphWidget.setYRange(0,1024)
         self.graphWidget.addLegend()
 
@@ -357,7 +358,23 @@ class MainWindow(QMainWindow):
         """!
         @brief Draw the plots.
         """
-        global zData
+        global xData, yData, zData
+        # x-axis
+        for i in range(len(xData)):
+
+            # Remove the first y element.
+            if(self.count<321):
+                
+                self.count += 1
+            else:
+                self.h = self.h[1:]
+                self.h.append(self.h[-1] + 1)  # Add a new value 1 higher than the last.
+
+            self.x = self.x[1:]  # Remove the first 
+            self.x.append(xData[i])  #  Add a new random value.
+
+            self.dataLinex.setData(self.h, self.x)  # Update the data.
+        # y-axis
         for i in range(len(zData)):
 
             # Remove the first y element.
@@ -365,13 +382,28 @@ class MainWindow(QMainWindow):
                 
                 self.count += 1
             else:
-                self.x = self.x[1:]
-                self.x.append(self.x[-1] + 1)  # Add a new value 1 higher than the last.
+                self.h = self.h[1:]
+                self.h.append(self.h[-1] + 1)  # Add a new value 1 higher than the last.
 
             self.y = self.y[1:]  # Remove the first 
             self.y.append(zData[i])  #  Add a new random value.
 
-            self.dataLine.setData(self.x, self.y)  # Update the data.
+            self.dataLiney.setData(self.h, self.y)  # Update the data.
+        # z-axis
+        for i in range(len(zData)):
+
+            # Remove the first y element.
+            if(self.count<321):
+                
+                self.count += 1
+            else:
+                self.h = self.h[1:]
+                self.h.append(self.h[-1] + 1)  # Add a new value 1 higher than the last.
+
+            self.z = self.z[1:]  # Remove the first 
+            self.z.append(zData[i])  #  Add a new random value.
+
+            self.dataLinez.setData(self.h, self.z)  # Update the data.
 
 
 
