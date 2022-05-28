@@ -186,9 +186,7 @@ class SerialWorker(QRunnable):
                     xData[i] =  (accData[i*6] | (accData[i*6+1]<<8))>>6
                     yData[i] =  (accData[i*6+2] | (accData[i*6+3]<<8))>>6
                     zData[i] =  (accData[i*6+4] | (accData[i*6+5]<<8))>>6
-                    clock[i] = i+1
-            
-            
+                    clock[i] = i+1         
             
             print('clock data:')
             print(clock)
@@ -269,15 +267,32 @@ class MainWindow(QMainWindow):
         """
         # Create the plot widget
         self.graphWidget = PlotWidget()
-        # Define buttons
-        self.clear_btn = QPushButton(
-            text="Clear",
-            clicked=self.graphWidget.clear # .clear() is a method of the PlotWidget class
-        )
-        self.draw_btn = QPushButton(
-            text="Draw",
-            clicked=self.draw
-        )
+
+        # Plot settings
+            # Add grid
+        self.graphWidget.showGrid(x=True, y=True)
+            # Set background color
+        self.graphWidget.setBackground('w')
+            # Add title
+        self.graphWidget.setTitle("Accelerometer data")
+            # Add axis labels
+        styles = {'color':'k', 'font-size':'15px'}
+        self.graphWidget.setLabel('left', 'Acc data', **styles)
+        self.graphWidget.setLabel('bottom', 'Time [s]', **styles)
+            # Add legend
+
+        pen = pg.mkPen(color=(255,255,255))
+
+        self.x = list(range(320))  #100 time points
+        self.y = [0]*320
+        self.count = 0
+
+        self.dataLine = self.graphWidget.plot(self.x,self.y)
+        #self.graphWidget.setYRange(0,1024)
+        self.graphWidget.addLegend()
+
+        # Plot data: x, y values
+        self.drawGeneralGraph()
 
         self.conn_btn = QPushButton(
             #text=("Connect to port {}".format(self.port_text)), 
@@ -295,7 +310,9 @@ class MainWindow(QMainWindow):
 
         self.timer = QtCore.QTimer()
         self.timer.setInterval(1000)
-        
+
+        self.graphTimer= QtCore.QTimer()
+        self.graphTimer.setInterval(500)
 
         '''
         #mostra dialog di errore se il psoc è stato disconnesso per sbaglio
@@ -332,37 +349,30 @@ class MainWindow(QMainWindow):
 
         modeSelection.setContentsMargins(20,20,20,20)
         modeSelection.setSpacing(20)
-
-        # Plot settings
-            # Add grid
-        self.graphWidget.showGrid(x=True, y=True)
-            # Set background color
-        self.graphWidget.setBackground('w')
-            # Add title
-        self.graphWidget.setTitle("Accelerometer data")
-            # Add axis labels
-        styles = {'color':'k', 'font-size':'15px'}
-        self.graphWidget.setLabel('left', 'Acc data', **styles)
-        self.graphWidget.setLabel('bottom', 'Time [s]', **styles)
-            # Add legend
-        self.graphWidget.addLegend()
-
-        # Plot data: x, y values
-        self.draw()
-        self.timer= QtCore.QTimer()
-        # self.timer.setInterval(50)
-        self.timer.timeout.connect(self.draw)
-        self.timer.start()
+        
         
        
         
-    def draw(self):
+    def drawGeneralGraph(self):
         """!
         @brief Draw the plots.
         """
-        self.xasis = self.plot(self.graphWidget,clock,xData,'x axis','g')
-        self.yaxis = self.plot(self.graphWidget,clock,yData,'y axis','b')
-        self.zaxis = self.plot(self.graphWidget,clock,zData,'z axis','m')
+        global zData
+        for i in range(len(zData)):
+
+            # Remove the first y element.
+            if(self.count<321):
+                
+                self.count += 1
+            else:
+                self.x = self.x[1:]
+                self.x.append(self.x[-1] + 1)  # Add a new value 1 higher than the last.
+
+            self.y = self.y[1:]  # Remove the first 
+            self.y.append(zData[i])  #  Add a new random value.
+
+            self.dataLine.setData(self.x, self.y)  # Update the data.
+
 
 
         '''
@@ -494,6 +504,8 @@ class MainWindow(QMainWindow):
             TRANSMITTING = True
             self.timer.timeout.connect(lambda: self.serial_worker.readData())
             self.timer.start()
+            self.graphTimer.timeout.connect(lambda: self.drawGeneralGraph())
+            self.graphTimer.start()
             
 
         else:
@@ -501,6 +513,7 @@ class MainWindow(QMainWindow):
             self.updateBtn.setText("Start")
             TRANSMITTING = False
             self.timer.stop()
+            self.graphTimer.stop()
 
 
 #############
