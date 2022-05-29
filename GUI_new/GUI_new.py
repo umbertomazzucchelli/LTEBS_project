@@ -280,8 +280,8 @@ class MainWindow(QMainWindow):
         self.graphWidget.setLabel('left', 'Acc data', **styles)
         self.graphWidget.setLabel('bottom', 'Time [ms]', **styles)
             # Add legend
-
-        #pen = pg.mkPen(color=(255,255,255))
+        self.graphWidget.addLegend()
+    
 
         self.horAxis = list(range(320))  #100 time points
         self.xGraph = [0]*320
@@ -295,11 +295,11 @@ class MainWindow(QMainWindow):
         self.dataLinez = self.graphWidget.plot(self.h,self.z)
         '''
         #self.graphWidget.setYRange(0,1024)
-        self.graphWidget.addLegend()
+        #self.graphWidget.addLegend()
 
         # Plot data: x, y values
         self.drawGeneralGraph()
-        self.graphWidget.addLegend()
+        #self.graphWidget.addLegend()
 
         # Toolbar
         toolbar = QToolBar("My main toolbar")   #my toolbar
@@ -318,7 +318,6 @@ class MainWindow(QMainWindow):
         menu = self.menuBar()
         file_menu = menu.addMenu("&File")
         file_menu.addAction(button_action)
-
     
         self.conn_btn = QPushButton(
             #text=("Connect to port {}".format(self.port_text)), 
@@ -332,10 +331,12 @@ class MainWindow(QMainWindow):
         self.updateBtn.setIcon(QtGui.QIcon('application-monitor.png'))
         self.updateBtn.setIconSize(QtCore.QSize(25,25))
 
+        # ModeSelect Combo-Box
         self.modeSelect = QComboBox()
         self.modeSelect.setEditable(False)
         self.modeSelect.addItems(["HR only", "RR only","Both"])
 
+        # CalibrationSelect Combo-Box
         self.calibrationSelect = QComboBox()
         self.calibrationSelect.setEditable(False)
         self.calibrationSelect.addItems(["Digit","Calibration +-2g", "Calibration +-4g"])
@@ -389,7 +390,6 @@ class MainWindow(QMainWindow):
         calibrationSelection.setContentsMargins(20,20,20,20)
         calibrationSelection.setSpacing(20)
         
-        
     def calibration (self, index):
         """
         @brief Curve calibration
@@ -399,16 +399,12 @@ class MainWindow(QMainWindow):
         #for i in range(axisSize):
         #self.graphWidget.clear()
 
-
-            
-
-
     def drawGeneralGraph(self):
         """!
         @brief Draw the plots.
         """
         global xData, yData, zData
-        # x-axis
+
         for i in range(len(xData)):
 
             # Remove the first y element.
@@ -419,42 +415,19 @@ class MainWindow(QMainWindow):
                 self.horAxis = self.horAxis[1:]
                 self.horAxis.append(self.horAxis[-1] + 1)  # Add a new value 1 higher than the last.
 
+            # X-axis
+            self.xGraph = self.xGraph[1:]  # Remove the first 
             self.xGraph.append(xData[i])  #  Add a new random value.
-
             self.dataLinex.setData(self.horAxis, self.xGraph)  # Update the data.
-        # y-axis
-        for i in range(len(yData)):
-
-            # Remove the first y element.
-            if(self.count<321):
-                
-                self.count += 1
-            else:
-                self.horAxis = self.horAxis[1:]
-                self.horAxis.append(self.horAxis[-1] + 1)  # Add a new value 1 higher than the last.
-
+            # Y-axis
             self.yGraph = self.yGraph[1:]  # Remove the first 
-            self.yGraph.append(zData[i])  #  Add a new random value.
-
+            self.yGraph.append(yData[i])  #  Add a new random value.
             self.dataLiney.setData(self.horAxis, self.yGraph)  # Update the data.
-        # z-axis
-        for i in range(len(zData)):
-
-            # Remove the first y element.
-            if(self.count<321):
-                
-                self.count += 1
-            else:
-                self.horAxis = self.horAxis[1:]
-                self.horAxis.append(self.horAxis[-1] + 1)  # Add a new value 1 higher than the last.
-
+            # Z-axis
             self.zGraph = self.zGraph[1:]  # Remove the first 
             self.zGraph.append(zData[i])  #  Add a new random value.
-
             self.dataLinez.setData(self.horAxis, self.zGraph)  # Update the data.
-
-
-
+        
         '''
         def update_plot_data(self):
         global clock
