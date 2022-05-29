@@ -10,7 +10,8 @@ import matplotlib
 from PyQt5.QtWidgets import * 
 from PyQt5 import QtCore, QtGui
 from PyQt5.QtGui import * 
-from PyQt5.QtCore import * 
+from PyQt5.QtCore import *
+from numpy.core.numeric import indices 
 
 # We import library dedicated to data plot
 import pyqtgraph as pg
@@ -32,6 +33,7 @@ xData = np.full(axisSize,0,dtype=np.int16)
 yData = np.full(axisSize,0,dtype=np.int16)
 zData = np.full(axisSize,0,dtype=np.int16)
 clock = np.zeros(axisSize)
+calibration_index= 0
 '''
 xData = np.zeros(axisSize)
 xData = xData.astype("int16")
@@ -174,42 +176,41 @@ class SerialWorker(QRunnable):
         global TRANSMITTING
         global STATUS
         global accData, xData, yData, zData
+        global calibration_index
 
         #self.serial_worker = SerialWorker(PORT)
-        try:
-            dataArray = self.port.read(194)
-            dataArray = struct.unpack('194B',dataArray)
-            lastIndex = len(dataArray)-1
-            if(dataArray[0]==10 and dataArray[lastIndex]==11):
-                accData = dataArray[1:193]
-                for i in range(axisSize):
-                    xData[i] =  (accData[i*6] | (accData[i*6+1]<<8))>>6
-                    yData[i] =  (accData[i*6+2] | (accData[i*6+3]<<8))>>6
-                    zData[i] =  (accData[i*6+4] | (accData[i*6+5]<<8))>>6
-                      
-            '''
-            print('clock data:')
-            print(clock)
-            print(dataArray)
-            print(accData)
-            print("X data:")
-            print(xData)
-            print("Y data:")
-            print(yData)
-            print("Z data:")   
-            print(zData)
-            #print(dataArray)
-            '''
-        except:
-            self.killed()
-            self.dlg3 = QMessageBox(self)
-            self.dlg3.setWindowTitle("WARNING")
-            self.dlg3.setText("Connection lost, reconnect the device before proceeding")
-            self.dlg3.setStandardButtons(QMessageBox.Ok)
-            self.dlg3.setIcon(QMessageBox.Critical)
-            button=self.dlg3.exec_()
-            if(button==QMessageBox.Ok):
-                self.dlg3.accept()
+
+        dataArray = self.port.read(194)
+        dataArray = struct.unpack('194B',dataArray)
+        lastIndex = len(dataArray)-1
+        if(dataArray[0]==10 and dataArray[lastIndex]==11):
+            accData = dataArray[1:193]
+            for i in range(axisSize):
+                xData[i] =  (accData[i*6] | (accData[i*6+1]<<8))>>6
+                yData[i] =  (accData[i*6+2] | (accData[i*6+3]<<8))>>6
+                zData[i] =  (accData[i*6+4] | (accData[i*6+5]<<8))>>6
+                if calibration_index==1:    #+-2g   
+                    xData[i]=xData[i]/256 -2
+                    yData[i]=yData[i]/256 -2
+                    zData[i]=zData[i]/256 -2
+                elif calibration_index==2:  #+- 4g
+                    xData[i]=xData[i]/128 -4
+                    yData[i]=yData[i]/128 -4
+                    zData[i]=zData[i]/128 -4
+                    
+        '''
+        print('clock data:')
+        print(clock)
+        print(dataArray)
+        print(accData)
+        print("X data:")
+        print(xData)
+        print("Y data:")
+        print(yData)
+        print("Z data:")   
+        print(zData)
+        #print(dataArray)
+        '''
 
         '''
         while(TRANSMITTING==True):
@@ -282,10 +283,10 @@ class MainWindow(QMainWindow):
 
         #pen = pg.mkPen(color=(255,255,255))
 
-        self.h = list(range(320))  #100 time points
-        self.x = [0]*320
-        self.y = [0]*320
-        self.z = [0]*320
+        self.horAxis = list(range(320))  #100 time points
+        self.xGraph = [0]*320
+        self.yGraph = [0]*320
+        self.zGraph = [0]*320
         self.count = 0
         self.draw()
         '''
@@ -303,6 +304,7 @@ class MainWindow(QMainWindow):
         # Toolbar
         toolbar = QToolBar("My main toolbar")   #my toolbar
         toolbar.setIconSize(QSize(16, 16))
+        toolbar.setMovable(False)
         self.addToolBar(toolbar)
         #button_action = QAction("File", self)       # name of the toolbar
 
@@ -335,7 +337,7 @@ class MainWindow(QMainWindow):
         self.modeSelect.addItems(["HR only", "RR only","Both"])
 
         self.calibrationSelect = QComboBox()
-        self.calibrationSelect.setEditable(True)
+        self.calibrationSelect.setEditable(False)
         self.calibrationSelect.addItems(["Digit","Calibration +-2g", "Calibration +-4g"])
         self.calibrationSelect.activated.connect(self.calibration)
 
@@ -343,7 +345,7 @@ class MainWindow(QMainWindow):
         self.timer.setInterval(1000)
 
         self.graphTimer= QtCore.QTimer()
-        self.graphTimer.setInterval(500)
+        self.graphTimer.setInterval(1000)
 
         '''
         #mostra dialog di errore se il psoc è stato disconnesso per sbaglio
@@ -392,22 +394,13 @@ class MainWindow(QMainWindow):
         """
         @brief Curve calibration
         """
-        global xData, yData, zData
-        ind = self.calibrationSelect.itemData(index)
-        for i in range(axisSize):
+        global calibration_index
+        calibration_index = self.calibrationSelect.itemData(index)
+        #for i in range(axisSize):
+        #self.graphWidget.clear()
 
-            if ind==0:  #digit
-                xData[i]=xData[i]
-                yData[i]=yData[i]
-                zData[i]=zData[i]
-            elif ind==1:    #+-2g   
-                xData[i]=xData[i]/256 -2
-                yData[i]=yData[i]/256 -2
-                zData[i]=zData[i]/256 -2
-            else :  #+- 4g
-                xData[i]=xData[i]/128 -2
-                yData[i]=yData[i]/128 -2
-                zData[i]=zData[i]/128 -2
+
+            
 
 
     def drawGeneralGraph(self):
@@ -423,28 +416,27 @@ class MainWindow(QMainWindow):
                 
                 self.count += 1
             else:
-                self.h = self.h[1:]
-                self.h.append(self.h[-1] + 1)  # Add a new value 1 higher than the last.
+                self.horAxis = self.horAxis[1:]
+                self.horAxis.append(self.horAxis[-1] + 1)  # Add a new value 1 higher than the last.
 
-            self.x = self.x[1:]  # Remove the first 
-            self.x.append(xData[i])  #  Add a new random value.
+            self.xGraph.append(xData[i])  #  Add a new random value.
 
-            self.dataLinex.setData(self.h, self.x)  # Update the data.
+            self.dataLinex.setData(self.horAxis, self.xGraph)  # Update the data.
         # y-axis
-        for i in range(len(zData)):
+        for i in range(len(yData)):
 
             # Remove the first y element.
             if(self.count<321):
                 
                 self.count += 1
             else:
-                self.h = self.h[1:]
-                self.h.append(self.h[-1] + 1)  # Add a new value 1 higher than the last.
+                self.horAxis = self.horAxis[1:]
+                self.horAxis.append(self.horAxis[-1] + 1)  # Add a new value 1 higher than the last.
 
-            self.y = self.y[1:]  # Remove the first 
-            self.y.append(zData[i])  #  Add a new random value.
+            self.yGraph = self.yGraph[1:]  # Remove the first 
+            self.yGraph.append(zData[i])  #  Add a new random value.
 
-            self.dataLiney.setData(self.h, self.y)  # Update the data.
+            self.dataLiney.setData(self.horAxis, self.yGraph)  # Update the data.
         # z-axis
         for i in range(len(zData)):
 
@@ -453,13 +445,13 @@ class MainWindow(QMainWindow):
                 
                 self.count += 1
             else:
-                self.h = self.h[1:]
-                self.h.append(self.h[-1] + 1)  # Add a new value 1 higher than the last.
+                self.horAxis = self.horAxis[1:]
+                self.horAxis.append(self.horAxis[-1] + 1)  # Add a new value 1 higher than the last.
 
-            self.z = self.z[1:]  # Remove the first 
-            self.z.append(zData[i])  #  Add a new random value.
+            self.zGraph = self.zGraph[1:]  # Remove the first 
+            self.zGraph.append(zData[i])  #  Add a new random value.
 
-            self.dataLinez.setData(self.h, self.z)  # Update the data.
+            self.dataLinez.setData(self.horAxis, self.zGraph)  # Update the data.
 
 
 
@@ -490,7 +482,7 @@ class MainWindow(QMainWindow):
         """!
         @brief Draw graph.
         """
-        pen = pg.mkPen(color=color,width=3)
+        pen = pg.mkPen(color=color,width=2)
         line = graph.plot(x, y, name=curve_name, pen=pen)
         return line
 
@@ -547,17 +539,19 @@ class MainWindow(QMainWindow):
                 if(CONN_STATUS==True):
                     break
             self.conn_btn.setText("Searching device...") 
+            self.updateBtn.setDisabled(False)
             
             #self.checkToggle = bool(True)
             
         else:
+           
             self.updateBtn.setChecked(False)
             # kill thread
             self.serial_worker.is_killed = True
             self.serial_worker.killed()
             #self.com_list_widget.setDisabled(False) # enable the possibility to change port
             self.conn_btn.setText("Device search")
-            self.updateBtn.setDisabled
+            self.updateBtn.setDisabled(True)
             
 
     def check_serialport_status(self, port_name, status):
@@ -599,6 +593,8 @@ class MainWindow(QMainWindow):
         if checked:
             self.serial_worker.send('a')
             self.updateBtn.setText("Stop")
+            self.modeSelect.setDisabled(True)
+            self.calibrationSelect.setDisabled(True)
             TRANSMITTING = True
             self.timer.timeout.connect(lambda: self.serial_worker.readData())
             self.timer.start()
@@ -612,6 +608,8 @@ class MainWindow(QMainWindow):
             TRANSMITTING = False
             self.timer.stop()
             self.graphTimer.stop()
+            self.modeSelect.setDisabled(False)
+            self.calibrationSelect.setDisabled(False)
 
 
 #############
