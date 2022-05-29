@@ -3,6 +3,7 @@ import sys
 from telnetlib import STATUS
 import time
 import logging
+from matplotlib.axis import XAxis
 import numpy as np
 import matplotlib 
 
@@ -185,7 +186,7 @@ class SerialWorker(QRunnable):
                     xData[i] =  (accData[i*6] | (accData[i*6+1]<<8))>>6
                     yData[i] =  (accData[i*6+2] | (accData[i*6+3]<<8))>>6
                     zData[i] =  (accData[i*6+4] | (accData[i*6+5]<<8))>>6
-                        
+                      
             '''
             print('clock data:')
             print(clock)
@@ -276,7 +277,7 @@ class MainWindow(QMainWindow):
             # Add axis labels
         styles = {'color':'k', 'font-size':'15px'}
         self.graphWidget.setLabel('left', 'Acc data', **styles)
-        self.graphWidget.setLabel('bottom', 'Time [s]', **styles)
+        self.graphWidget.setLabel('bottom', 'Time [ms]', **styles)
             # Add legend
 
         #pen = pg.mkPen(color=(255,255,255))
@@ -333,6 +334,11 @@ class MainWindow(QMainWindow):
         self.modeSelect.setEditable(False)
         self.modeSelect.addItems(["HR only", "RR only","Both"])
 
+        self.calibrationSelect = QComboBox()
+        self.calibrationSelect.setEditable(True)
+        self.calibrationSelect.addItems(["Digit","Calibration +-2g", "Calibration +-4g"])
+        self.calibrationSelect.activated.connect(self.calibration)
+
         self.timer = QtCore.QTimer()
         self.timer.setInterval(1000)
 
@@ -358,6 +364,9 @@ class MainWindow(QMainWindow):
         modeSelection = QHBoxLayout()
         modeSelection.addWidget(self.modeSelect)
         modeSelection.addWidget(self.updateBtn)
+        calibrationSelection = QHBoxLayout()
+        calibrationSelection.addWidget(self.calibrationSelect)
+        calibrationSelection.addWidget(self.updateBtn)
         dataGraph = QHBoxLayout()
         dataGraph.addWidget(self.graphWidget)
         RRHRgraphs = QHBoxLayout()
@@ -366,6 +375,7 @@ class MainWindow(QMainWindow):
         vlay = QVBoxLayout()
         vlay.addLayout(serialButton)
         vlay.addLayout(modeSelection)
+        vlay.addLayout(calibrationSelection)
         vlay.addLayout(dataGraph)
         vlay.addLayout(RRHRgraphs)
         widget = QWidget()
@@ -374,10 +384,32 @@ class MainWindow(QMainWindow):
 
         modeSelection.setContentsMargins(20,20,20,20)
         modeSelection.setSpacing(20)
+        calibrationSelection.setContentsMargins(20,20,20,20)
+        calibrationSelection.setSpacing(20)
         
         
-       
-        
+    def calibration (self, index):
+        """
+        @brief Curve calibration
+        """
+        global xData, yData, zData
+        ind = self.calibrationSelect.itemData(index)
+        for i in range(axisSize):
+
+            if ind==0:  #digit
+                xData[i]=xData[i]
+                yData[i]=yData[i]
+                zData[i]=zData[i]
+            elif ind==1:    #+-2g   
+                xData[i]=xData[i]/256 -2
+                yData[i]=yData[i]/256 -2
+                zData[i]=zData[i]/256 -2
+            else :  #+- 4g
+                xData[i]=xData[i]/128 -2
+                yData[i]=yData[i]/128 -2
+                zData[i]=zData[i]/128 -2
+
+
     def drawGeneralGraph(self):
         """!
         @brief Draw the plots.
