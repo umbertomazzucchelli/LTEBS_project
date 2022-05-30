@@ -378,7 +378,6 @@ class Ui_UserWindow(object):
         self.gridLayout.addWidget(self.RR_label, 1, 0, 1, 1)
         
         self.HR_plot = PlotWidget(self.centralwidget)
-        #self.HR_plot.setStyleSheet("background-color: rgb(255, 255, 255)")
         self.HR_plot.setObjectName("HR_plot")
         self.HR_plot.showGrid(x=True, y=True)
         self.HR_plot.setBackground("w")
@@ -392,28 +391,19 @@ class Ui_UserWindow(object):
         self.gridLayout_3.addLayout(self.verticalLayout, 0, 0, 1, 1)
         UserWindow.setCentralWidget(self.centralwidget)
 
-        #button_action=QAction(QIcon("disk_return_black.png"),"Save Data", self)  #home icon
-        #button_action.setStatusTip("My botton")
-        #button_action.setCheckable(True)
-
         self.toolBar = QtWidgets.QToolBar(UserWindow)
         self.toolBar.setObjectName("toolBar")
     
-        #self.toolBar.addAction(button_action)
         UserWindow.addToolBar(QtCore.Qt.TopToolBarArea, self.toolBar)
         UserWindow.insertToolBarBreak(self.toolBar)
 
         self.tool_save_data = QtWidgets.QAction(UserWindow)
-        self.tool_save_data.setObjectName("actionSave_data")
-        self.tool_save_data.setText("Save data")
-        #self.actionSave_data.setIcon(QIcon("disk_return_black.png"))
-        #self.actionSave_data.setIconVisibleInMenu(True)
-        #print(self.tool_save_data.isIconVisibleInMenu())
-        #self.actionSave_data = QAction(QIcon("disk_return_black.png"),"Save Data", self)
+        self.tool_save_data = QtWidgets.QAction(QIcon("disk_return_black.png"),"Save data")
         
         self.tool_save_status = QtWidgets.QAction(UserWindow)
         self.tool_save_status.setObjectName("actionSave_status")
         self.tool_save_status.setText("Save status")
+
         self.toolBar.setIconSize(QSize(16,16))
         
         self.toolBar.setMovable(False)
