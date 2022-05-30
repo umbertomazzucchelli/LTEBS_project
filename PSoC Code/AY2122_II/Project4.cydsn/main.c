@@ -163,12 +163,12 @@ int main(void)
    
     
     int16 regCount = 192;
-    int8_t data[192];
+    uint8_t data[192];
     uint8_t fifoFull;
     int16 xData[32];
     int16 yData[32];
     int16 zData[32];
-    int8_t dataSend[194];
+    uint8_t dataSend[194];
 
     uint8_t regSetting;
     char arrayToSend[194];
