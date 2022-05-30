@@ -2,7 +2,7 @@
 --	Conversion of Project4.v to vh2:
 --
 --	Cypress Semiconductor - WARP Version 6.3 IR 41
---	Thu May 26 16:49:17 2022
+--	Mon May 30 14:42:21 2022
 --
 
 USE cypress.cypress.all;
@@ -12,65 +12,65 @@ ATTRIBUTE part_name of top_RTL:TYPE IS "cpsoc3";
 END top_RTL;
 --------------------------------------------------------
 ARCHITECTURE R_T_L OF top_RTL IS
-TERMINAL Net_220 : bit;
-TERMINAL Net_221 : bit;
-TERMINAL Net_222 : bit;
-TERMINAL Net_223 : bit;
-TERMINAL Net_224 : bit;
-TERMINAL Net_225 : bit;
-TERMINAL Net_226 : bit;
-TERMINAL Net_227 : bit;
-TERMINAL Net_228 : bit;
-TERMINAL Net_229 : bit;
-TERMINAL Net_230 : bit;
-TERMINAL Net_231 : bit;
-TERMINAL Net_232 : bit;
-TERMINAL Net_233 : bit;
-TERMINAL Net_234 : bit;
-TERMINAL Net_235 : bit;
-TERMINAL Net_293 : bit;
-TERMINAL Net_237 : bit;
-TERMINAL Net_238 : bit;
-TERMINAL Net_239 : bit;
-TERMINAL Net_240 : bit;
-TERMINAL Net_241 : bit;
-TERMINAL Net_242 : bit;
-TERMINAL Net_243 : bit;
-TERMINAL Net_244 : bit;
-TERMINAL Net_245 : bit;
-TERMINAL Net_246 : bit;
-TERMINAL Net_247 : bit;
-TERMINAL Net_248 : bit;
-TERMINAL Net_249 : bit;
-TERMINAL Net_250 : bit;
-TERMINAL Net_251 : bit;
-TERMINAL Net_252 : bit;
-TERMINAL Net_253 : bit;
-TERMINAL Net_254 : bit;
-TERMINAL Net_255 : bit;
-TERMINAL Net_295 : bit;
+TERMINAL Net_298 : bit;
+TERMINAL Net_299 : bit;
+TERMINAL Net_300 : bit;
+TERMINAL Net_301 : bit;
+TERMINAL Net_302 : bit;
+TERMINAL Net_303 : bit;
+TERMINAL Net_304 : bit;
+TERMINAL Net_305 : bit;
+TERMINAL Net_306 : bit;
+TERMINAL Net_307 : bit;
+TERMINAL Net_308 : bit;
+TERMINAL Net_309 : bit;
+TERMINAL Net_310 : bit;
+TERMINAL Net_311 : bit;
+TERMINAL Net_312 : bit;
+TERMINAL Net_313 : bit;
+TERMINAL Net_314 : bit;
+TERMINAL Net_315 : bit;
+TERMINAL Net_316 : bit;
+TERMINAL Net_317 : bit;
+TERMINAL Net_318 : bit;
+TERMINAL Net_319 : bit;
+TERMINAL Net_320 : bit;
+TERMINAL Net_321 : bit;
+TERMINAL Net_322 : bit;
+TERMINAL Net_323 : bit;
+TERMINAL Net_324 : bit;
+TERMINAL Net_325 : bit;
+TERMINAL Net_326 : bit;
+TERMINAL Net_327 : bit;
+TERMINAL Net_328 : bit;
+TERMINAL Net_329 : bit;
+TERMINAL Net_330 : bit;
+TERMINAL Net_331 : bit;
+TERMINAL Net_332 : bit;
+TERMINAL Net_333 : bit;
+TERMINAL Net_334 : bit;
 TERMINAL Net_297 : bit;
-TERMINAL Net_258 : bit;
-TERMINAL Net_259 : bit;
-TERMINAL Net_260 : bit;
-TERMINAL Net_261 : bit;
-TERMINAL Net_262 : bit;
-TERMINAL Net_263 : bit;
-TERMINAL Net_264 : bit;
-TERMINAL Net_265 : bit;
-TERMINAL Net_266 : bit;
-TERMINAL Net_267 : bit;
-TERMINAL Net_268 : bit;
-TERMINAL Net_269 : bit;
-TERMINAL Net_270 : bit;
-TERMINAL Net_271 : bit;
-TERMINAL Net_272 : bit;
-TERMINAL Net_273 : bit;
-TERMINAL Net_274 : bit;
-TERMINAL Net_275 : bit;
-TERMINAL Net_276 : bit;
-TERMINAL Net_277_1 : bit;
-TERMINAL Net_277_0 : bit;
+TERMINAL Net_335 : bit;
+TERMINAL Net_336 : bit;
+TERMINAL Net_337 : bit;
+TERMINAL Net_338 : bit;
+TERMINAL Net_339 : bit;
+TERMINAL Net_340 : bit;
+TERMINAL Net_341 : bit;
+TERMINAL Net_342 : bit;
+TERMINAL Net_343 : bit;
+TERMINAL Net_344 : bit;
+TERMINAL Net_345 : bit;
+TERMINAL Net_346 : bit;
+TERMINAL Net_347 : bit;
+TERMINAL Net_348 : bit;
+TERMINAL Net_349 : bit;
+TERMINAL Net_350 : bit;
+TERMINAL Net_351 : bit;
+TERMINAL Net_352 : bit;
+TERMINAL Net_353 : bit;
+TERMINAL Net_354_1 : bit;
+TERMINAL Net_354_0 : bit;
 SIGNAL \UART_BT:Net_9\ : bit;
 SIGNAL \UART_BT:Net_61\ : bit;
 SIGNAL one : bit;
@@ -1490,21 +1490,21 @@ KIT_059_1:cy_annotation_universal_v1_0
 	GENERIC MAP(comp_name=>"KIT_059_v1_0",
 		port_names=>"P_00, P_01, P_02, P_03, P_04, P_05, P_06, P_07, P_10, P_11, P_12, P_120, P_121, P_122, P_123, P_124, P_125, P_126, P_127, P_13, P_14, P_15, P_150, P_151, P_152, P_153, P_154, P_155, P_16, P_17, P_20, P_21, P_22, P_23, P_24, P_25, P_26, P_27, P_30, P_31, P_32, P_33, P_34, P_35, P_36, P_37, P_59, P_60, P_61, P_62, P_63, P_GND_0, P_GND_1, P_GND_3, P_RST_0, P_VDD_0, P_VDDIO, USB_1_1, USB_1_0",
 		width=>59)
-	PORT MAP(connect=>(Net_220, Net_221, Net_222, Net_223,
-			Net_224, Net_225, Net_226, Net_227,
-			Net_228, Net_229, Net_230, Net_231,
-			Net_232, Net_233, Net_234, Net_235,
-			Net_293, Net_237, Net_238, Net_239,
-			Net_240, Net_241, Net_242, Net_243,
-			Net_244, Net_245, Net_246, Net_247,
-			Net_248, Net_249, Net_250, Net_251,
-			Net_252, Net_253, Net_254, Net_255,
-			Net_295, Net_297, Net_258, Net_259,
-			Net_260, Net_261, Net_262, Net_263,
-			Net_264, Net_265, Net_266, Net_267,
-			Net_268, Net_269, Net_270, Net_271,
-			Net_272, Net_273, Net_274, Net_275,
-			Net_276, Net_277_1, Net_277_0));
+	PORT MAP(connect=>(Net_298, Net_299, Net_300, Net_301,
+			Net_302, Net_303, Net_304, Net_305,
+			Net_306, Net_307, Net_308, Net_309,
+			Net_310, Net_311, Net_312, Net_313,
+			Net_314, Net_315, Net_316, Net_317,
+			Net_318, Net_319, Net_320, Net_321,
+			Net_322, Net_323, Net_324, Net_325,
+			Net_326, Net_327, Net_328, Net_329,
+			Net_330, Net_331, Net_332, Net_333,
+			Net_334, Net_297, Net_335, Net_336,
+			Net_337, Net_338, Net_339, Net_340,
+			Net_341, Net_342, Net_343, Net_344,
+			Net_345, Net_346, Net_347, Net_348,
+			Net_349, Net_350, Net_351, Net_352,
+			Net_353, Net_354_1, Net_354_0));
 \UART_BT:IntClock\:cy_clock_v1_0
 	GENERIC MAP(cy_registers=>"",
 		id=>"b0162966-0060-4af5-82d1-fcb491ad7619/be0a0e37-ad17-42ca-b5a1-1a654d736358",

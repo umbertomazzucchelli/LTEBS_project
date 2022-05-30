@@ -27,6 +27,7 @@ PORT = ""
 TRANSMITTING = False
 STARTED = False
 dataSize = 192
+baudRate = 115200
 accData = []
 axisSize = dataSize//6
 xData = np.full(axisSize,0,dtype=np.int16)
@@ -34,6 +35,8 @@ yData = np.full(axisSize,0,dtype=np.int16)
 zData = np.full(axisSize,0,dtype=np.int16)
 clock = np.zeros(axisSize)
 calibration_index= 0
+old_calibration=0
+
 '''
 xData = np.zeros(axisSize)
 xData = xData.astype("int16")
@@ -75,12 +78,13 @@ class SerialWorker(QRunnable):
         """!
         @brief Init worker.
         """
+        global baudRate
         self.is_killed = False
         super().__init__()
         #init port, params and signals
         self.port = serial.Serial()
         self.port_name = serial_port_name
-        self.baudrate = 9600 #hard coded but can be a global variable, or an input param
+        self.baudrate = baudRate #hard coded but can be a global variable, or an input param
         self.signals = SerialWorkerSignals()
 
     @pyqtSlot()
@@ -167,9 +171,7 @@ class SerialWorker(QRunnable):
             CONN_STATUS = False
             self.signals.device_port.emit(self.port_name)
             
-
         logging.info("Killing the process")
-
 
     @pyqtSlot()
     def readData(self):
@@ -228,7 +230,6 @@ class SerialWorker(QRunnable):
             print(dataArray)
         '''
 
-
 ###############
 # MAIN WINDOW #
 ###############
@@ -274,7 +275,7 @@ class MainWindow(QMainWindow):
             # Set background color
         self.graphWidget.setBackground('bbccdd')   #color in exa
             # Add title
-        self.graphWidget.setTitle("Accelerometer data",color="b", size="15pt",italic=True)
+        self.graphWidget.setTitle("Accelerometer data",color="b", size="12pt",italic=True)
             # Add axis labels
         styles = {'color':'k', 'font-size':'15px'}
         self.graphWidget.setLabel('left', 'Acc data', **styles)
@@ -282,25 +283,24 @@ class MainWindow(QMainWindow):
             # Add legend
         self.graphWidget.addLegend()
     
-
+        # Display 100 time points
         self.horAxis = list(range(320))  #100 time points
         self.xGraph = [0]*320
         self.yGraph = [0]*320
         self.zGraph = [0]*320
         self.count = 0
+
         self.draw()
+
         '''
         self.dataLinex = self.graphWidget.plot(self.h,self.x)
         self.dataLiney = self.graphWidget.plot(self.h,self.y)
         self.dataLinez = self.graphWidget.plot(self.h,self.z)
         '''
-        #self.graphWidget.setYRange(0,1024)
-        #self.graphWidget.addLegend()
-
+    
         # Plot data: x, y values
         self.drawGeneralGraph()
-        #self.graphWidget.addLegend()
-
+        
         # Toolbar
         toolbar = QToolBar("My main toolbar")   #my toolbar
         toolbar.setIconSize(QSize(16, 16))
@@ -394,11 +394,13 @@ class MainWindow(QMainWindow):
         """
         @brief Curve calibration
         """
-        global calibration_index
+        global calibration_index, old_calibration
+        # LA PARTE COMMENTATA SAREBBE PER PULIRE IL GRAFICO MA LO FA SOLO UNA VOLTA
+        #old_calibration = calibration_index
         calibration_index = self.calibrationSelect.itemData(index)
-        #for i in range(axisSize):
-        #self.graphWidget.clear()
-
+        #if (old_calibration != calibration_index):
+        #    self.graphWidget.clear()
+        
     def drawGeneralGraph(self):
         """!
         @brief Draw the plots.
@@ -440,6 +442,7 @@ class MainWindow(QMainWindow):
 
         self.line.setData(clock,self.xData)
         '''
+
     def draw(self):
         """!
              @brief Draw the plots.
@@ -461,7 +464,6 @@ class MainWindow(QMainWindow):
 
     '''
     # function to scroll the plot
-
 
     def update(self, line):
     self.data_segment[self.ptr] = line[1] # gets new line from a Plot-Manager which updates all plots
@@ -572,18 +574,17 @@ class MainWindow(QMainWindow):
             self.timer.timeout.connect(lambda: self.serial_worker.readData())
             self.timer.start()
             self.graphTimer.timeout.connect(lambda: self.drawGeneralGraph())
-            self.graphTimer.start()
-            
+            self.graphTimer.start() 
 
         else:
             self.serial_worker.send('s')
             self.updateBtn.setText("Start")
+            #self.graphWidget.clear()
             TRANSMITTING = False
             self.timer.stop()
             self.graphTimer.stop()
             self.modeSelect.setDisabled(False)
             self.calibrationSelect.setDisabled(False)
-
 
 #############
 #  RUN APP  #

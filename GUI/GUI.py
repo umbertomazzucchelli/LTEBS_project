@@ -30,6 +30,7 @@ xData = np.full(axisSize,0,dtype=np.int16)
 yData = np.full(axisSize,0,dtype=np.int16)
 zData = np.full(axisSize,0,dtype=np.int16)
 clock = np.zeros(axisSize)
+baudRate = 115200
 '''
 xData = np.zeros(axisSize)
 xData = xData.astype("int16")
@@ -71,12 +72,14 @@ class SerialWorker(QRunnable):
         """!
         @brief Init worker.
         """
+        global baudRate
+
         self.is_killed = False
         super().__init__()
         #init port, params and signals
         self.port = serial.Serial()
         self.port_name = serial_port_name
-        self.baudrate = 9600 #hard coded but can be a global variable, or an input param
+        self.baudrate = baudRate #hard coded but can be a global variable, or an input param
         self.signals = SerialWorkerSignals()
 
     @pyqtSlot()
