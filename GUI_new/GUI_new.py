@@ -3,9 +3,9 @@ import sys
 from telnetlib import STATUS
 import time
 import logging
-from matplotlib.axis import XAxis
+#import matplotlib #.axis import XAxis
 import numpy as np
-import matplotlib 
+#import matplotlib 
 
 from PyQt5.QtWidgets import * 
 from PyQt5 import QtCore, QtGui
@@ -248,7 +248,7 @@ class MainWindow(QMainWindow):
         self.setWindowTitle("Respiratory / Heart Rate Measurement")
         width = 1280
         height = 720
-        self.setFixedSize(width, height)
+        self.setMaximumSize(width, height)
 
         #create thread handler
         self.threadpool = QThreadPool()
