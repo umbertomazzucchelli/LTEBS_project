@@ -318,29 +318,92 @@ class MainWindow(QMainWindow):
         menu = self.menuBar()
         file_menu = menu.addMenu("&File")
         file_menu.addAction(button_action)
+
+        gridlayout = QGridLayout()
+        verticalLayout = QVBoxLayout()
+        device_search = QHBoxLayout()
     
         self.conn_btn = QPushButton(
             #text=("Connect to port {}".format(self.port_text)), 
             text=("Device search"), 
             checkable=True,
             toggled=self.on_toggle)
-        
-        self.updateBtn = QPushButton(
-            text = "Start", checkable= True, toggled = self.dataUpdate
+
+        self.conn_label = QLabel(
+            text = ("No Device Connected")
         )
+        font = QFont()
+        font.setBold(True)
+        font.setWeight(75)
+        self.conn_label.setFont(font)
+        self.conn_label.setStyleSheet("background-color: rgb(255, 0, 0);\n"
+"border: 1px solid black")
+        self.conn_label.setAlignment(QtCore.Qt.AlignCenter)
+
+        # top horizontal layout
+        device_search.addWidget(self.conn_btn)
+        device_search.addWidget(self.conn_label)
+
+        verticalLayout.addLayout(device_search)
+
+        modeSelection = QHBoxLayout()
+
+        self.modeSelect = QComboBox()
+        self.modeSelect.addItem("HR Only")
+        self.modeSelect.addItem("RR Only")
+        self.modeSelect.addItem("both")
+
+        self.calibrate = QPushButton(
+            text = ("calibration")
+        )
+
+        self.updateBtn = QPushButton(
+            text = "Start", 
+            checkable= True, 
+            toggled = self.dataUpdate
+        )
+
         self.updateBtn.setIcon(QtGui.QIcon('application-monitor.png'))
         self.updateBtn.setIconSize(QtCore.QSize(25,25))
 
+        modeSelection.addWidget(self.modeSelect)
+        modeSelection.addWidget(self.calibrate)
+        modeSelection.addWidget(self.updateBtn)
+        verticalLayout.addLayout(modeSelection)
+
+        saveStatus = QHBoxLayout()
+
+        self.FSR_Select = QComboBox()
+        self.FSR_Select.setEditable(False)
+        self.FSR_Select.addItem("FS: ±2 g")
+        self.FSR_Select.addItem("FS: ±4 g")
+        self.FSR_Select.addItem("FS: ±8 g")
+        self.FSR_Select.addItem("FS: ±16 g")
+
+        self.save_btn = QPushButton(
+            text = ("Save status")
+            # once clicked save FS and So ?
+        )
+
+        saveStatus.addWidget(self.save_btn) 
+        saveStatus.addWidget(self.FSR_Select)
+        verticalLayout.addLayout(saveStatus)
+        #plot = QHBoxLayout
+        #plot.addWidget(self.graphWidget)
+
+        verticalLayout.addWidget(self.graphWidget)
+
+
         # ModeSelect Combo-Box
-        self.modeSelect = QComboBox()
-        self.modeSelect.setEditable(False)
-        self.modeSelect.addItems(["HR only", "RR only","Both"])
+       # self.modeSelect = QComboBox()
+       # self.modeSelect.setEditable(False)
+       # self.modeSelect.addItems(["HR only", "RR only","Both"])
 
         # CalibrationSelect Combo-Box
-        self.calibrationSelect = QComboBox()
-        self.calibrationSelect.setEditable(False)
-        self.calibrationSelect.addItems(["Digit","Calibration +-2g", "Calibration +-4g"])
-        self.calibrationSelect.activated.connect(self.calibration)
+        #self.calibrationSelect = QComboBox()
+        #self.calibrationSelect.setEditable(False)
+        #self.calibrationSelect.addItems(["Digit","Calibration +-2g", "Calibration +-4g"])
+        #self.calibrationSelect.activated.connect(self.calibration)
 
         self.timer = QtCore.QTimer()
         self.timer.setInterval(1000)
@@ -361,34 +424,36 @@ class MainWindow(QMainWindow):
         '''
 
         # layout
-        serialButton = QHBoxLayout()
-        #serialButtons.addWidget(self.com_list_widget)
-        serialButton.addWidget(self.conn_btn)
-        modeSelection = QHBoxLayout()
-        modeSelection.addWidget(self.modeSelect)
-        modeSelection.addWidget(self.updateBtn)
-        calibrationSelection = QHBoxLayout()
-        calibrationSelection.addWidget(self.calibrationSelect)
-        calibrationSelection.addWidget(self.updateBtn)
-        dataGraph = QHBoxLayout()
-        dataGraph.addWidget(self.graphWidget)
-        RRHRgraphs = QHBoxLayout()
-        RRHRgraphs.addWidget(self.graphWidget)
-        RRHRgraphs.addWidget(self.graphWidget)
-        vlay = QVBoxLayout()
-        vlay.addLayout(serialButton)
-        vlay.addLayout(modeSelection)
-        vlay.addLayout(calibrationSelection)
-        vlay.addLayout(dataGraph)
-        vlay.addLayout(RRHRgraphs)
+        #serialButton = QHBoxLayout()
+        ##serialButtons.addWidget(self.com_list_widget)
+        #serialButton.addWidget(self.conn_btn)
+        #modeSelection = QHBoxLayout()
+        #modeSelection.addWidget(self.modeSelect)
+        #modeSelection.addWidget(self.updateBtn)
+        #calibrationSelection = QHBoxLayout()
+        #calibrationSelection.addWidget(self.modeSelect)
+        #calibrationSelection.addWidget(self.updateBtn)
+        #dataGraph = QHBoxLayout()
+        #dataGraph.addWidget(self.graphWidget)
+        #
+        #RRHRgraphs = QHBoxLayout()
+        #RRHRgraphs.addWidget(self.graphWidget)
+        #RRHRgraphs.addWidget(self.graphWidget)
+        #vlay = QVBoxLayout()
+        #vlay.addLayout(serialButton)
+        #vlay.addLayout(modeSelection)
+        #vlay.addLayout(calibrationSelection)
+        #vlay.addLayout(dataGraph)
+        #vlay.addLayout(RRHRgraphs)
+
         widget = QWidget()
-        widget.setLayout(vlay)
+        widget.setLayout(verticalLayout)
         self.setCentralWidget(widget)
 
-        modeSelection.setContentsMargins(20,20,20,20)
-        modeSelection.setSpacing(20)
-        calibrationSelection.setContentsMargins(20,20,20,20)
-        calibrationSelection.setSpacing(20)
+        modeSelection.setContentsMargins(5,5,5,5)
+        modeSelection.setSpacing(5)
+        #calibrationSelection.setContentsMargins(20,20,20,20)
+        #calibrationSelection.setSpacing(20)
         
     def calibration (self, index):
         """

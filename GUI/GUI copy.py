@@ -242,6 +242,10 @@ class Ui_UserWindow(object):
         self.connected = CONN_STATUS
         #self.serialscan()
 
+        # Some random data
+        self.x = [] 
+        self.y = []
+
         UserWindow.setObjectName("UserWindow")
         UserWindow.resize(749, 540)
         self.centralwidget = QtWidgets.QWidget(UserWindow)
@@ -255,7 +259,7 @@ class Ui_UserWindow(object):
 
         self.device_search = QtWidgets.QHBoxLayout()
 
-        self.conn_btn = QtWidgets.QPushButton(self.centralwidget)
+        self.conn_btn = QtWidgets.QPushButton(self.centralwidget, clicked = lambda: self.on_toggle)
         self.conn_btn.setText("Device Search")
         self.conn_btn.setStyleSheet("")
         self.conn_btn.setCheckable(True)
