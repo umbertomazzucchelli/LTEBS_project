@@ -102,7 +102,7 @@ class SerialWorker(QRunnable):
                                         write_timeout=0, timeout=2)                
                 if self.port.is_open:
                     self.send('t')
-                    time.sleep(0.5)
+                    time.sleep(1)
 
                     if(self.read()=="HR/RR sensor"):
                         CONN_STATUS = True
@@ -378,7 +378,7 @@ class MainWindow(QMainWindow):
         self.FSR_Select.addItem("FS: ±2 g")
         self.FSR_Select.addItem("FS: ±4 g")
         self.FSR_Select.addItem("FS: ±8 g")
-        self.FSR_Select.addItem("FS: ±16 g")
+        self.FSR_Select.addItem("FS: ±16 g") 
 
         self.save_btn = QPushButton(
             text = ("Save status")
@@ -563,7 +563,8 @@ class MainWindow(QMainWindow):
                 p.name
                 for p in serial.tools.list_ports.comports()
             ]
-            
+            self.conn_btn.setText("Searching device...") 
+
             for i in range(len(serial_ports)):
                 self.port_text=serial_ports[i]
 
@@ -575,10 +576,9 @@ class MainWindow(QMainWindow):
                 self.serial_worker.signals.device_port.connect(self.connected_device)
                 # execute the worker
                 self.threadpool.start(self.serial_worker)
-                time.sleep(1)
+                time.sleep(2)
                 if(CONN_STATUS==True):
                     break
-            self.conn_btn.setText("Searching device...") 
             self.updateBtn.setDisabled(False)
             
             #self.checkToggle = bool(True)
