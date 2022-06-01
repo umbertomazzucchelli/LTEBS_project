@@ -171,7 +171,7 @@ int main(void)
     uint8_t dataSend[194];
 
     uint8_t regSetting;
-    char arrayToSend[194];
+    int16 arrayToSend[98];
 
     status=0;
     
@@ -222,21 +222,33 @@ int main(void)
                 {
                     I2C_Peripheral_ReadRegisterMulti(LIS3DH_DEVICE_ADDRESS,LIS3DH_OUT_X_L,regCount,data);
                     //UART_PutString("Data ready\n");
-                    dataSend[0]= 0x0A;
-                    dataSend[97]=0x0B;
                     for(int i = 0; i<32;i++)
                     {
                         xData[i] = (int16) (data[i*6] | (data[i*6+1]<<8))>>6;
                         yData[i] = (int16) (data[i*6+2] | (data[i*6+3]<<8))>>6;
                         zData[i] = (int16) (data[i*6+4] | (data[i*6+5]<<8))>>6;
                     }
-                    dataSend[0]=0x0A;
-                    dataSend[193]=0x0B;
+                    //dataSend[0]=0x0A;
+                    //dataSend[193]=0x0B;
+                    arrayToSend[0] = 0xAAAA;
+                    arrayToSend[97] = 0xBBBB; 
+                    for(int i = 1; i<97;i++)
+                    {
+                        if(i<33) arrayToSend[i] = xData[i-1];
+                        else if(i>32 && i<65) arrayToSend[i] = yData[i-1];
+                        else if(i>64) arrayToSend[i] = zData[i-1];
+                    }
+                    for(int i=0;i<97;i++)
+                    {
+                        sprintf(message, "%d,",arrayToSend[i]);
+                        UART_PutString(message);
+                    }
+                    /*
                     for(int i=1;i<193;i++)
                     {
                         dataSend[i]=data[i-1];
                     }
-                    /*
+                    
                     for(int i=0;i<194;i++)
                     {
                         sprintf(message, "%d,",dataSend[i]);
@@ -244,8 +256,8 @@ int main(void)
                         //UART_PutString("\n");
                     }
                     */
-                    UART_PutArray(dataSend,194);
-                    UART_BT_PutArray(dataSend, 194); //send data via BT
+                    //UART_PutArray(dataSend,194);
+                    //UART_BT_PutArray(dataSend, 194); //send data via BT
             
                     /*
                     UART_PutString("x data \n");
@@ -284,9 +296,9 @@ int main(void)
                 
                 EEPROM_save_status(FS, So);
 //                EEPROM_Stop();
-////                I2C_Peripheral_Stop();
-////                UART_BT_Stop();
-////                UART_Stop();
+//                I2C_Peripheral_Stop();
+//                UART_BT_Stop();
+//                UART_Stop();
                 UART_BT_PutString("turn off device");
                 UART_PutString("turn off device");
                 status = 0;

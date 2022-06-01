@@ -377,8 +377,6 @@ class MainWindow(QMainWindow):
         self.FSR_Select.setEditable(False)
         self.FSR_Select.addItem("FS: ±2 g")
         self.FSR_Select.addItem("FS: ±4 g")
-        self.FSR_Select.addItem("FS: ±8 g")
-        self.FSR_Select.addItem("FS: ±16 g") 
 
         self.save_btn = QPushButton(
             text = ("Save status")

@@ -247,7 +247,7 @@ class Ui_UserWindow(object):
         self.y = []
 
         UserWindow.setObjectName("UserWindow")
-        UserWindow.resize(749, 540)
+        UserWindow.resize(1440, 900)
         self.centralwidget = QtWidgets.QWidget(UserWindow)
         self.centralwidget.setObjectName("centralwidget")
         
@@ -354,7 +354,7 @@ class Ui_UserWindow(object):
         self.RR_plot.setObjectName("RR_plot")
         self.RR_plot.showGrid(x=True, y=True)
         self.RR_plot.setBackground("w")
-        self.RR_plot.setTitle("Respiratory data")
+        self.RR_plot.setTitle("Respiratory rate")
         self.RR_plot.setLabel('left','Acceleration [g]', **styles)
         self.RR_plot.setLabel('bottom','Time [s]', **styles)
         self.gridLayout.addWidget(self.RR_plot, 0, 0, 1, 1)
@@ -385,7 +385,7 @@ class Ui_UserWindow(object):
         self.HR_plot.setObjectName("HR_plot")
         self.HR_plot.showGrid(x=True, y=True)
         self.HR_plot.setBackground("w")
-        self.HR_plot.setTitle("Respiratory data")
+        self.HR_plot.setTitle("Heart rate")
         self.HR_plot.setLabel('left','Acceleration [g]', **styles)
         self.HR_plot.setLabel('bottom','Time [s]', **styles)
         self.gridLayout.addWidget(self.RR_plot, 0, 0, 1, 1)
@@ -413,7 +413,7 @@ class Ui_UserWindow(object):
         self.toolBar.setMovable(False)
 
         self.toolBar.addAction(self.tool_save_data)
-        self.toolBar.addAction(self.tool_save_status)
+        #self.toolBar.addAction(self.tool_save_status)
 
         self.retranslateUi(UserWindow)
         QtCore.QMetaObject.connectSlotsByName(UserWindow)
@@ -432,7 +432,7 @@ class Ui_UserWindow(object):
         self.modeSelect.setItemText(0, _translate("UserWindow", "HR Only"))
         self.modeSelect.setItemText(1, _translate("UserWindow", "RR Only"))
         self.modeSelect.setItemText(2, _translate("UserWindow", "Both"))
-        self.conn_label.setText(_translate("UserWindow", "NO DEVICE IS CONNECTED"))
+        self.conn_label.setText(_translate("UserWindow", "NO DEVICE CONNECTED"))
         self.updateBtn.setText(_translate("UserWindow", "Start"))
         self.save_btn.setText(_translate("UserWindow", "SAVE STATUS"))
         self.acc_label.setText(_translate("UserWindow", "Accelerometer data"))
