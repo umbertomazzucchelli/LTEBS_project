@@ -34,10 +34,10 @@ int main(void)
 
     /* Place your initialization/startup code here (e.g. MyInst_Start()) */
     I2C_Peripheral_Start();
-    UART_BT_Start();
+    //UART_BT_Start();
     UART_Start();
     isr_RX_StartEx(Custom_ISR_RX);
-    isr_RX_BT_StartEx(Custom_ISR_RX_BT);
+    //isr_RX_BT_StartEx(Custom_ISR_RX_BT);
     EEPROM_Custom_Start();
     
     CyDelay(5); //"The boot procedure is complete about 5 ms after device power-up."
@@ -228,60 +228,31 @@ int main(void)
                         yData[i] = (int16) (data[i*6+2] | (data[i*6+3]<<8))>>6;
                         zData[i] = (int16) (data[i*6+4] | (data[i*6+5]<<8))>>6;
                     }
-                    //dataSend[0]=0x0A;
-                    //dataSend[193]=0x0B;
-                    arrayToSend[0] = 0xAAAA;
-                    arrayToSend[97] = 0xBBBB; 
+                    dataSend[0]=0x0A;
+                    dataSend[193]=0x0B;
+                    /*
+                    arrayToSend[0] = -32768;
+                    arrayToSend[97] = 32767; 
                     for(int i = 1; i<97;i++)
                     {
                         if(i<33) arrayToSend[i] = xData[i-1];
-                        else if(i>32 && i<65) arrayToSend[i] = yData[i-1];
-                        else if(i>64) arrayToSend[i] = zData[i-1];
+                        else if(i>32 && i<65) arrayToSend[i] = yData[(i-33)-1];
+                        else if(i>64) arrayToSend[i] = zData[(i-65)-1];
                     }
-                    for(int i=0;i<97;i++)
+                    for(int i=0;i<98;i++)
                     {
                         sprintf(message, "%d,",arrayToSend[i]);
                         UART_PutString(message);
                     }
-                    /*
+                    */
                     for(int i=1;i<193;i++)
                     {
                         dataSend[i]=data[i-1];
                     }
                     
-                    for(int i=0;i<194;i++)
-                    {
-                        sprintf(message, "%d,",dataSend[i]);
-                        UART_PutString(message);
-                        //UART_PutString("\n");
-                    }
-                    */
-                    //UART_PutArray(dataSend,194);
+                    
+                    UART_PutArray(dataSend,194);
                     //UART_BT_PutArray(dataSend, 194); //send data via BT
-            
-                    /*
-                    UART_PutString("x data \n");
-                    for(int j = 0; j<32;j++)
-                    {
-                        sprintf(message, "%d",xData[j]);
-                        UART_PutString(message);
-                        UART_PutString("\n");
-                    }
-                    UART_PutString("y data \n");
-                    for(int j = 0; j<32;j++)
-                    {
-                        sprintf(message, "%d",yData[j]);
-                        UART_PutString(message);
-                        UART_PutString("\n");
-                    }
-                    UART_PutString("z data \n");
-                    for(int j = 0; j<32;j++)
-                    {
-                        sprintf(message, "%d",zData[j]);
-                        UART_PutString(message);
-                        UART_PutString("\n");
-                    }
-                    */
                     
                     
                     regSetting=0x00;
@@ -308,56 +279,7 @@ int main(void)
             default:
                 break;
                 
-        }
-        /*
-        if(status==1)
-        {
-            CyDelay(500); //to get stable data, just a try
-            error=I2C_Peripheral_ReadRegister(LIS3DH_DEVICE_ADDRESS, LIS3DH_FIFO_SRC_REG, &fifoFull); 
-            sprintf(message,"\r\novrn value: %d \r\n",(fifoFull & 0x40)>>6);
-            UART_PutString(message);
-            if(error == NO_ERROR && (fifoFull & 0x40)>>6)
-            {
-                I2C_Peripheral_ReadRegisterMulti(LIS3DH_DEVICE_ADDRESS,LIS3DH_OUT_X_L,regCount,data);
-                for(int i = 0; i<32;i++)
-                {
-                    xData[i] = (int16) (data[i*6] | (data[i*6+1]<<8))>>6;
-                    yData[i] = (int16) (data[i*6+2] | (data[i*6+3]<<8))>>6;
-                    zData[i] = (int16) (data[i*6+4] | (data[i*6+5]<<8))>>6;
-                    sprintf(message, "xData: %d\n",xData[i]);
-                    UART_PutString(message);
-                    sprintf(message, "yData: %d\n",yData[i]);
-                    UART_PutString(message);
-                    sprintf(message, "zData: %d\n",zData[i]);
-                    UART_PutString(message);
-                }
-                regSetting=0x00;
-                error = I2C_Peripheral_WriteRegister(LIS3DH_DEVICE_ADDRESS,LIS3DH_FIFO_CTRL_REG,regSetting);
-                regSetting=0x40;
-                error = I2C_Peripheral_WriteRegister(LIS3DH_DEVICE_ADDRESS,LIS3DH_FIFO_CTRL_REG,regSetting);
-            }
-            
-            // retrieve from EEPROM memory
-            FS = EEPROM_retrieve_FS();
-            So[0] = EEPROM_retrieve_So_lsb();
-            So[1] = EEPROM_retrieve_So_msb();
-            
-            // read registers 
-            readReg(control_reg_4, LIS3DH_CTRL_REG4);   //for both So[1] and FS[1:0]
-            readReg(control_reg, LIS3DH_CTRL_REG1);     //for So[0]
- 
-            //writes FS in register CTRL_REG_4[5:4]
-            setReg(((FS<<4)|control_reg_4), LIS3DH_CTRL_REG4);   //CTRL_REG4[5:4] contain FS
-            
-            // writes So[1:0] bits in reg1[3] and reg4[3]
-            setReg(((So[0]<<3)|control_reg_4), LIS3DH_CTRL_REG4);   //lsb in CTRL_REG_4[3]
-            setReg(((So[1]<<3)|control_reg), LIS3DH_CTRL_REG1);     //msb in CTRL_REG_1[3]
-            
-            UART_PutString("\r\nFull Scale and Sensitivity settings retrieved and set\r\n");
-            
-        }
-        */
-//        
+        }       
         // at any cycle check if there were changes from GUI in the FS and So registers and save in EEPROM
         
         if ((flag_FS == 1)||(flag_So == 1)) // FS value stored in FS

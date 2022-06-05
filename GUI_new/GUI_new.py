@@ -26,10 +26,10 @@ STATUS=True
 PORT = ""
 TRANSMITTING = False
 STARTED = False
-dataSize = 192
-baudRate = 115200
+dataSize = 98
+baudRate = 9600 #9600 for USB, 115200 for BT
 accData = []
-axisSize = dataSize//6
+axisSize = dataSize//3
 xData = np.full(axisSize,0,dtype=np.int16)
 yData = np.full(axisSize,0,dtype=np.int16)
 zData = np.full(axisSize,0,dtype=np.int16)
@@ -142,21 +142,23 @@ class SerialWorker(QRunnable):
             return testString
         except:
             logging.info("Could not receive {} on port {}.".format(testString, self.port_name))
+   
 
     @pyqtSlot()
-    def readArray(self,size):
-        retArray=[]
+    def readAcc(self):
+        """!
+        @brief Basic function to read a single char on serial port.
+        """
+        testString=''
         try:
             while(self.port.in_waiting>0):
-                retArray += self.port.read(size).decode('utf-8', errors='replace')
-                if(len(retArray)==size):
-                    break
-                logging.info(self.port.in_waiting)
-            logging.info("Array received")
-            return retArray
+                testString+=self.port.read().decode('utf-8', errors='replace')
+                #logging.info(self.port.in_waiting)
+            #logging.info("Received: {}".format(testString))
+            return testString
         except:
-            logging.info("Could not receive the array")
-   
+            logging.info("Could not receive {} on port {}.".format(testString, self.port_name))
+
     @pyqtSlot()
     def killed(self):
         """!
@@ -181,7 +183,7 @@ class SerialWorker(QRunnable):
         global calibration_index
 
         #self.serial_worker = SerialWorker(PORT)
-
+        
         dataArray = self.port.read(194)
         dataArray = struct.unpack('194B',dataArray)
         lastIndex = len(dataArray)-1
@@ -199,8 +201,17 @@ class SerialWorker(QRunnable):
                     xData[i]=xData[i]/128 -4
                     yData[i]=yData[i]/128 -4
                     zData[i]=zData[i]/128 -4
-                    
+        
         '''
+        
+        dataString = self.readAcc()
+        #print("dataString type:" ,type(dataString))
+        #print(len(dataString))
+        dataArray = dataString.split(',')
+        if(dataArray[0]==-32768):
+            print("dataArray len",len(dataArray))
+            print(dataArray)
+
         print('clock data:')
         print(clock)
         print(dataArray)
@@ -268,7 +279,7 @@ class MainWindow(QMainWindow):
         """
         # Create the plot widget
         self.graphWidget = PlotWidget()
-
+        
         # Plot settings
             # Add grid
         self.graphWidget.showGrid(x=True, y=True)
@@ -282,6 +293,8 @@ class MainWindow(QMainWindow):
         self.graphWidget.setLabel('bottom', 'Time [ms]', **styles)
             # Add legend
         self.graphWidget.addLegend()
+        
+        
     
         # Display 100 time points
         self.horAxis = list(range(320))  #100 time points
@@ -404,7 +417,7 @@ class MainWindow(QMainWindow):
         #self.calibrationSelect.activated.connect(self.calibration)
 
         self.timer = QtCore.QTimer()
-        self.timer.setInterval(1000)
+        self.timer.setInterval(500)
 
         self.graphTimer= QtCore.QTimer()
         self.graphTimer.setInterval(1000)
@@ -453,6 +466,7 @@ class MainWindow(QMainWindow):
         #calibrationSelection.setContentsMargins(20,20,20,20)
         #calibrationSelection.setSpacing(20)
         
+        '''
     def calibration (self, index):
         """
         @brief Curve calibration
@@ -463,6 +477,7 @@ class MainWindow(QMainWindow):
         calibration_index = self.calibrationSelect.itemData(index)
         #if (old_calibration != calibration_index):
         #    self.graphWidget.clear()
+        '''
         
     def drawGeneralGraph(self):
         """!
@@ -556,12 +571,12 @@ class MainWindow(QMainWindow):
         @brief Allow connection and disconnection from selected serial port.
         """
         if checked:
+            self.conn_btn.setText("Searching device...") 
             #acquire list of serial ports
             serial_ports = [
                 p.name
                 for p in serial.tools.list_ports.comports()
             ]
-            self.conn_btn.setText("Searching device...") 
 
             for i in range(len(serial_ports)):
                 self.port_text=serial_ports[i]
@@ -632,7 +647,7 @@ class MainWindow(QMainWindow):
             self.serial_worker.send('a')
             self.updateBtn.setText("Stop")
             self.modeSelect.setDisabled(True)
-            self.calibrationSelect.setDisabled(True)
+            #self.calibrationSelect.setDisabled(True)
             TRANSMITTING = True
             self.timer.timeout.connect(lambda: self.serial_worker.readData())
             self.timer.start()
@@ -647,7 +662,7 @@ class MainWindow(QMainWindow):
             self.timer.stop()
             self.graphTimer.stop()
             self.modeSelect.setDisabled(False)
-            self.calibrationSelect.setDisabled(False)
+            #self.calibrationSelect.setDisabled(False)
 
 #############
 #  RUN APP  #
