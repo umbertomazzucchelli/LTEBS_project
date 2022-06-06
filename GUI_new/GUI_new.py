@@ -293,6 +293,7 @@ class MainWindow(QMainWindow):
         self.graphWidget.setLabel('bottom', 'Time [ms]', **styles)
             # Add legend
         self.graphWidget.addLegend()
+        self.graphWidget.setMouseEnabled(x=False, y=False)
         
         
     
