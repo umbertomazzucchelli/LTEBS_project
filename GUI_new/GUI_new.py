@@ -6,6 +6,9 @@ import logging
 #import matplotlib #.axis import XAxis
 import numpy as np
 #import matplotlib 
+import peakutils
+import scipy.signal as signal
+from scipy.fftpack import fft
 
 from PyQt5.QtWidgets import * 
 from PyQt5 import QtCore, QtGui
@@ -290,7 +293,7 @@ class MainWindow(QMainWindow):
         self.graphWidget.setTitle("Accelerometer data",color="b", size="12pt",italic=True)
             # Add axis labels
         styles = {'color':'k', 'font-size':'15px'}
-        self.graphWidget.setLabel('left', 'Acc data', **styles)
+        self.graphWidget.setLabel('left', 'Acc data m/s2', **styles)
         self.graphWidget.setLabel('bottom', 'Time [ms]', **styles)
             # Add legend
         self.graphWidget.addLegend()
@@ -479,6 +482,7 @@ class MainWindow(QMainWindow):
         self.dataLinex.clear()
         self.dataLiney.clear()
         self.dataLinez.clear()
+        #self.graphWidget.clear()
         FSR_index = self.FSR_Select.currentIndex()  #indica l'indice del combo box selezionato, valore di default = -1
 
         #self.draw()
@@ -552,16 +556,53 @@ class MainWindow(QMainWindow):
         line = graph.plot(x, y, name=curve_name, pen=pen)
         return line
 
-    '''
-    # function to scroll the plot
+    def butter_bandpass_design(self, low_cut, high_cut, sample_rate, order=4):
+        """
+        Defines the Butterworth bandpass filter-design
+        :param low_cut: Lower cut off frequency in Hz
+        :param high_cut: Higher cut off frequency in Hz
+        :param sample_rate: Sample rate of the signal in Hz
+        :param order: Order of the filter-design
+        :return: b, a : ndarray, ndarray - Numerator (b) and denominator (a) polynomials of the IIR filter. Only returned if output='ba'.
+        """
+        nyq = 0.5 * sample_rate
+        low = low_cut / nyq
+        high = high_cut / nyq
+        b, a = signal.butter(order, [low, high], btype='band')
 
-    def update(self, line):
-    self.data_segment[self.ptr] = line[1] # gets new line from a Plot-Manager which updates all plots
-    self.ptr += 1 # counts the amount of samples
-    self.line_plot.setData(self.data_segment[:self.ptr]) # displays all read samples
-    self.line_plot.setPos(-self.ptr, 0) # shifts the plot to the left so it scrolls
+        return b, a
+    def butter_bandpass_filter(self, signal_array, low_cut, high_cut, sample_rate, order=4):
+        """
+        Apply's the filter design on the signal_array.
+        :param signal_array: signal, which should get filtered - as ndarray
+        :param low_cut: Lower cut off frequency in Hz
+        :param high_cut: Higher cut off frequency in Hz
+        :param sample_rate: Sample rate of the signal in Hz
+        :param order: Order of the filter-design
+        :return: ndarray - The filtered output, an array of type numpy.float64 with the same shape as signal_array.
+        """
+        b, a = self.butter_bandpass_design(low_cut, high_cut, sample_rate, order=order)
+        y = signal.filtfilt(b, a, signal_array)
 
-    '''
+        return y
+
+    def fast_fourier_transformation(self, signal_array, sample_rate):
+        """
+        Apply's the Fast Furier Transformation. This transforms the signal into an power spectrum in frequency domain.
+        :param signal_array: signal as ndarray
+        :param sample_rate: Sample rate of the signal in Hz
+        :return: yf : complex ndarray - Results of the FFT
+                 xf : ndarray - frequency parts in an equally interval
+        """
+        N = signal_array.size  # number of sample points
+        T = 1 / sample_rate  # sample spacing
+        yf = fft(signal_array)
+
+        # xf = fftfreq(N, T)  # for all frequencies
+        xf = np.linspace(0.0, 1.0 / (2.0 * T), N / 2)  # for positive frequencies only
+
+        return yf, xf
+
 
     ##################
     # SERIAL SIGNALS #
