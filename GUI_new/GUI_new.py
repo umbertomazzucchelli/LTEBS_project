@@ -34,8 +34,8 @@ xData = np.full(axisSize,0,dtype=np.int16)
 yData = np.full(axisSize,0,dtype=np.int16)
 zData = np.full(axisSize,0,dtype=np.int16)
 clock = np.zeros(axisSize)
-calibration_index= 0
-old_calibration=0
+FSR_index= 0
+old_FSR=0
 
 '''
 xData = np.zeros(axisSize)
@@ -180,7 +180,7 @@ class SerialWorker(QRunnable):
         global TRANSMITTING
         global STATUS
         global accData, xData, yData, zData
-        global calibration_index
+        global FSR_index
 
         #self.serial_worker = SerialWorker(PORT)
         
@@ -193,11 +193,12 @@ class SerialWorker(QRunnable):
                 xData[i] =  (accData[i*6] | (accData[i*6+1]<<8))>>6
                 yData[i] =  (accData[i*6+2] | (accData[i*6+3]<<8))>>6
                 zData[i] =  (accData[i*6+4] | (accData[i*6+5]<<8))>>6
-                if calibration_index==1:    #+-2g   
+                if FSR_index==0:    #+-2g   
                     xData[i]=xData[i]/256 -2
                     yData[i]=yData[i]/256 -2
                     zData[i]=zData[i]/256 -2
-                elif calibration_index==2:  #+- 4g
+                    print(xData)
+                elif FSR_index==1:  #+- 4g
                     xData[i]=xData[i]/128 -4
                     yData[i]=yData[i]/128 -4
                     zData[i]=zData[i]/128 -4
@@ -391,6 +392,8 @@ class MainWindow(QMainWindow):
         self.FSR_Select.setEditable(False)
         self.FSR_Select.addItem("FS: ±2 g")
         self.FSR_Select.addItem("FS: ±4 g")
+        #self.FSR_Select.activated.connect(self.calibration(1)) #con .activated "Used when an item is selected by the user."
+        self.FSR_Select.currentIndexChanged.connect(self.change_graph)  #quando l'item nella lista viene cambiato mi porta a change_graph
 
         self.save_btn = QPushButton(
             text = ("Save status")
@@ -467,18 +470,26 @@ class MainWindow(QMainWindow):
         #calibrationSelection.setContentsMargins(20,20,20,20)
         #calibrationSelection.setSpacing(20)
         
-        '''
-    def calibration (self, index):
+        
+    def change_graph (self):#,index
         """
         @brief Curve calibration
         """
-        global calibration_index, old_calibration
+        global FSR_index, old_calibration
+        self.dataLinex.clear()
+        self.dataLiney.clear()
+        self.dataLinez.clear()
+        FSR_index = self.FSR_Select.currentIndex()  #indica l'indice del combo box selezionato, valore di default = -1
+
+        #self.draw()
+        #self.static_canvas1.draw()
+
         # LA PARTE COMMENTATA SAREBBE PER PULIRE IL GRAFICO MA LO FA SOLO UNA VOLTA
         #old_calibration = calibration_index
-        calibration_index = self.calibrationSelect.itemData(index)
+        #calibration_index = self.FSR_Select.itemData(index)
         #if (old_calibration != calibration_index):
         #    self.graphWidget.clear()
-        '''
+        
         
     def drawGeneralGraph(self):
         """!
@@ -648,7 +659,7 @@ class MainWindow(QMainWindow):
             self.serial_worker.send('a')
             self.updateBtn.setText("Stop")
             self.modeSelect.setDisabled(True)
-            #self.calibrationSelect.setDisabled(True)
+            self.FSR_Select.setDisabled(True)
             TRANSMITTING = True
             self.timer.timeout.connect(lambda: self.serial_worker.readData())
             self.timer.start()
@@ -663,7 +674,7 @@ class MainWindow(QMainWindow):
             self.timer.stop()
             self.graphTimer.stop()
             self.modeSelect.setDisabled(False)
-            #self.calibrationSelect.setDisabled(False)
+            self.FSR_Select.setDisabled(False)
 
 #############
 #  RUN APP  #
