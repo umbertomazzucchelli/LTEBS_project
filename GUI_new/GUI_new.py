@@ -9,6 +9,11 @@ import numpy as np
 import peakutils
 import scipy.signal as signal
 from scipy.fftpack import fft
+from scipy.signal import butter, lfilter, freqz
+
+#importazione libreria per filtri
+import heartpy as hp
+from heartpy import filtering
 
 from PyQt5.QtWidgets import * 
 from PyQt5 import QtCore, QtGui
@@ -38,7 +43,13 @@ yData = np.full(axisSize,0,dtype=np.int16)
 zData = np.full(axisSize,0,dtype=np.int16)
 clock = np.zeros(axisSize)
 FSR_index= 0
-old_FSR=0
+SAMPLE_RATE = 50
+LOW_CUT = 0.2
+HIGH_CUT = 0.45
+
+order = 5
+fs = 50.0       # sample rate, Hz
+cutoff = 1
 
 '''
 xData = np.zeros(axisSize)
@@ -184,7 +195,9 @@ class SerialWorker(QRunnable):
         global STATUS
         global accData, xData, yData, zData
         global FSR_index
-
+        global SAMPLE_RATE,LOW_CUT,HIGH_CUT
+        global order, fs, cutoff
+      
         #self.serial_worker = SerialWorker(PORT)
         
         dataArray = self.port.read(194)
@@ -196,16 +209,42 @@ class SerialWorker(QRunnable):
                 xData[i] =  (accData[i*6] | (accData[i*6+1]<<8))>>6
                 yData[i] =  (accData[i*6+2] | (accData[i*6+3]<<8))>>6
                 zData[i] =  (accData[i*6+4] | (accData[i*6+5]<<8))>>6
+                
                 if FSR_index==0:    #+-2g   
                     xData[i]=xData[i]/256 -2
                     yData[i]=yData[i]/256 -2
                     zData[i]=zData[i]/256 -2
-                    print(xData)
+                    
                 elif FSR_index==1:  #+- 4g
                     xData[i]=xData[i]/128 -4
                     yData[i]=yData[i]/128 -4
                     zData[i]=zData[i]/128 -4
-        
+                
+            xData = self.butter_lowpass_filter(xData, cutoff, fs, order)
+            yData = self.butter_lowpass_filter(yData, cutoff, fs, order)
+            zData = self.butter_lowpass_filter(zData, cutoff, fs, order)
+            '''
+            xData = self.butter_bandpass_filter(xData, LOW_CUT, HIGH_CUT,
+                                                                SAMPLE_RATE)
+            yData = self.butter_bandpass_filter(yData, LOW_CUT, HIGH_CUT,
+                                                                SAMPLE_RATE)
+            zData = self.butter_bandpass_filter(zData, LOW_CUT, HIGH_CUT,
+                                                                SAMPLE_RATE)
+            '''
+            '''
+            filtering with heartpy
+            '''
+            '''
+            bandpass = [0.2, 0.45]
+            xData = filtering.filter_signal(xData, bandpass, 50.0, 2, 'bandpass')
+            yData = filtering.filter_signal(yData, bandpass, 50.0, 2, 'bandpass')
+            #zData = filtering.filter_signal(zData, bandpass, 50.0, 2, 'bandpass')
+            print('x filter: ', xData)
+            print('y filter: ', yData)
+            print('z filter: ',zData)
+            '''
+
+
         '''
         
         dataString = self.readAcc()
@@ -244,6 +283,62 @@ class SerialWorker(QRunnable):
             dataArray = struct.unpack('194B',dataArray)
             print(dataArray)
         '''
+    def butter_bandpass_design(self, low_cut, high_cut, sample_rate, order=4):
+        """
+        Defines the Butterworth bandpass filter-design
+        :param low_cut: Lower cut off frequency in Hz
+        :param high_cut: Higher cut off frequency in Hz
+        :param sample_rate: Sample rate of the signal in Hz
+        :param order: Order of the filter-design
+        :return: b, a : ndarray, ndarray - Numerator (b) and denominator (a) polynomials of the IIR filter. Only returned if output='ba'.
+        """
+        nyq = 0.5 * sample_rate
+        low = low_cut / nyq
+        high = high_cut / nyq
+        b, a = signal.butter(order, [low, high], btype='band')
+
+        return b, a
+    def butter_bandpass_filter(self, signal_array, low_cut, high_cut, sample_rate, order=4):
+        """
+        Apply's the filter design on the signal_array.
+        :param signal_array: signal, which should get filtered - as ndarray
+        :param low_cut: Lower cut off frequency in Hz
+        :param high_cut: Higher cut off frequency in Hz
+        :param sample_rate: Sample rate of the signal in Hz
+        :param order: Order of the filter-design
+        :return: ndarray - The filtered output, an array of type numpy.float64 with the same shape as signal_array.
+        """
+        b, a = self.butter_bandpass_design(low_cut, high_cut, sample_rate, order=order)
+        y = signal.filtfilt(b, a, signal_array)
+
+        return y
+
+    def butter_lowpass(self, cutoff, fs, order=5):
+        return butter(order, cutoff, fs=fs, btype='low', analog=False)
+
+    def butter_lowpass_filter(self, data, cutoff, fs, order=5):
+        b, a = self.butter_lowpass(cutoff, fs, order=order)
+        #y = lfilter(b, a, data)
+        y = signal.filtfilt(b, a, data) #uso filtfilt anzichè lfilter per rimanere in fase
+        return y
+
+    def fast_fourier_transformation(self, signal_array, sample_rate):
+        """
+        Apply's the Fast Furier Transformation. This transforms the signal into an power spectrum in frequency domain.
+        :param signal_array: signal as ndarray
+        :param sample_rate: Sample rate of the signal in Hz
+        :return: yf : complex ndarray - Results of the FFT
+                 xf : ndarray - frequency parts in an equally interval
+        """
+        N = signal_array.size  # number of sample points
+        T = 1 / sample_rate  # sample spacing
+        yf = fft(signal_array)
+
+        # xf = fftfreq(N, T)  # for all frequencies
+        xf = np.linspace(0.0, 1.0 / (2.0 * T), N / 2)  # for positive frequencies only
+
+        return yf, xf
+
 
 ###############
 # MAIN WINDOW #
@@ -293,12 +388,11 @@ class MainWindow(QMainWindow):
         self.graphWidget.setTitle("Accelerometer data",color="b", size="12pt",italic=True)
             # Add axis labels
         styles = {'color':'k', 'font-size':'15px'}
-        self.graphWidget.setLabel('left', 'Acc data m/s2', **styles)
+        self.graphWidget.setLabel('left', 'Acc data [m/s2]', **styles)
         self.graphWidget.setLabel('bottom', 'Time [ms]', **styles)
             # Add legend
         self.graphWidget.addLegend()
         self.graphWidget.setMouseEnabled(x=False, y=False)
-        
         
     
         # Display 100 time points
@@ -556,53 +650,7 @@ class MainWindow(QMainWindow):
         line = graph.plot(x, y, name=curve_name, pen=pen)
         return line
 
-    def butter_bandpass_design(self, low_cut, high_cut, sample_rate, order=4):
-        """
-        Defines the Butterworth bandpass filter-design
-        :param low_cut: Lower cut off frequency in Hz
-        :param high_cut: Higher cut off frequency in Hz
-        :param sample_rate: Sample rate of the signal in Hz
-        :param order: Order of the filter-design
-        :return: b, a : ndarray, ndarray - Numerator (b) and denominator (a) polynomials of the IIR filter. Only returned if output='ba'.
-        """
-        nyq = 0.5 * sample_rate
-        low = low_cut / nyq
-        high = high_cut / nyq
-        b, a = signal.butter(order, [low, high], btype='band')
-
-        return b, a
-    def butter_bandpass_filter(self, signal_array, low_cut, high_cut, sample_rate, order=4):
-        """
-        Apply's the filter design on the signal_array.
-        :param signal_array: signal, which should get filtered - as ndarray
-        :param low_cut: Lower cut off frequency in Hz
-        :param high_cut: Higher cut off frequency in Hz
-        :param sample_rate: Sample rate of the signal in Hz
-        :param order: Order of the filter-design
-        :return: ndarray - The filtered output, an array of type numpy.float64 with the same shape as signal_array.
-        """
-        b, a = self.butter_bandpass_design(low_cut, high_cut, sample_rate, order=order)
-        y = signal.filtfilt(b, a, signal_array)
-
-        return y
-
-    def fast_fourier_transformation(self, signal_array, sample_rate):
-        """
-        Apply's the Fast Furier Transformation. This transforms the signal into an power spectrum in frequency domain.
-        :param signal_array: signal as ndarray
-        :param sample_rate: Sample rate of the signal in Hz
-        :return: yf : complex ndarray - Results of the FFT
-                 xf : ndarray - frequency parts in an equally interval
-        """
-        N = signal_array.size  # number of sample points
-        T = 1 / sample_rate  # sample spacing
-        yf = fft(signal_array)
-
-        # xf = fftfreq(N, T)  # for all frequencies
-        xf = np.linspace(0.0, 1.0 / (2.0 * T), N / 2)  # for positive frequencies only
-
-        return yf, xf
-
+    
 
     ##################
     # SERIAL SIGNALS #
