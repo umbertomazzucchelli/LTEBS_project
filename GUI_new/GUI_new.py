@@ -28,6 +28,9 @@ from pyqtgraph import PlotWidget
 import serial 
 import serial.tools.list_ports
 
+import statistics
+
+
 #Global
 CONN_STATUS = False
 STATUS=True
@@ -41,7 +44,15 @@ axisSize = dataSize//3
 xData = np.full(axisSize,0,dtype=np.int16)
 yData = np.full(axisSize,0,dtype=np.int16)
 zData = np.full(axisSize,0,dtype=np.int16)
+xData_g = np.full(axisSize,0,dtype=np.float32)
+yData_g = np.full(axisSize,0,dtype=np.float32)
+zData_g = np.full(axisSize,0,dtype=np.float32)
 clock = np.zeros(axisSize)
+j = 0
+xavg = 0
+yavg = 0
+zavg = 0
+
 FSR_index= 0
 SAMPLE_RATE = 50
 LOW_CUT = 0.2
@@ -193,7 +204,7 @@ class SerialWorker(QRunnable):
     def readData(self):
         global TRANSMITTING
         global STATUS
-        global accData, xData, yData, zData
+        global accData, xData, yData, zData, xData_g, yData_g, zData_g, j
         global FSR_index
         global SAMPLE_RATE,LOW_CUT,HIGH_CUT
         global order, fs, cutoff
@@ -211,14 +222,24 @@ class SerialWorker(QRunnable):
                 zData[i] =  (accData[i*6+4] | (accData[i*6+5]<<8))>>6
                 
                 if FSR_index==0:    #+-2g   
-                    xData[i]=xData[i]/256 -2
-                    yData[i]=yData[i]/256 -2
-                    zData[i]=zData[i]/256 -2
+                    xData_g[i]=xData[i]/256.0 -2.0
+                    yData_g[i]=yData[i]/256.0 -2.0
+                    zData_g[i]=zData[i]/256.0 -2.0
                     
                 elif FSR_index==1:  #+- 4g
-                    xData[i]=xData[i]/128 -4
-                    yData[i]=yData[i]/128 -4
-                    zData[i]=zData[i]/128 -4
+                    xData_g[i]=xData[i]/128 -4
+                    yData_g[i]=yData[i]/128 -4
+                    zData_g[i]=zData[i]/128 -4
+
+                xavg = statistics.mean(xData_g)
+                yavg = statistics.mean(yData_g)
+                zavg = statistics.mean(zData_g)
+                j+=1
+                if j>3:
+                    xData_g = [x-xavg for x in xData_g]
+                    yData_g = [y-yavg for y in yData_g]
+                    zData_g = [z-zavg for z in zData_g]
+
                 
             xData = self.butter_lowpass_filter(xData, cutoff, fs, order)
             yData = self.butter_lowpass_filter(yData, cutoff, fs, order)
@@ -593,7 +614,7 @@ class MainWindow(QMainWindow):
         """!
         @brief Draw the plots.
         """
-        global xData, yData, zData
+        global xData, yData, zData, xData_g, yData_g, zData_g
 
         for i in range(len(xData)):
 
@@ -607,15 +628,15 @@ class MainWindow(QMainWindow):
 
             # X-axis
             self.xGraph = self.xGraph[1:]  # Remove the first 
-            self.xGraph.append(xData[i])  #  Add a new random value.
+            self.xGraph.append(xData_g[i])  #  Add a new random value.
             self.dataLinex.setData(self.horAxis, self.xGraph)  # Update the data.
             # Y-axis
             self.yGraph = self.yGraph[1:]  # Remove the first 
-            self.yGraph.append(yData[i])  #  Add a new random value.
+            self.yGraph.append(yData_g[i])  #  Add a new random value.
             self.dataLiney.setData(self.horAxis, self.yGraph)  # Update the data.
             # Z-axis
             self.zGraph = self.zGraph[1:]  # Remove the first 
-            self.zGraph.append(zData[i])  #  Add a new random value.
+            self.zGraph.append(zData_g[i])  #  Add a new random value.
             self.dataLinez.setData(self.horAxis, self.zGraph)  # Update the data.
         
         '''
@@ -635,11 +656,11 @@ class MainWindow(QMainWindow):
         """!
              @brief Draw the plots.
         """
-        global accData, xData, yData, zData
+        global accData, xData, yData, zData, xData_g, yData_g, zData_g
 
-        self.dataLinex = self.plot(self.graphWidget,clock,xData,'x-axis','r')
-        self.dataLiney = self.plot(self.graphWidget,clock,yData,'y-axis','g')
-        self.dataLinez = self.plot(self.graphWidget,clock,zData,'z-axis','b')
+        self.dataLinex = self.plot(self.graphWidget,clock,xData_g,'x-axis','r')
+        self.dataLiney = self.plot(self.graphWidget,clock,yData_g,'y-axis','g')
+        self.dataLinez = self.plot(self.graphWidget,clock,zData_g,'z-axis','b')
 
     
     def plot(self, graph, x, y, curve_name, color):
