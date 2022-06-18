@@ -34,10 +34,10 @@ int main(void)
 
     /* Place your initialization/startup code here (e.g. MyInst_Start()) */
     I2C_Peripheral_Start();
-    //UART_BT_Start();
-    UART_Start();
-    isr_RX_StartEx(Custom_ISR_RX);
-    //isr_RX_BT_StartEx(Custom_ISR_RX_BT);
+    UART_BT_Start();
+    //UART_Start();
+    //isr_RX_StartEx(Custom_ISR_RX);
+    isr_RX_BT_StartEx(Custom_ISR_RX_BT);
     EEPROM_Custom_Start();
     
     CyDelay(5); //"The boot procedure is complete about 5 ms after device power-up."
@@ -251,8 +251,8 @@ int main(void)
                     }
                     
                     
-                    UART_PutArray(dataSend,194);
-                    //UART_BT_PutArray(dataSend, 194); //send data via BT
+                    //UART_PutArray(dataSend,194);
+                    UART_BT_PutArray(dataSend, 194); //send data via BT
                     
                     
                     regSetting=0x00;

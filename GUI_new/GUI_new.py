@@ -1,8 +1,10 @@
+from multiprocessing import connection
 import struct
 import sys
 from telnetlib import STATUS
 import time
 import logging
+from matplotlib.pyplot import connect
 #import matplotlib #.axis import XAxis
 import numpy as np
 #import matplotlib 
@@ -38,20 +40,21 @@ PORT = ""
 TRANSMITTING = False
 STARTED = False
 dataSize = 98
-baudRate = 9600 #9600 for USB, 115200 for BT
+baudRate = 115200 #9600 for USB, 115200 for BT
 accData = []
 axisSize = dataSize//3
 xData = np.full(axisSize,0,dtype=np.int16)
 yData = np.full(axisSize,0,dtype=np.int16)
 zData = np.full(axisSize,0,dtype=np.int16)
-xData_g = np.full(axisSize,0,dtype=np.float32)
-yData_g = np.full(axisSize,0,dtype=np.float32)
-zData_g = np.full(axisSize,0,dtype=np.float32)
+xData_g = np.full(axisSize,0,dtype=np.float16)
+yData_g = np.full(axisSize,0,dtype=np.float16)
+zData_g = np.full(axisSize,0,dtype=np.float16)
 clock = np.zeros(axisSize)
 j = 0
 xavg = 0
 yavg = 0
 zavg = 0
+connectionWait = False
 
 FSR_index= 0
 SAMPLE_RATE = 50
@@ -119,7 +122,7 @@ class SerialWorker(QRunnable):
         """
         global CONN_STATUS
         global TRANSMITTING
-        global PORT
+        global PORT, connectionWait
 
         if not CONN_STATUS:
             try:
@@ -133,13 +136,15 @@ class SerialWorker(QRunnable):
                         CONN_STATUS = True
                         self.signals.status.emit(self.port_name, 1)
                         PORT = self.port_name
-                        time.sleep(1) #just for compatibility reasons    
+                        time.sleep(1) #just for compatibility reasons 
+                    connectionWait = False   
                         
                     
             except serial.SerialException:
                 logging.info("Error with port {}.".format(self.port_name))
                 self.signals.status.emit(self.port_name, 0)
                 time.sleep(0.01)
+                connectionWait=False
 
 
     @pyqtSlot()
@@ -213,14 +218,40 @@ class SerialWorker(QRunnable):
         
         dataArray = self.port.read(194)
         dataArray = struct.unpack('194B',dataArray)
+        dataArray = np.asarray(dataArray,dtype=np.uint8)
         lastIndex = len(dataArray)-1
         if(dataArray[0]==10 and dataArray[lastIndex]==11):
             accData = dataArray[1:193]
             for i in range(axisSize):
+                '''
                 xData[i] =  (accData[i*6] | (accData[i*6+1]<<8))>>6
                 yData[i] =  (accData[i*6+2] | (accData[i*6+3]<<8))>>6
                 zData[i] =  (accData[i*6+4] | (accData[i*6+5]<<8))>>6
+                '''
+                xData[i] =  (((accData[i*6+1] & 0xFF)<<8) | (accData[i*6] & 0xFF))>>6
+                yData[i] =  (((accData[i*6+3] & 0xFF)<<8) | (accData[i*6+2] & 0xFF))>>6
+                zData[i] =  (((accData[i*6+5] & 0xFF)<<8) | (accData[i*6+4] & 0xFF))>>6
+
+                if(xData[i]>511 & xData[i]<1024):
+                    xData_g[i] = xData[i]*(-0.0039060665362)+3.99990606654
+                else:
+                    xData_g[i] = xData[i]*(-0.0039137254902) - 0.0000862745098039
+                if(yData[i]>511 & yData[i]<1024):
+                    yData_g[i] = yData[i]*(-0.0039060665362)+3.99990606654
+                else:
+                    yData_g[i] = yData[i]*(-0.0039137254902) - 0.0000862745098039
+                if(zData[i]>511 & zData[i]<1024):
+                    zData_g[i] = zData[i]*(-0.0039060665362)+3.99990606654
+                else:
+                    zData_g[i] = zData[i]*(-0.0039137254902) - 0.0000862745098039
                 
+            print("X data:")
+            print(xData)
+            print("Y data:")
+            print(yData)
+            print("Z data:")   
+            print(zData)
+            '''
                 if FSR_index==0:    #+-2g   
                     xData_g[i]=xData[i]/256.0 -2.0
                     yData_g[i]=yData[i]/256.0 -2.0
@@ -230,7 +261,7 @@ class SerialWorker(QRunnable):
                     xData_g[i]=xData[i]/128 -4
                     yData_g[i]=yData[i]/128 -4
                     zData_g[i]=zData[i]/128 -4
-
+                
                 xavg = statistics.mean(xData_g)
                 yavg = statistics.mean(yData_g)
                 zavg = statistics.mean(zData_g)
@@ -244,7 +275,7 @@ class SerialWorker(QRunnable):
             xData = self.butter_lowpass_filter(xData, cutoff, fs, order)
             yData = self.butter_lowpass_filter(yData, cutoff, fs, order)
             zData = self.butter_lowpass_filter(zData, cutoff, fs, order)
-            '''
+            
             xData = self.butter_bandpass_filter(xData, LOW_CUT, HIGH_CUT,
                                                                 SAMPLE_RATE)
             yData = self.butter_bandpass_filter(yData, LOW_CUT, HIGH_CUT,
@@ -289,21 +320,6 @@ class SerialWorker(QRunnable):
         #print(dataArray)
         '''
 
-        '''
-        while(TRANSMITTING==True):
-    
-            header = self.port.read(1)
-            header = struct.unpack('1B',header)[0]
-            print("Header ",header)
-            if(header==0x0A):
-                dataArray = self.port.read(192)
-                dataArray = struct.unpack('192B',dataArray)
-                if
-
-            dataArray = self.port.read(194)
-            dataArray = struct.unpack('194B',dataArray)
-            print(dataArray)
-        '''
     def butter_bandpass_design(self, low_cut, high_cut, sample_rate, order=4):
         """
         Defines the Butterworth bandpass filter-design
@@ -627,16 +643,19 @@ class MainWindow(QMainWindow):
                 self.horAxis.append(self.horAxis[-1] + 1)  # Add a new value 1 higher than the last.
 
             # X-axis
-            self.xGraph = self.xGraph[1:]  # Remove the first 
-            self.xGraph.append(xData_g[i])  #  Add a new random value.
+            self.xGraph = self.xGraph[1:]  # Remove the first
+            self.xGraph.append(xData_g[i])  #  Add a new random value. 
+            #self.xGraph.append(xData_g[i])  #  Add a new random value.
             self.dataLinex.setData(self.horAxis, self.xGraph)  # Update the data.
             # Y-axis
             self.yGraph = self.yGraph[1:]  # Remove the first 
-            self.yGraph.append(yData_g[i])  #  Add a new random value.
+            self.yGraph.append(yData_g[i])
+            #self.yGraph.append(yData_g[i])  #  Add a new random value.
             self.dataLiney.setData(self.horAxis, self.yGraph)  # Update the data.
             # Z-axis
             self.zGraph = self.zGraph[1:]  # Remove the first 
-            self.zGraph.append(zData_g[i])  #  Add a new random value.
+            self.zGraph.append(zData_g[i])
+            #self.zGraph.append(zData_g[i])  #  Add a new random value.
             self.dataLinez.setData(self.horAxis, self.zGraph)  # Update the data.
         
         '''
@@ -661,7 +680,11 @@ class MainWindow(QMainWindow):
         self.dataLinex = self.plot(self.graphWidget,clock,xData_g,'x-axis','r')
         self.dataLiney = self.plot(self.graphWidget,clock,yData_g,'y-axis','g')
         self.dataLinez = self.plot(self.graphWidget,clock,zData_g,'z-axis','b')
-
+        '''
+        self.dataLinex = self.plot(self.graphWidget,clock,xData_g,'x-axis','r')
+        self.dataLiney = self.plot(self.graphWidget,clock,yData_g,'y-axis','g')
+        self.dataLinez = self.plot(self.graphWidget,clock,zData_g,'z-axis','b')
+        '''
     
     def plot(self, graph, x, y, curve_name, color):
         """!
@@ -676,24 +699,17 @@ class MainWindow(QMainWindow):
     ##################
     # SERIAL SIGNALS #
     ##################
-    '''
-    def port_changed(self):
-        """!
-        @brief Update conn_btn label based on selected port.
-        """
-        self.port_text = self.com_list_widget.currentText()
-        #self.conn_btn.setText("Connect to port {}".format(self.port_text))
-        self.conn_btn.setText("Device search")
-    '''
 
     @pyqtSlot(bool)
     def on_toggle(self, checked):
-        global CONN_STATUS
+        global CONN_STATUS,connectionWait
         """!
         @brief Allow connection and disconnection from selected serial port.
         """
         if checked:
             self.conn_btn.setText("Searching device...") 
+            self.conn_btn.repaint()
+            time.sleep(0.1)
             #acquire list of serial ports
             serial_ports = [
                 p.name
@@ -705,15 +721,27 @@ class MainWindow(QMainWindow):
 
                 #setup reading worker
                 self.serial_worker = SerialWorker(self.port_text) #needs to be re defined
-                print("Porta attiva ", self.port_text)
+                connectionWait = True
+                print("Active port ", self.port_text)
                 # connect worker signals to functions
-                self.serial_worker.signals.status.connect(self.check_serialport_status)
+                
                 self.serial_worker.signals.device_port.connect(self.connected_device)
                 # execute the worker
                 self.threadpool.start(self.serial_worker)
-                time.sleep(2)
+                #time.sleep(2)
+                while(connectionWait==True):
+                    time.sleep(0.5)
                 if(CONN_STATUS==True):
+                    self.conn_btn.setText(
+                    "Disconnect from port {}".format(self.port_text))
                     break
+
+                    
+            if(CONN_STATUS==False):
+                self.conn_btn.setText("Device not found")
+                self.conn_btn.repaint()
+                time.sleep(0.5)
+                self.conn_btn.setChecked(False)
             self.updateBtn.setDisabled(False)
             
             #self.checkToggle = bool(True)
@@ -728,24 +756,6 @@ class MainWindow(QMainWindow):
             self.conn_btn.setText("Device search")
             self.updateBtn.setDisabled(True)
             
-
-    def check_serialport_status(self, port_name, status):
-        """!
-        @brief Handle the status of the serial port connection.
-
-        Available status:
-            - 0  --> Error during opening of serial port
-            - 1  --> Serial port opened correctly
-        """
-        if status == 0:
-            self.conn_btn.setChecked(False)
-        elif status == 1:
-            # enable all the widgets on the interface
-            #self.com_list_widget.setDisabled(True) # disable the possibility to change COM port when already connected
-            self.conn_btn.setText(
-                "Disconnect from port {}".format(port_name)
-            )
-
     def connected_device(self, port_name):
         """!
         @brief Checks on the termination of the serial worker.

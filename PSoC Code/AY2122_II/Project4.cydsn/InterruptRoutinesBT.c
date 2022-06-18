@@ -24,8 +24,8 @@ CY_ISR(Custom_ISR_RX_BT)
 {
     // Non-blocking call to get the latest data recieved
     ch_received = UART_BT_GetChar();
-    FS_received = UART_BT_GetChar();   // byte contains FS values
-    So_received = UART_BT_GetChar();   // byte contains So values
+    FS_received = UART_BT_GetByte();   // byte contains FS values
+    So_received = UART_BT_GetByte();   // byte contains So values
 
         
     // Set flags based on UART command
