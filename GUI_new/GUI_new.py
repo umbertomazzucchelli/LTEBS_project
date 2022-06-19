@@ -251,17 +251,7 @@ class SerialWorker(QRunnable):
             print(yData)
             print("Z data:")   
             print(zData)
-            '''
-                if FSR_index==0:    #+-2g   
-                    xData_g[i]=xData[i]/256.0 -2.0
-                    yData_g[i]=yData[i]/256.0 -2.0
-                    zData_g[i]=zData[i]/256.0 -2.0
-                    
-                elif FSR_index==1:  #+- 4g
-                    xData_g[i]=xData[i]/128 -4
-                    yData_g[i]=yData[i]/128 -4
-                    zData_g[i]=zData[i]/128 -4
-                
+            '''                
                 xavg = statistics.mean(xData_g)
                 yavg = statistics.mean(yData_g)
                 zavg = statistics.mean(zData_g)
@@ -270,7 +260,6 @@ class SerialWorker(QRunnable):
                     xData_g = [x-xavg for x in xData_g]
                     yData_g = [y-yavg for y in yData_g]
                     zData_g = [z-zavg for z in zData_g]
-
                 
             xData = self.butter_lowpass_filter(xData, cutoff, fs, order)
             yData = self.butter_lowpass_filter(yData, cutoff, fs, order)
@@ -281,12 +270,10 @@ class SerialWorker(QRunnable):
             yData = self.butter_bandpass_filter(yData, LOW_CUT, HIGH_CUT,
                                                                 SAMPLE_RATE)
             zData = self.butter_bandpass_filter(zData, LOW_CUT, HIGH_CUT,
-                                                                SAMPLE_RATE)
-            '''
-            '''
+                                                                SAMPLE_RATE)        
+            
             filtering with heartpy
-            '''
-            '''
+            
             bandpass = [0.2, 0.45]
             xData = filtering.filter_signal(xData, bandpass, 50.0, 2, 'bandpass')
             yData = filtering.filter_signal(yData, bandpass, 50.0, 2, 'bandpass')
@@ -296,29 +283,6 @@ class SerialWorker(QRunnable):
             print('z filter: ',zData)
             '''
 
-
-        '''
-        
-        dataString = self.readAcc()
-        #print("dataString type:" ,type(dataString))
-        #print(len(dataString))
-        dataArray = dataString.split(',')
-        if(dataArray[0]==-32768):
-            print("dataArray len",len(dataArray))
-            print(dataArray)
-
-        print('clock data:')
-        print(clock)
-        print(dataArray)
-        print(accData)
-        print("X data:")
-        print(xData)
-        print("Y data:")
-        print(yData)
-        print("Z data:")   
-        print(zData)
-        #print(dataArray)
-        '''
 
     def butter_bandpass_design(self, low_cut, high_cut, sample_rate, order=4):
         """
@@ -485,8 +449,7 @@ class MainWindow(QMainWindow):
         font.setBold(True)
         font.setWeight(75)
         self.conn_label.setFont(font)
-        self.conn_label.setStyleSheet("background-color: rgb(255, 0, 0);\n"
-"border: 1px solid black")
+        self.conn_label.setStyleSheet("background-color: rgb(255, 0, 0);\n" "border: 1px solid black")
         self.conn_label.setAlignment(QtCore.Qt.AlignCenter)
 
         # top horizontal layout
@@ -542,18 +505,6 @@ class MainWindow(QMainWindow):
 
         verticalLayout.addWidget(self.graphWidget)
 
-
-        # ModeSelect Combo-Box
-       # self.modeSelect = QComboBox()
-       # self.modeSelect.setEditable(False)
-       # self.modeSelect.addItems(["HR only", "RR only","Both"])
-
-        # CalibrationSelect Combo-Box
-        #self.calibrationSelect = QComboBox()
-        #self.calibrationSelect.setEditable(False)
-        #self.calibrationSelect.addItems(["Digit","Calibration +-2g", "Calibration +-4g"])
-        #self.calibrationSelect.activated.connect(self.calibration)
-
         self.timer = QtCore.QTimer()
         self.timer.setInterval(500)
 
@@ -571,29 +522,6 @@ class MainWindow(QMainWindow):
         if(button==QMessageBox.Ok):
             self.dlg3.accept()
         '''
-
-        # layout
-        #serialButton = QHBoxLayout()
-        ##serialButtons.addWidget(self.com_list_widget)
-        #serialButton.addWidget(self.conn_btn)
-        #modeSelection = QHBoxLayout()
-        #modeSelection.addWidget(self.modeSelect)
-        #modeSelection.addWidget(self.updateBtn)
-        #calibrationSelection = QHBoxLayout()
-        #calibrationSelection.addWidget(self.modeSelect)
-        #calibrationSelection.addWidget(self.updateBtn)
-        #dataGraph = QHBoxLayout()
-        #dataGraph.addWidget(self.graphWidget)
-        #
-        #RRHRgraphs = QHBoxLayout()
-        #RRHRgraphs.addWidget(self.graphWidget)
-        #RRHRgraphs.addWidget(self.graphWidget)
-        #vlay = QVBoxLayout()
-        #vlay.addLayout(serialButton)
-        #vlay.addLayout(modeSelection)
-        #vlay.addLayout(calibrationSelection)
-        #vlay.addLayout(dataGraph)
-        #vlay.addLayout(RRHRgraphs)
 
         widget = QWidget()
         widget.setLayout(verticalLayout)
@@ -680,11 +608,6 @@ class MainWindow(QMainWindow):
         self.dataLinex = self.plot(self.graphWidget,clock,xData_g,'x-axis','r')
         self.dataLiney = self.plot(self.graphWidget,clock,yData_g,'y-axis','g')
         self.dataLinez = self.plot(self.graphWidget,clock,zData_g,'z-axis','b')
-        '''
-        self.dataLinex = self.plot(self.graphWidget,clock,xData_g,'x-axis','r')
-        self.dataLiney = self.plot(self.graphWidget,clock,yData_g,'y-axis','g')
-        self.dataLinez = self.plot(self.graphWidget,clock,zData_g,'z-axis','b')
-        '''
     
     def plot(self, graph, x, y, curve_name, color):
         """!
@@ -693,8 +616,6 @@ class MainWindow(QMainWindow):
         pen = pg.mkPen(color=color,width=2)
         line = graph.plot(x, y, name=curve_name, pen=pen)
         return line
-
-    
 
     ##################
     # SERIAL SIGNALS #
