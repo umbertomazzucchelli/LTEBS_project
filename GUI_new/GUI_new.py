@@ -1,4 +1,5 @@
 from multiprocessing import connection
+from re import L
 import struct
 import sys
 from telnetlib import STATUS
@@ -55,6 +56,7 @@ xavg = 0
 yavg = 0
 zavg = 0
 connectionWait = False
+calibration = False
 
 FSR_index= 0
 SAMPLE_RATE = 50
@@ -252,6 +254,8 @@ class SerialWorker(QRunnable):
             print("Z data:")   
             print(zData)
             '''                
+            NON SO CHE FILTRO USEREMO, MA NEL PAPER CONSIGLIA UN BAND PASS [0,1]Hz, in particolare con BUTTERWORTH e calcolando la frequenza dominante nel range
+
                 xavg = statistics.mean(xData_g)
                 yavg = statistics.mean(yData_g)
                 zavg = statistics.mean(zData_g)
@@ -339,6 +343,46 @@ class SerialWorker(QRunnable):
         xf = np.linspace(0.0, 1.0 / (2.0 * T), N / 2)  # for positive frequencies only
 
         return yf, xf
+
+    '''
+    def RRalgortithm(self):
+        global xData_g,yData_g,zData_g
+        nSamples = 200 #a caso, dovrà essere il numero di sample in 2s
+        max = 0
+        index1 = 0
+        index2 = 0
+
+        xDataWindow = xDataWindow + xData_g
+        if(np.size(xDataWindow)==nSamples):
+            for i in len(xDataWindow):
+                if(xDataWindow[i]>max):
+                    max = xDataWindow[i]
+                    index1 = i
+    '''      
+    def calibration(self):
+        global calibration,xData_g,yData_g,zData_g
+
+        newZero = [] 
+        if(calibration):
+            xSum = 0.0
+            ySum = 0.0
+            zSum = 0.0
+            for i in len(xData_g):
+                xSum = xSum + xData_g[i]
+            xAvg = xSum/len(xData_g)
+            newZero[0] = xAvg
+            for i in len(yData_g):
+                ySum = ySum + yData_g[i]
+            yAvg = ySum/len(yData_g)
+            newZero[1] = yAvg
+            for i in len(zData_g):
+                zSum = zSum + zData_g[i]
+            zAvg = zSum/len(zData_g)
+            newZero[2] = zAvg
+        
+        calibration = False
+        return newZero
+
 
 
 ###############
@@ -467,7 +511,8 @@ class MainWindow(QMainWindow):
 
         self.calibrate = QPushButton(
             text = ("calibration")
-        )
+)
+        self.calibrate.clicked.connect(self.startCalibration)
 
         self.updateBtn = QPushButton(
             text = "Start", 
@@ -706,6 +751,7 @@ class MainWindow(QMainWindow):
             self.timer.start()
             self.graphTimer.timeout.connect(lambda: self.drawGeneralGraph())
             self.graphTimer.start() 
+            self.calibrate.setDisabled(False)
 
         else:
             self.serial_worker.send('s')
@@ -716,6 +762,13 @@ class MainWindow(QMainWindow):
             self.graphTimer.stop()
             self.modeSelect.setDisabled(False)
             self.FSR_Select.setDisabled(False)
+            self.calibrate.setDisabled(True)
+
+    def startCalibration(self):
+        global calibration
+
+        calibration = True
+        
 
 #############
 #  RUN APP  #
