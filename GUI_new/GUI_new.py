@@ -15,8 +15,8 @@ from scipy.fftpack import fft
 from scipy.signal import butter, lfilter, freqz
 
 #importazione libreria per filtri
-import heartpy as hp
-from heartpy import filtering
+#import heartpy as hp
+#from heartpy import filtering
 
 from PyQt5.QtWidgets import * 
 from PyQt5 import QtCore, QtGui
@@ -246,13 +246,7 @@ class SerialWorker(QRunnable):
                     zData_g[i] = zData[i]*(-0.0039060665362)+3.99990606654
                 else:
                     zData_g[i] = zData[i]*(-0.0039137254902) - 0.0000862745098039
-                
-            print("X data:")
-            print(xData)
-            print("Y data:")
-            print(yData)
-            print("Z data:")   
-            print(zData)
+
             '''                
             NON SO CHE FILTRO USEREMO, MA NEL PAPER CONSIGLIA UN BAND PASS [0,1]Hz, in particolare con BUTTERWORTH e calcolando la frequenza dominante nel range
 
@@ -404,7 +398,7 @@ class MainWindow(QMainWindow):
         self.setWindowTitle("Respiratory / Heart Rate Measurement")
         width = 1280
         height = 720
-        self.setMaximumSize(width, height)
+        self.setFixedSize(width, height)
 
         #create thread handler
         self.threadpool = QThreadPool()
@@ -487,7 +481,7 @@ class MainWindow(QMainWindow):
             toggled=self.on_toggle)
 
         self.conn_label = QLabel(
-            text = ("No Device Connected")
+            text = ("No device connected")
         )
         font = QFont()
         font.setBold(True)
@@ -541,10 +535,7 @@ class MainWindow(QMainWindow):
             text = ("Save status")
             # once clicked save FS and So ?
         )
-
-        saveStatus.addWidget(self.save_btn) 
-        saveStatus.addWidget(self.FSR_Select)
-        verticalLayout.addLayout(saveStatus)
+        
         #plot = QHBoxLayout
         #plot.addWidget(self.graphWidget)
 
@@ -700,6 +691,8 @@ class MainWindow(QMainWindow):
                 if(CONN_STATUS==True):
                     self.conn_btn.setText(
                     "Disconnect from port {}".format(self.port_text))
+                    self.conn_label.setText("Device connected")
+                    self.conn_label.setStyleSheet("background-color: rgb(0, 255, 0);\n" "border: 1px solid black")
                     break
 
                     
@@ -718,6 +711,8 @@ class MainWindow(QMainWindow):
             # kill thread
             self.serial_worker.is_killed = True
             self.serial_worker.killed()
+            self.conn_label.setText("No device connected")
+            self.conn_label.setStyleSheet("background-color: rgb(255, 0, 0);\n" "border: 1px solid black")
             #self.com_list_widget.setDisabled(False) # enable the possibility to change port
             self.conn_btn.setText("Device search")
             self.updateBtn.setDisabled(True)
