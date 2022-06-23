@@ -15,8 +15,8 @@ from scipy.fftpack import fft
 from scipy.signal import butter, lfilter, freqz
 
 #importazione libreria per filtri
-#import heartpy as hp
-#from heartpy import filtering
+import heartpy as hp
+from heartpy import filtering
 
 from PyQt5.QtWidgets import * 
 from PyQt5 import QtCore, QtGui
@@ -50,6 +50,9 @@ zData = np.full(axisSize,0,dtype=np.int16)
 xData_g = np.full(axisSize,0,dtype=np.float16)
 yData_g = np.full(axisSize,0,dtype=np.float16)
 zData_g = np.full(axisSize,0,dtype=np.float16)
+
+zData_f = np.full(axisSize,0,dtype=np.float16)
+
 clock = np.zeros(axisSize)
 j = 0
 xavg = 0
@@ -60,12 +63,12 @@ calibration = False
 
 FSR_index= 0
 SAMPLE_RATE = 50
-LOW_CUT = 0.2
-HIGH_CUT = 0.45
+LOW_CUT = 0.01
+HIGH_CUT = 1.0
 
-order = 5
+order = 3
 fs = 50.0       # sample rate, Hz
-cutoff = 1
+cutoff = 3
 
 '''
 xData = np.zeros(axisSize)
@@ -211,7 +214,7 @@ class SerialWorker(QRunnable):
     def readData(self):
         global TRANSMITTING
         global STATUS
-        global accData, xData, yData, zData, xData_g, yData_g, zData_g, j
+        global accData, xData, yData, zData, xData_g, yData_g, zData_g, j, zData_f
         global FSR_index
         global SAMPLE_RATE,LOW_CUT,HIGH_CUT
         global order, fs, cutoff
@@ -246,7 +249,14 @@ class SerialWorker(QRunnable):
                     zData_g[i] = zData[i]*(-0.0039060665362)+3.99990606654
                 else:
                     zData_g[i] = zData[i]*(-0.0039137254902) - 0.0000862745098039
-
+            '''    
+            print("X data:")
+            print(xData)
+            print("Y data:")
+            print(yData)
+            print("Z data:")   
+            print(zData)
+            '''
             '''                
             NON SO CHE FILTRO USEREMO, MA NEL PAPER CONSIGLIA UN BAND PASS [0,1]Hz, in particolare con BUTTERWORTH e calcolando la frequenza dominante nel range
 
@@ -258,24 +268,25 @@ class SerialWorker(QRunnable):
                     xData_g = [x-xavg for x in xData_g]
                     yData_g = [y-yavg for y in yData_g]
                     zData_g = [z-zavg for z in zData_g]
-                
-            xData = self.butter_lowpass_filter(xData, cutoff, fs, order)
-            yData = self.butter_lowpass_filter(yData, cutoff, fs, order)
-            zData = self.butter_lowpass_filter(zData, cutoff, fs, order)
+            '''   
             
-            xData = self.butter_bandpass_filter(xData, LOW_CUT, HIGH_CUT,
-                                                                SAMPLE_RATE)
-            yData = self.butter_bandpass_filter(yData, LOW_CUT, HIGH_CUT,
-                                                                SAMPLE_RATE)
-            zData = self.butter_bandpass_filter(zData, LOW_CUT, HIGH_CUT,
-                                                                SAMPLE_RATE)        
+            #xData_g = self.butter_lowpass_filter(xData_g, cutoff, fs, order)
+            #yData_g = self.butter_lowpass_filter(yData_g, cutoff, fs, order)
+            zData_f = self.butter_lowpass_filter(zData_g, cutoff, fs, order)
             
-            filtering with heartpy
+            #xData_g = self.butter_bandpass_filter(xData_g, LOW_CUT, HIGH_CUT,
+            #                                                    SAMPLE_RATE)
+            #yData_g = self.butter_bandpass_filter(yData_g, LOW_CUT, HIGH_CUT,
+            #                                                    SAMPLE_RATE)
+            #zData_f = self.butter_bandpass_filter(zData_g, LOW_CUT, HIGH_CUT,
+            #                                                  SAMPLE_RATE)        
             
+           # filtering with heartpy
+            '''
             bandpass = [0.2, 0.45]
             xData = filtering.filter_signal(xData, bandpass, 50.0, 2, 'bandpass')
             yData = filtering.filter_signal(yData, bandpass, 50.0, 2, 'bandpass')
-            #zData = filtering.filter_signal(zData, bandpass, 50.0, 2, 'bandpass')
+            zData = filtering.filter_signal(zData, bandpass, 50.0, 2, 'bandpass')
             print('x filter: ', xData)
             print('y filter: ', yData)
             print('z filter: ',zData)
@@ -439,6 +450,7 @@ class MainWindow(QMainWindow):
         self.xGraph = [0]*320
         self.yGraph = [0]*320
         self.zGraph = [0]*320
+        self.zGraph_f = [0]*320
         self.count = 0
 
         self.draw()
@@ -535,6 +547,7 @@ class MainWindow(QMainWindow):
             text = ("Save status")
             # once clicked save FS and So ?
         )
+
         
         #plot = QHBoxLayout
         #plot.addWidget(self.graphWidget)
@@ -594,7 +607,7 @@ class MainWindow(QMainWindow):
         """!
         @brief Draw the plots.
         """
-        global xData, yData, zData, xData_g, yData_g, zData_g
+        global xData, yData, zData, xData_g, yData_g, zData_g, zData_f
 
         for i in range(len(xData)):
 
@@ -605,7 +618,7 @@ class MainWindow(QMainWindow):
             else:
                 self.horAxis = self.horAxis[1:]
                 self.horAxis.append(self.horAxis[-1] + 1)  # Add a new value 1 higher than the last.
-
+            '''
             # X-axis
             self.xGraph = self.xGraph[1:]  # Remove the first
             self.xGraph.append(xData_g[i])  #  Add a new random value. 
@@ -616,11 +629,18 @@ class MainWindow(QMainWindow):
             self.yGraph.append(yData_g[i])
             #self.yGraph.append(yData_g[i])  #  Add a new random value.
             self.dataLiney.setData(self.horAxis, self.yGraph)  # Update the data.
+            '''
             # Z-axis
             self.zGraph = self.zGraph[1:]  # Remove the first 
             self.zGraph.append(zData_g[i])
             #self.zGraph.append(zData_g[i])  #  Add a new random value.
             self.dataLinez.setData(self.horAxis, self.zGraph)  # Update the data.
+
+            # Z-axis FILTERED
+            self.zGraph_f = self.zGraph_f[1:]  # Remove the first 
+            self.zGraph_f.append(zData_f[i])
+            #self.zGraph.append(zData_g[i])  #  Add a new random value.
+            self.dataLinez_f.setData(self.horAxis, self.zGraph_f)  # Update the data.
         
         '''
         def update_plot_data(self):
@@ -639,11 +659,12 @@ class MainWindow(QMainWindow):
         """!
              @brief Draw the plots.
         """
-        global accData, xData, yData, zData, xData_g, yData_g, zData_g
+        global accData, xData, yData, zData, xData_g, yData_g, zData_g, zData_f
 
-        self.dataLinex = self.plot(self.graphWidget,clock,xData_g,'x-axis','r')
-        self.dataLiney = self.plot(self.graphWidget,clock,yData_g,'y-axis','g')
+        #self.dataLinex = self.plot(self.graphWidget,clock,xData_g,'x-axis','r')
+        #self.dataLiney = self.plot(self.graphWidget,clock,yData_g,'y-axis','g')
         self.dataLinez = self.plot(self.graphWidget,clock,zData_g,'z-axis','b')
+        self.dataLinez_f = self.plot(self.graphWidget,clock,zData_f,'z-axis filtered','r')
     
     def plot(self, graph, x, y, curve_name, color):
         """!
