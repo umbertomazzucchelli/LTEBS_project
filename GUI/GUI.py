@@ -6,13 +6,15 @@ from telnetlib import STATUS
 import time
 import logging
 from matplotlib.pyplot import connect
+import matplotlib.pyplot as plt
 #import matplotlib #.axis import XAxis
 import numpy as np
 #import matplotlib 
 import peakutils
+from scipy.fft import fftfreq
 import scipy.signal as signal
 from scipy.fftpack import fft
-from scipy.signal import butter, lfilter, freqz
+from scipy.signal import butter, lfilter, freqz, blackman
 
 #importazione libreria per filtri
 import heartpy as hp
@@ -255,12 +257,14 @@ class SerialWorker(QRunnable):
                 else:
                     zData_g[i] = zData[i]*(-0.0039137254902) - 0.0000862745098039
                 j=j+1
-                zData_array.append(zData[i])
+                zData_array.append(zData_g[i])
                 
 
             if (j==320):
                 print(j)
                 zData_ty,zData_tx= self.fast_fourier_transformation(zData_array,fs)
+                fmax=self.calcolamax(zData_ty,zData_tx) #trovo fmax per filtro
+                print(fmax)
                 prova = True
                 j = 0
                 print("J resettato")
@@ -357,15 +361,36 @@ class SerialWorker(QRunnable):
         :return: yf : complex ndarray - Results of the FFT
                  xf : ndarray - frequency parts in an equally interval
         """
-        #N = int(len(signal_array))  # number of sample points
-        N=320
+        N = int(len(signal_array))  # number of sample points
+        #N=320
         T = 1 / sample_rate  # sample spacing
         yf = fft(signal_array)
-        
+        w=blackman(N)
+        ywf= fft(signal_array*w)
         #xf = fftfreq(N, T)  # for all frequencies
-        xf = np.linspace(0.0, 1.0 / (2.0 * T), 160)  # for positive frequencies only
+        #xf = np.linspace(0.0, 1.0 / (2.0 * T), N, endpoint=False)  # for positive frequencies only
+        xf=fftfreq(N,T)[:N//2]
+        plt.semilogy(xf[1:N//2], 2.0/N * np.abs(yf[1:N//2]), '-b')
+        plt.semilogy(xf[1:N//2], 2.0/N * np.abs(ywf[1:N//2]), '-r')
+        plt.legend(['FFT', 'FFT w. window'])
+        #plt.legend(['FFT'])
+        plt.grid()
+        plt.show()
 
-        return yf, xf
+        return ywf, xf
+
+    def calcolamax(self, yf, xf):
+        yf_max=0
+        index_max=0
+        for i in range(len(xf)):
+            if (yf[i] > yf_max):
+                yf_max=yf[i]
+                index_max=i
+
+        f_max=xf[index_max]
+        return f_max
+            
+        
 
     '''
     def RRalgortithm(self):
@@ -473,7 +498,8 @@ class MainWindow(QMainWindow):
         self.count = 0
 
         #self.draw()
-        self.plot(self.graphWidget,zData_tx,zData_ty,'Transform','r')
+        #self.plot(self.graphWidget,zData_tx,zData_ty,'Transform','r')
+        
         
         '''
         self.dataLinex = self.graphWidget.plot(self.h,self.x)
