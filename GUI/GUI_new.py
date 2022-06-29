@@ -5,6 +5,7 @@ import sys
 from telnetlib import STATUS
 import time
 import logging
+from typing_extensions import Self
 from matplotlib.pyplot import connect, fill_between
 import matplotlib.pyplot as plt
 #import matplotlib #.axis import XAxis
@@ -58,6 +59,7 @@ zData_bandpass = np.full(axisSize,0,dtype=np.float16)
 zData_BP_FT = np.full(axisSize,0,dtype=np.float16)
 zData_array = []
 sum_data = np.full(axisSize,0,dtype=np.float16)
+zData_array_LP = []
 
 clock = np.zeros(axisSize)
 j = 0
@@ -66,6 +68,12 @@ yavg = 0
 zavg = 0
 connectionWait = False
 calibration = False
+calibration_flag=-1
+max_ipo=0
+
+time_max=0
+start_time=-1
+delta_time=1   #deve essere circa 2 secondi
 
 FSR_index= 0
 SAMPLE_RATE = 50
@@ -223,7 +231,7 @@ class SerialWorker(QRunnable):
         global TRANSMITTING
         global STATUS
         global accData, xData, yData, zData, xData_g, yData_g, zData_g, j, zData_lowpass, zData_bandpass, zData_array
-        global zData_BP_FT, sum_data
+        global zData_BP_FT, sum_data, zData_array_LP
         global FSR_index
         global SAMPLE_RATE,LOW_CUT,HIGH_CUT
         global order, fs, cutoff
@@ -259,7 +267,7 @@ class SerialWorker(QRunnable):
                 else:
                     zData_g[i] = zData[i]*(-0.0039137254902) - 0.0000862745098039
                 
-                sum_data[i]=zData_g[i]+yData_g[i]
+                #sum_data[i]=zData_g[i]+yData_g[i]      #vediamo se usare solo z o la somma dei due
 
             
             '''    
@@ -283,23 +291,29 @@ class SerialWorker(QRunnable):
                     zData_g = [z-zavg for z in zData_g]
             '''   
             j=j+1
-                
+    
             #xData_g = self.butter_lowpass_filter(xData_g, cutoff, fs, order)
             #yData_g = self.butter_lowpass_filter(yData_g, cutoff, fs, order)
-            zData_lowpass = self.butter_lowpass_filter(sum_data, cutoff, fs, order)
-            
+            zData_lowpass = self.butter_lowpass_filter(zData_g, cutoff, fs, order)
             #xData_g = self.butter_bandpass_filter(xData_g, LOW_CUT, HIGH_CUT,
             #                                                    SAMPLE_RATE)
             #yData_g = self.butter_bandpass_filter(yData_g, LOW_CUT, HIGH_CUT,
             #                                                    SAMPLE_RATE)
             zData_bandpass = self.butter_bandpass_filter(zData_lowpass, LOW_CUT, HIGH_CUT,
-                                                              SAMPLE_RATE)       
-            for i in range(len(zData_bandpass)):
-                zData_array.append(zData_bandpass[i])
-    
+                                                              SAMPLE_RATE)   
+            self.new_zero=self.calibration()   
+            self.new_zero_z=self.new_zero[2] 
+            zData_lowpass=zData_lowpass-self.new_zero_z     #FORSE QUESTA CALIBRAZIONE FA FATTA DURARE PIù DI 32 DATI
+
+            if (j<=15):
+                for i in range(len(zData_lowpass)):
+                    zData_array_LP.append(zData_lowpass[i])
+            
+            self.RRalgorithm(zData_array_LP)
+
             if (j==10):
                 
-                zData_ty,zData_tx= self.fast_fourier_transformation(zData_array,fs)
+                zData_ty,zData_tx= self.fast_fourier_transformation(zData_array_LP,fs)
                 fmax=self.calcolamax(zData_ty,zData_tx) #trovo fmax per filtro
                 print(fmax)
                 j = 0
@@ -309,7 +323,9 @@ class SerialWorker(QRunnable):
                 # We apply again a bandpass filter over the characteristic frequency
                 zData_BP_FT = self.butter_bandpass_filter(zData_bandpass, f_low, f_high,
                                                               SAMPLE_RATE)  
-        
+                for i in range(len(zData_BP_FT)):
+                    zData_array.append(zData_BP_FT[i])
+                
 
 
     def butter_bandpass_design(self, low_cut, high_cut, sample_rate, order=4):
@@ -388,7 +404,101 @@ class SerialWorker(QRunnable):
         f_max=xf[index_max]
         return f_max
 
-    '''
+    def RRalgorithm(self, data):
+        global calibration_flag, time_max, delta_time, j, max_ipo, start_time
+        
+        '''
+        ------ PEAK DETECTION ---------
+        The algorithm to detect the peak is based on the simultaneous usage
+        of a time threshold (to prevent 'false respiration') and a numerical
+        threshold (determined during the calibration phase)
+        '''
+        if (j==15): #così ho un array dato da 9.6 secondi di registrazione
+            threshold=self.calibration_threshold(data)  #in this way I can calculate a new threshold every tot sec
+            for i in range(len(data)-2):
+                '''
+                if (calibration_flag==1): #FORSE QUI CI SONO DA AZZERARE VARIABILI
+                    calibration_flag=2 
+                '''
+                #Calibration has finished. Research for maxima begins
+                if (calibration_flag==1):
+                    if(data[i+2]<=data[i+1] & data[i+1]>=data[i] & data[i+1]>threshold):
+                        max_ipo=data[i+1]
+                        flag_max_ipo_found=1
+                        
+                        if (flag_max_ipo_found):
+                            stop_time=time.time()
+                            time_max=stop_time - start_time
+                            if (time_max >= delta_time):
+                                max_real=max_ipo
+                                stop_time=0
+                                start_time=0
+                                start_time=time.time()  #mi riparte quando ho trovato un massimo vero
+                                flag_max_ipo_found=0
+                                flag_max_found=1
+                        
+                        if (flag_max_found==1):
+                            count_max+=1
+                            if (count_max>=2):  #we need to detect 2 absolute maxima before starting to provide a respiratory frequency
+                                #resp_rate= 60/(time_max*0.02)  
+                                resp_rate= 60/(time_max)    #gio dice che non ci va la frequenza di campionamento
+                            time_max=0
+                            flag_max_found=0
+                            count_max=0
+                            print(resp_rate)
+            j=0
+            
+
+    def calibration_threshold(self, val):
+        """
+        -------- CALIBRATION ---------
+        The patient has to breath normally for 10 seconds 
+        and the maximum value reached in this calibration window is used for the
+        definition of a threshold.
+        """
+        global calibration_flag #azzerata dentro calibration
+        self.max_calibration=0
+        threshold=0.0
+
+        #self.second=time.time()
+        
+        if(calibration_flag==0):    
+            for i in range(len(val)):
+                #si può accendere il LED qui durante calibrazione
+                if (val[i]>self.max_calibration):
+                    self.max_calibration=val[i]
+                #Defining a calibration threshold on the 50% of the maximum   
+            calibration_flag=1
+            threshold=self.max_calibration*0.5
+            
+        return threshold
+
+    def calibration(self):
+        global calibration,xData_g,yData_g,zData_g,calibration_flag
+        calibration_flag=0
+
+        newZero = np.zeros(3)
+        if(calibration):
+            xSum = 0.0
+            ySum = 0.0
+            zSum = 0.0
+            for i in range(len(xData_g)):  #SAREBBERO DA FARE SUI DATI FILTRATI
+                xSum = xSum + xData_g[i]
+            xAvg = xSum/len(xData_g)
+            newZero[0] = xAvg
+            for i in range(len(yData_g)):
+                ySum = ySum + yData_g[i]
+            yAvg = ySum/len(yData_g)
+            newZero[1] = yAvg
+            for i in range(len(zData_g)):
+                zSum = zSum + zData_g[i]
+            zAvg = zSum/len(zData_g)
+            newZero[2] = zAvg
+        
+        calibration = False
+        return newZero  
+
+    """
     def RRalgortithm(self):
         global xData_g,yData_g,zData_g
         nSamples = 200 #a caso, dovrà essere il numero di sample in 2s
@@ -402,32 +512,7 @@ class SerialWorker(QRunnable):
                 if(xDataWindow[i]>max):
                     max = xDataWindow[i]
                     index1 = i
-    '''      
-    def calibration(self):
-        global calibration,xData_g,yData_g,zData_g
-
-        newZero = [] 
-        if(calibration):
-            xSum = 0.0
-            ySum = 0.0
-            zSum = 0.0
-            for i in len(xData_g):
-                xSum = xSum + xData_g[i]
-            xAvg = xSum/len(xData_g)
-            newZero[0] = xAvg
-            for i in len(yData_g):
-                ySum = ySum + yData_g[i]
-            yAvg = ySum/len(yData_g)
-            newZero[1] = yAvg
-            for i in len(zData_g):
-                zSum = zSum + zData_g[i]
-            zAvg = zSum/len(zData_g)
-            newZero[2] = zAvg
-        
-        calibration = False
-        return newZero
-
-
+    """
 
 ###############
 # MAIN WINDOW #
@@ -664,13 +749,13 @@ class MainWindow(QMainWindow):
             self.yGraph.append(yData_g[i])
             #self.yGraph.append(yData_g[i])  #  Add a new random value.
             self.dataLiney.setData(self.horAxis, self.yGraph)  # Update the data.
-            
+            '''
             # Z-axis
             self.zGraph = self.zGraph[1:]  # Remove the first 
             self.zGraph.append(zData_g[i])
             #self.zGraph.append(zData_g[i])  #  Add a new random value.
             self.dataLinez.setData(self.horAxis, self.zGraph)  # Update the data.
-            '''
+            
             # Z-axis low pass FILTERED
             self.zGraph_lowpass = self.zGraph_lowpass[1:]  # Remove the first 
             self.zGraph_lowpass.append(zData_lowpass[i])
@@ -682,14 +767,13 @@ class MainWindow(QMainWindow):
             self.zGraph_bandpass.append(zData_bandpass[i])
             #self.zGraph.append(zData_g[i])  #  Add a new random value.
             self.dataLinez_bandpass.setData(self.horAxis, self.zGraph_bandpass)  # Update the data.
-            
+            '''
             # Z-axis band pass AFTER FT
             self.zGraph_BP_FT = self.zGraph_BP_FT[1:]  # Remove the first 
             self.zGraph_BP_FT.append(zData_BP_FT[i])
             #self.zGraph.append(zData_g[i])  #  Add a new random value.
             self.dataLinez_BP_FT.setData(self.horAxis, self.zGraph_BP_FT)  # Update the data.
-            '''
-      
+            
 
     def draw(self):
         """!
@@ -699,10 +783,10 @@ class MainWindow(QMainWindow):
 
         #self.dataLinex = self.plot(self.graphWidget,clock,xData_g,'x-axis','r')
         #self.dataLiney = self.plot(self.graphWidget,clock,yData_g,'y-axis','g')
-        #self.dataLinez = self.plot(self.graphWidget,clock,zData_g,'z-axis','b')
+        self.dataLinez = self.plot(self.graphWidget,clock,zData_g,'z-axis','b')
         self.dataLinez_lowpass = self.plot(self.graphWidget,clock,zData_lowpass,'z-axis low-pass filtered','r')
         #self.dataLinez_bandpass = self.plot(self.graphWidget,clock,zData_bandpass,'z-axis band-pass filtered','g')
-        #self.dataLinez_BP_FT = self.plot(self.graphWidget,clock,zData_BP_FT,'z-axis band-pass after FT','black')
+        self.dataLinez_BP_FT = self.plot(self.graphWidget,clock,zData_BP_FT,'z-axis band-pass after FT','black')
     
     def plot(self, graph, x, y, curve_name, color):
         """!
@@ -822,7 +906,9 @@ class MainWindow(QMainWindow):
         global calibration
 
         calibration = True
+        #SerialWorker.calibration(self)
         
+      
 
 #############
 #  RUN APP  #
