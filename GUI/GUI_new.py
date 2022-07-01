@@ -11,15 +11,12 @@ import matplotlib.pyplot as plt
 #import matplotlib #.axis import XAxis
 import numpy as np
 #import matplotlib 
-import peakutils
+#import peakutils
 from scipy.fft import fftfreq
 import scipy.signal as signal
 from scipy.fftpack import fft
 from scipy.signal import butter, lfilter, freqz, blackman
 
-#importazione libreria per filtri
-import heartpy as hp
-from heartpy import filtering
 
 from PyQt5.QtWidgets import * 
 from PyQt5 import QtCore, QtGui
@@ -34,8 +31,7 @@ from pyqtgraph import PlotWidget
 import serial 
 import serial.tools.list_ports
 
-import statistics
-
+import pandas as pd
 
 #Global
 CONN_STATUS = False
@@ -274,26 +270,8 @@ class SerialWorker(QRunnable):
                 
                 #sum_data[i]=zData_g[i]+yData_g[i]      #vediamo se usare solo z o la somma dei due
 
-            
-            '''    
-            print("X data:")
-            print(xData)
-            print("Y data:")
-            print(yData)
-            print("Z data:")   
-            print(zData)
-            '''
             '''                
             NON SO CHE FILTRO USEREMO, MA NEL PAPER CONSIGLIA UN BAND PASS [0,1]Hz, in particolare con BUTTERWORTH e calcolando la frequenza dominante nel range
-
-                xavg = statistics.mean(xData_g)
-                yavg = statistics.mean(yData_g)
-                zavg = statistics.mean(zData_g)
-                j+=1
-                if j>3:
-                    xData_g = [x-xavg for x in xData_g]
-                    yData_g = [y-yavg for y in yData_g]
-                    zData_g = [z-zavg for z in zData_g]
             '''  
             
             if (start_threshold==1): #j inizia ad aumentare solo dopo che ho calibrato
@@ -554,7 +532,7 @@ class MainWindow(QMainWindow):
         self.setWindowTitle("Respiratory / Heart Rate Measurement")
         width = 1280
         height = 720
-        self.setFixedSize(width, height)
+        self.setMaximumSize(width, height)
 
         #create thread handler
         self.threadpool = QThreadPool()
@@ -588,6 +566,28 @@ class MainWindow(QMainWindow):
             # Add legend
         self.graphWidget.addLegend()
         self.graphWidget.setMouseEnabled(x=False, y=False)
+
+        # Create the Heart rate plot widget
+        self.HR_plot = PlotWidget() 
+        self.HR_plot.showGrid(x=True, y=True)
+        self.HR_plot.setBackground('bbccdd')   #color in exa
+        self.HR_plot.setTitle("Heart rate",color="b", size="12pt",italic=True)
+        styles = {'color':'k', 'font-size':'15px'}
+        self.HR_plot.setLabel('left', 'Acc data [m/s^2]', **styles)
+        self.HR_plot.setLabel('bottom', 'Time [ms]', **styles)
+        self.HR_plot.addLegend()
+        self.HR_plot.setMouseEnabled(x=False, y=False)
+
+        # Create the Respiratory rate plot widget
+        self.RR_plot = PlotWidget() 
+        self.RR_plot.showGrid(x=True, y=True)
+        self.RR_plot.setBackground('bbccdd')   #color in exa
+        self.RR_plot.setTitle("Respiratory rate",color="b", size="12pt",italic=True)
+        styles = {'color':'k', 'font-size':'15px'}
+        self.RR_plot.setLabel('left', 'Acc data [m/s^2]', **styles)
+        self.RR_plot.setLabel('bottom', 'Time [ms]', **styles)
+        self.RR_plot.addLegend()
+        self.RR_plot.setMouseEnabled(x=False, y=False)
         
     
         # Display 100 time points
@@ -612,19 +612,51 @@ class MainWindow(QMainWindow):
         self.addToolBar(toolbar)
         #button_action = QAction("File", self)       # name of the toolbar
 
-        button_action=QAction(QIcon("disk_return_black.png"),"Save Data", self)  #home icon
-        button_action.setStatusTip("My botton")
-        button_action.setCheckable(True)    #now I can press it
-        toolbar.addAction(button_action)
+        save_action = QAction(QIcon("disk_return_black.png"), "Export to .csv", self)
+        save_action.setStatusTip("Export to .csv")
+        save_action.triggered.connect(self.save_data)
+        toolbar.addAction(save_action)
+        self.setStatusBar(QStatusBar(self))
         toolbar.addSeparator()
-        button_action2 = QAction(QIcon("home.png"), "Your &button2",self)
-        toolbar.addAction(button_action2)
+
+        #home_action = QAction(QIcon("home.png"), "Home",self)
+        #toolbar.addAction(home_action)
         menu = self.menuBar()
         file_menu = menu.addMenu("&File")
-        file_menu.addAction(button_action)
+        file_menu.addAction(save_action)
+        #file_menu = menu.addMenu("&Home")
+        #file_menu.addAction(home_action)
 
-        gridlayout = QGridLayout()
+        self.HR_label = QLabel()
+        HR_value = 100 # this value is update with the algorithm
+        text = 'Instant heart rate value: {} bpm'
+        a = text.format(HR_value)
+        self.HR_label.setText(a)
+        font = QtGui.QFont()
+        font.setFamily("Arial")
+        font.setBold(True)
+        font.setWeight(75)
+        self.HR_label.setFont(font)
+        self.HR_label.setStyleSheet("border: 1px solid black")
+        self.HR_label.setAlignment(QtCore.Qt.AlignCenter)
+
+        self.RR_label = QLabel()
+        RR_value = resp_rate
+        text = 'Instant respiratory rate value: {}'
+        a = text.format(RR_value)
+        self.RR_label.setText(a)
+        font = QtGui.QFont()
+        font.setFamily("Arial")
+        font.setBold(True)
+        font.setWeight(75)
+        self.RR_label.setFont(font)
+        self.RR_label.setStyleSheet("border: 1px solid black")
+        self.RR_label.setAlignment(QtCore.Qt.AlignCenter)
+
         verticalLayout = QVBoxLayout()
+        heart_resp = QHBoxLayout()
+        heart_plot = QVBoxLayout()
+        resp_plot = QVBoxLayout()
         device_search = QHBoxLayout()
     
         self.conn_btn = QPushButton(
@@ -652,9 +684,10 @@ class MainWindow(QMainWindow):
         modeSelection = QHBoxLayout()
 
         self.modeSelect = QComboBox()
+        self.modeSelect.addItem("both")
         self.modeSelect.addItem("HR Only")
         self.modeSelect.addItem("RR Only")
-        self.modeSelect.addItem("both")
+        self.modeSelect.currentIndexChanged.connect(self.selectionchange)
 
         self.calibrate = QPushButton(
             text = ("calibration")
@@ -675,8 +708,6 @@ class MainWindow(QMainWindow):
         modeSelection.addWidget(self.updateBtn)
         verticalLayout.addLayout(modeSelection)
 
-        saveStatus = QHBoxLayout()
-
         self.FSR_Select = QComboBox()
         self.FSR_Select.setEditable(False)
         self.FSR_Select.addItem("FS: ±2 g")
@@ -690,10 +721,16 @@ class MainWindow(QMainWindow):
         )
 
         
-        #plot = QHBoxLayout
-        #plot.addWidget(self.graphWidget)
+        heart_plot.addWidget(self.HR_label)
+        heart_plot.addWidget(self.HR_plot)
+        resp_plot.addWidget(self.RR_label)
+        resp_plot.addWidget(self.RR_plot)
+
+        heart_resp.addLayout(heart_plot)
+        heart_resp.addLayout(resp_plot)
 
         verticalLayout.addWidget(self.graphWidget)
+        verticalLayout.addLayout(heart_resp)
 
         self.timer = QtCore.QTimer()
         self.timer.setInterval(500)
@@ -721,7 +758,43 @@ class MainWindow(QMainWindow):
         modeSelection.setSpacing(5)
         #calibrationSelection.setContentsMargins(20,20,20,20)
         #calibrationSelection.setSpacing(20)
+
+    def save_data(self):
+        print("exporting to csv...")
+
+        global zData_g, xData_g, yData_g
+        df = pd.DataFrame({
+            'x axis': xData_g,
+            'y axis': yData_g,
+            'z axis': zData_g,
+        })
+        df.to_csv('HR_Rate.csv', float_format = '%.2f', index = False)
         
+    def selectionchange(self,i):
+        global flag_graph
+        flag_graph = i
+        a = ['both','HR only', 'RR only'] 
+        # 0 --> HR
+        # 1 --> RR
+        # 2 --> both
+        print("Plotting: ", a[flag_graph])
+        ### FLAG GRAPH per plottare solo ciò che interessa --- disattivo cio che non voglio
+        if (flag_graph == 0): #only HR
+            self.RR_plot.setBackground('bbccdd')
+            self.HR_plot.setBackground('bbccdd')
+            #zData_lowpass = np.full(axisSize,10,dtype=np.float16)
+            #self.dataLinez_lowpass = self.plot(self.graphWidget,clock,zData_lowpass,'z-axis low-pass filtered','r')
+        elif (flag_graph == 1): #only RR
+            self.RR_plot.setBackground('r')
+            self.HR_plot.setBackground('bbccdd')
+            #zData_lowpass = np.full(axisSize,5,dtype=np.float16)
+            #self.dataLinez_lowpass = self.plot(self.HR_plot,clock,zData_lowpass,'z-axis low-pass filtered','g')
+        elif (flag_graph == 2):
+            self.HR_plot.setBackground('y')
+            self.RR_plot.setBackground('bbccdd')
+        #    zData_bandpass = np.full(axisSize,5,dtype=np.float16)
+        #    self.dataLinez_bandpass = self.plot(self.RR_plot,clock,zData_bandpass,'z-axis band-pass filtered','b')
+
         
     def change_graph (self):#,index
         """
@@ -805,9 +878,9 @@ class MainWindow(QMainWindow):
         #self.dataLinex = self.plot(self.graphWidget,clock,xData_g,'x-axis','r')
         #self.dataLiney = self.plot(self.graphWidget,clock,yData_g,'y-axis','g')
         self.dataLinez = self.plot(self.graphWidget,clock,zData_g,'z-axis','b')
-        self.dataLinez_lowpass = self.plot(self.graphWidget,clock,zData_lowpass,'z-axis low-pass filtered','r')
+        self.dataLinez_lowpass = self.plot(self.HR_plot,clock,zData_lowpass,'z-axis low-pass filtered','r')
         #self.dataLinez_bandpass = self.plot(self.graphWidget,clock,zData_bandpass,'z-axis band-pass filtered','g')
-        self.dataLinez_BP_FT = self.plot(self.graphWidget,clock,zData_BP_FT,'z-axis band-pass after FT','black')
+        self.dataLinez_BP_FT = self.plot(self.RR_plot,clock,zData_BP_FT,'z-axis band-pass after FT','black')
     
     def plot(self, graph, x, y, curve_name, color):
         """!
