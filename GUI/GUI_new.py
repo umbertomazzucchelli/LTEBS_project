@@ -1,4 +1,6 @@
+from audioop import findmax
 from multiprocessing import connection
+from pydoc import source_synopsis
 from re import L
 import struct
 import sys
@@ -12,6 +14,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 #import matplotlib 
 #import peakutils
+from scipy.signal import find_peaks
+from scipy import interpolate
 from scipy.fft import fftfreq
 import scipy.signal as signal
 from scipy.fftpack import fft
@@ -65,6 +69,7 @@ newZero = np.zeros(3)
 clock = np.zeros(axisSize)
 j = 0
 k = 0
+p = 0
 xavg = 0
 yavg = 0
 zavg = 0
@@ -79,13 +84,11 @@ time_max=0
 start_time=-1
 delta_time=0.5   #deve essere circa 2 secondi
 
-FSR_index= 0
 SAMPLE_RATE = 50
-LOW_CUT = 0.00001
+LOW_CUT = 0.01
 HIGH_CUT = 1.0
 
 order = 8
-fs = 50.0       # sample rate, Hz
 cutoff = 3
 
 f_bw=0.25 #Hz for normal activities, put 0.50 Hz for sport activities
@@ -171,7 +174,6 @@ class SerialWorker(QRunnable):
                 time.sleep(0.01)
                 connectionWait=False
 
-
     @pyqtSlot()
     def send(self, char):
         """!
@@ -198,7 +200,6 @@ class SerialWorker(QRunnable):
         except:
             logging.info("Could not receive {} on port {}.".format(testString, self.port_name))
    
-
     @pyqtSlot()
     def readAcc(self):
         """!
@@ -236,9 +237,8 @@ class SerialWorker(QRunnable):
         global STATUS
         global accData, xData, yData, zData, xData_g, yData_g, zData_g, j, zData_lowpass, zData_bandpass, zData_array
         global zData_BP_FT, sum_data, zData_array_LP,k, start_threshold, zData_smoothed, zData_array_smoothed, zData_interp
-        global FSR_index
         global SAMPLE_RATE,LOW_CUT,HIGH_CUT
-        global order, fs, cutoff
+        global order, cutoff, p
       
         #self.serial_worker = SerialWorker(PORT)
         
@@ -271,23 +271,55 @@ class SerialWorker(QRunnable):
                 else:
                     zData_g[i] = zData[i]*(-0.0039137254902) - 0.0000862745098039
                 
-                #sum_data[i]=zData_g[i]+yData_g[i]      #vediamo se usare solo z o la somma dei due
+                sum_data[i]=zData_g[i]+yData_g[i]      #vediamo se usare solo z o la somma dei due
 
             '''                
             NON SO CHE FILTRO USEREMO, MA NEL PAPER CONSIGLIA UN BAND PASS [0,1]Hz, in particolare con BUTTERWORTH e calcolando la frequenza dominante nel range
             '''  
-            
+                                            
+            zData_array = np.append(zData_array, zData_g[i])
+            p+=1
+
+            if (p == 49):
+                #xData_g = self.butter_lowpass_filter(xData_g, cutoff, fs, order)
+                #yData_g = self.butter_lowpass_filter(yData_g, cutoff, fs, order)
+                zData_lowpass = self.butter_lowpass_filter(zData_array, cutoff, SAMPLE_RATE, order)
+                #xData_g = self.butter_bandpass_filter(xData_g, LOW_CUT, HIGH_CUT,
+                #                                                    SAMPLE_RATE)
+                #yData_g = self.butter_bandpass_filter(yData_g, LOW_CUT, HIGH_CUT,
+                #                                                    SAMPLE_RATE)
+                zData_bandpass = self.butter_bandpass_design(zData_lowpass, LOW_CUT, HIGH_CUT,
+                                                                  SAMPLE_RATE)   
+    
+                #zData_smoothed = self.smooth_signal(zData_lowpass, SAMPLE_RATE, window_length=5, polyorder=3)
+                zData_smoothed = signal.savgol_filter(zData_lowpass, window_length=5, polyorder=3)
+                self.window_length_MA = 3
+                zData_windowed = self.moving_average(self.window_length_MA, zData_array)
+
+                zData_interp = self.interpolation(zData_array)
+
+                plt.plot(zData_array)
+                plt.plot(zData_lowpass)
+                plt.plot(zData_bandpass)
+                plt.plot(zData_smoothed)
+                plt.plot(zData_windowed)
+                plt.plot(zData_interp)
+                plt.legend()
+
+                plt.show()
+
+
             if (start_threshold==1): #j inizia ad aumentare solo dopo che ho calibrato
                 j=j+1
             k=k+1
             #xData_g = self.butter_lowpass_filter(xData_g, cutoff, fs, order)
             #yData_g = self.butter_lowpass_filter(yData_g, cutoff, fs, order)
-            zData_lowpass = self.butter_lowpass_filter(zData_g, cutoff, fs, order)
+            zData_lowpass = self.butter_lowpass_filter(zData_g, cutoff, SAMPLE_RATE, order)
             #xData_g = self.butter_bandpass_filter(xData_g, LOW_CUT, HIGH_CUT,
             #                                                    SAMPLE_RATE)
             #yData_g = self.butter_bandpass_filter(yData_g, LOW_CUT, HIGH_CUT,
             #                                                    SAMPLE_RATE)
-            zData_bandpass = self.butter_bandpass_filter(zData_lowpass, LOW_CUT, HIGH_CUT,
+            zData_bandpass = self.butter_bandpass_design(zData_lowpass, LOW_CUT, HIGH_CUT,
                                                               SAMPLE_RATE)   
 
             #zData_smoothed = self.smooth_signal(zData_lowpass, SAMPLE_RATE, window_length=5, polyorder=3)
@@ -295,59 +327,78 @@ class SerialWorker(QRunnable):
 
             self.new_zero=self.calibration()   
             self.new_zero_y=self.new_zero[1]
-            zData_smoothed=zData_smoothed-self.new_zero_y     #FORSE QUESTA CALIBRAZIONE FA FATTA DURARE PIù DI 32 DATI            
+            zData_smoothed=zData_smoothed-self.new_zero_y     #FORSE QUESTA CALIBRAZIONE FA FATTA DURARE PIù DI 32 DATI      
+
+            self.new_zero=self.calibration()   
+            self.new_zero_z=self.new_zero[2]
+            zData_lowpass=zData_lowpass-self.new_zero_z     #FORSE QUESTA CALIBRAZIONE FA FATTA DURARE PIù DI 32 DATI      
             
             for i in range(len(zData_lowpass)):
-                zData_array_LP.append(zData_lowpass[i])
+                zData_array_LP = np.append(zData_array_LP, zData_lowpass[i])
 
-                for i in range(len(zData_smoothed)):
-                    zData_array_smoothed.append(zData_smoothed[i])
+            for i in range(len(zData_smoothed)):
+                zData_array_smoothed = np.append(zData_array_smoothed, zData_smoothed[i])
             
-            self.RRalgorithm(zData_array_LP)
-
+            #self.RRalgorithm(zData_array_smoothed)
                         
-            if (k==10):
-                
-                zData_ty,zData_tx= self.fast_fourier_transformation(zData_array_LP,fs)
-                fmax=self.calcolamax(zData_ty,zData_tx) #trovo fmax per filtro
+            if (k==20):
+                zData_array_smoothed = np.array(zData_array_smoothed)
+                print(type(zData_array_smoothed))
+                self.threshold=self.calibration_threshold(zData_array_LP)
+                self.delta=75
+                self.n_peaks_lp = self.find_peaks(zData_array_LP, self.threshold, self.delta)
+                k=0
+                print('numero picchi lp',self.n_peaks_lp)
+
+                self.threshold=self.calibration_threshold(zData_array_smoothed)
+                self.n_peaks_sm = self.find_peaks(zData_array_smoothed, self.threshold, self.delta)
+                k=0
+                print('numero picchi sm',self.n_peaks_sm)
+                zData_array_smoothed = []
+                '''
+                zData_ty,zData_tx= self.fast_fourier_transformation(zData_array_LP,SAMPLE_RATE)
+                #fmax=self.calcolamax(zData_ty,zData_tx) #trovo fmax per filtro
+                fmax = max(zData_ty)
                 #print(fmax)
                 k = 0
-                #print("J resettato")
                 f_low=fmax-f_bw
                 f_high=fmax+f_bw
                 if (f_low <= 0):
                     f_low = 0.0001
+
                 # We apply again a bandpass filter over the characteristic frequency
-                zData_BP_FT = self.butter_bandpass_filter(zData_bandpass, f_low, f_high,
+                zData_BP_FT = self.butter_bandpass_design(zData_lowpass, f_low, f_high,
                                                               SAMPLE_RATE)  
-                for i in range(len(zData_BP_FT)):
-                    zData_array.append(zData_BP_FT[i])
+                #for i in range(len(zData_BP_FT)):
+                #    zData_array.append(zData_BP_FT[i])
+                '''
 
     ### moving average ###
-    '''
-    window_length = 3
-    def moving average(self, window_length, xData_g, yData_g, zData_g)
+    
+
+    def moving_average(self, window_length, data):
         
         ### with rolling function ###
-        data = xData_g #yData_g zData_g
-        series = pd.Series(data)
-        Mov_avg = series.rolling(window = WL, center = True).mean()
-        smoothed = Mov_avg.to_numpy # optional: (dtype = 'float32') # dipende cosa ci serve
+        #series = pd.Series(data)
+        #series = data.to_frame()
+        #Mov_avg = series.rolling(window = window_length, center = True).mean()
+        #smoothed = Mov_avg.to_numpy # optional: (dtype = 'float32') # dipende cosa ci serve
+        smoothed = np.convolve(data, np.ones(window_length)) / window_length
     
         return smoothed
-    '''
+    
 
     ### interpolation ###
-    '''
-    from scipy import interpolate
 
-    x = np.arange(0, len(zData))
+    def interpolation(self, data):
 
-    y = np.cos(x)
+        x = np.linspace(0, len(data), endpoint=True)
+        y = np.cos(x**2)
+        f = interpolate.interp1d(x, y, kind = 'cubic')
+        ynew = f(len(data))
+ 
+        return ynew
 
-    f = interpolate.interp1d(x, y, kind = 'cubic')
-
-    '''
 
     ### acceleration Ai + PCA###
     '''
@@ -418,21 +469,22 @@ class SerialWorker(QRunnable):
         return y        
     '''
     
-
     ### peak finding ###
-    '''
+    
     # https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.find_peaks.html#scipy.signal.find_peaks
     # calculate the relativa maxima of the 1D array with find_peaks
+
     def find_peaks(self, data, threshold, delta):
-        from scipy.signal import find_peaks
-        peaks, _ = find_peaks(x, height = threshold, distance = delta)
-        plt.plot(x)
-        plt.plot(peaks, x[peaks], "x")
+        
+        i_peaks, _ = find_peaks(data, height = threshold, distance = delta)
+        plt.plot(data)
+        plt.plot(i_peaks,data[i_peaks], "x")
         plt.show()
         # returns the indeces of the peaks --> use them to find the respiration peaks
+        peaks = len(i_peaks)
         return peaks 
 
-    '''
+    
 
     ### heart rate computation ###
     '''
@@ -461,11 +513,7 @@ class SerialWorker(QRunnable):
 
     '''
 
-
-                
-
-
-    def butter_bandpass_design(self, low_cut, high_cut, sample_rate, order=4):
+    def butter_bandpass_design(self, signal_array, low_cut, high_cut, sample_rate, order=4):
         """
         Defines the Butterworth bandpass filter-design
         :param low_cut: Lower cut off frequency in Hz
@@ -475,11 +523,12 @@ class SerialWorker(QRunnable):
         :return: b, a : ndarray, ndarray - Numerator (b) and denominator (a) polynomials of the IIR filter. Only returned if output='ba'.
         """
         nyq = 0.5 * sample_rate
-        low = low_cut / nyq
-        high = high_cut / nyq
-        b, a = signal.butter(order, [low, high], btype='band')
-
-        return b, a
+        #low = low_cut / nyq
+        #high = high_cut / nyq
+        sos = signal.butter(order, [low_cut, high_cut], btype='band', output ='sos',fs=sample_rate)
+        y = signal.sosfiltfilt(sos, signal_array)
+        return y
+    '''
     def butter_bandpass_filter(self, signal_array, low_cut, high_cut, sample_rate, order=4):
         """
         Apply's the filter design on the signal_array.
@@ -490,11 +539,11 @@ class SerialWorker(QRunnable):
         :param order: Order of the filter-design
         :return: ndarray - The filtered output, an array of type numpy.float64 with the same shape as signal_array.
         """
-        b, a = self.butter_bandpass_design(low_cut, high_cut, sample_rate, order=order)
-        y = signal.filtfilt(b, a, signal_array)
+        
+        y = signal.sosfiltfilt(sos, signal_array)
 
         return y
-
+    '''
     def butter_lowpass(self, cutoff, fs, order):#=5):
         return butter(order, cutoff, fs=fs, btype='low', analog=False)
 
@@ -521,12 +570,12 @@ class SerialWorker(QRunnable):
         #xf = fftfreq(N, T)  # for all frequencies
         #xf = np.linspace(0.0, 1.0 / (2.0 * T), N, endpoint=False)  # for positive frequencies only
         xf=fftfreq(N,T)[:N//2]
-        plt.semilogy(xf[1:N//2], 2.0/N * np.abs(yf[1:N//2]), '-b')
-        plt.semilogy(xf[1:N//2], 2.0/N * np.abs(ywf[1:N//2]), '-r')
-        plt.legend(['FFT', 'FFT w. window'])
+        #plt.semilogy(xf[1:N//2], 2.0/N * np.abs(yf[1:N//2]), '-b')
+        #plt.semilogy(xf[1:N//2], 2.0/N * np.abs(ywf[1:N//2]), '-r')
+        #plt.legend(['FFT', 'FFT w. window'])
         
-        plt.grid()
-        plt.show()
+        #plt.grid()
+        #plt.show()
 
         return ywf, xf
 
@@ -537,27 +586,26 @@ class SerialWorker(QRunnable):
             if (yf[i] > yf_max):
                 yf_max=yf[i]
                 index_max=i
-
         f_max=xf[index_max]
         return f_max
 
+    '''
     def smooth_signal(data, sample_rate, window_length=None, polyorder=3):
-        '''
+        
         smooths given signal using savitzky-golay filter
         Function that smooths data using savitzky-golay filter using default settings.
         Functionality requested by Eirik Svendsen. Added since 1.2.4
         Parameters
-        '''
+        
         if window_length == None:
             window_length = sample_rate // 10
 
         if window_length % 2 == 0 or window_length == 0: window_length += 1
 
         smoothed = signal.savgol_filter(data, window_length = window_length,
-                                 polyorder = polyorder)
-
-            
+                                 polyorder = polyorder) 
         return smoothed    
+    '''
 
     def RRalgorithm(self, data):
         global calibration_flag, time_max, delta_time, j, max_ipo, start_time, count_max, resp_rate, index_increment
@@ -657,11 +705,13 @@ class SerialWorker(QRunnable):
             yAvg = ySum/len(yData_g)
             newZero[1] = yAvg
             '''
+            newZero[0] = xSum
+
             for i in range(len(zData_array_smoothed)):
                 ySum = ySum + zData_array_smoothed[i]
             yAvg = ySum/len(zData_array_smoothed)
             newZero[1] = yAvg
-            newZero[0] = xSum
+            
             #newZero[1] = ySum
             for i in range(len(zData_array_LP)):
                 zSum = zSum + zData_array_LP[i]
@@ -886,20 +936,21 @@ class MainWindow(QMainWindow):
         modeSelection.addWidget(self.calibrate)
         modeSelection.addWidget(self.updateBtn)
         verticalLayout.addLayout(modeSelection)
-
+        
+        '''
         self.FSR_Select = QComboBox()
         self.FSR_Select.setEditable(False)
         self.FSR_Select.addItem("FS: ±2 g")
         self.FSR_Select.addItem("FS: ±4 g")
         #self.FSR_Select.activated.connect(self.calibration(1)) #con .activated "Used when an item is selected by the user."
         self.FSR_Select.currentIndexChanged.connect(self.change_graph)  #quando l'item nella lista viene cambiato mi porta a change_graph
+        '''
 
         self.save_btn = QPushButton(
             text = ("Save status")
             # once clicked save FS and So ?
         )
 
-        
         heart_plot.addWidget(self.HR_label)
         heart_plot.addWidget(self.HR_plot)
         resp_plot.addWidget(self.RR_label)
@@ -948,6 +999,7 @@ class MainWindow(QMainWindow):
             'z axis': zData_g,
         })
         df.to_csv('HR_Rate.csv', float_format = '%.2f', index = False)
+
         
     def selectionchange(self,i):
         global flag_graph
@@ -974,7 +1026,7 @@ class MainWindow(QMainWindow):
         #    zData_bandpass = np.full(axisSize,5,dtype=np.float16)
         #    self.dataLinez_bandpass = self.plot(self.RR_plot,clock,zData_bandpass,'z-axis band-pass filtered','b')
 
-        
+    '''   
     def change_graph (self):#,index
         """
         @brief Curve calibration
@@ -994,7 +1046,7 @@ class MainWindow(QMainWindow):
         #calibration_index = self.FSR_Select.itemData(index)
         #if (old_calibration != calibration_index):
         #    self.graphWidget.clear()
-        
+    '''    
         
     def drawGeneralGraph(self):
         """!
@@ -1028,28 +1080,32 @@ class MainWindow(QMainWindow):
             self.zGraph.append(zData_g[i])
             #self.zGraph.append(zData_g[i])  #  Add a new random value.
             self.dataLinez.setData(self.horAxis, self.zGraph)  # Update the data.
+            '''
             # Z-axis interp
             self.zGraph_interp = self.zGraph_interp[1:]  # Remove the first 
             self.zGraph_interp.append(zData_interp[i])
             #self.zGraph.append(zData_g[i])  #  Add a new random value.
             self.dataLinez_interp.setData(self.horAxis, self.zGraph_interp)  # Update the data.
+            '''
+
             # Z-axis low pass FILTERED
             self.zGraph_lowpass = self.zGraph_lowpass[1:]  # Remove the first 
             self.zGraph_lowpass.append(zData_lowpass[i])
             #self.zGraph.append(zData_g[i])  #  Add a new random value.
             self.dataLinez_lowpass.setData(self.horAxis, self.zGraph_lowpass)  # Update the data.
-            # Z-axis low pass FILTERED
+
+            # Z-axis sgavigonk FILTERED
             self.zGraph_smoothed = self.zGraph_smoothed[1:]  # Remove the first 
             self.zGraph_smoothed.append(zData_smoothed[i])
             #self.zGraph.append(zData_g[i])  #  Add a new random value.
             self.dataLinez_smoothed.setData(self.horAxis, self.zGraph_smoothed)  # Update the data.
-            '''
+
             # Z-axis band pass FILTERED
             self.zGraph_bandpass = self.zGraph_bandpass[1:]  # Remove the first 
             self.zGraph_bandpass.append(zData_bandpass[i])
             #self.zGraph.append(zData_g[i])  #  Add a new random value.
             self.dataLinez_bandpass.setData(self.horAxis, self.zGraph_bandpass)  # Update the data.
-            '''
+            
             # Z-axis band pass AFTER FT
             self.zGraph_BP_FT = self.zGraph_BP_FT[1:]  # Remove the first 
             self.zGraph_BP_FT.append(zData_BP_FT[i])
@@ -1067,10 +1123,10 @@ class MainWindow(QMainWindow):
         #self.dataLiney = self.plot(self.graphWidget,clock,yData_g,'y-axis','g')
         self.dataLinez = self.plot(self.graphWidget,clock,zData_g,'z-axis','b')
         self.dataLinez_lowpass = self.plot(self.graphWidget,clock,zData_lowpass,'z-axis low-pass filtered','r')
-        self.dataLinez_interp = self.plot(self.graphWidget,clock,zData_interp,'z-axis interp','black')
-        self.dataLinez_lowpass = self.plot(self.HR_plot,clock,zData_lowpass,'z-axis low-pass filtered','r')
+        #self.dataLinez_interp = self.plot(self.graphWidget,clock,zData_interp,'z-axis interp','black')
+        #self.dataLinez_lowpass = self.plot(self.HR_plot,clock,zData_lowpass,'z-axis low-pass filtered','r')
         self.dataLinez_smoothed = self.plot(self.HR_plot,clock,zData_smoothed,'z-axis smoothed','b')
-        self.dataLinez_bandpass = self.plot(self.RR_plot,clock,zData_bandpass,'z-axis band-pass filtered','g')
+        self.dataLinez_bandpass = self.plot(self.HR_plot,clock,zData_bandpass,'z-axis band-pass filtered','g')
         self.dataLinez_BP_FT = self.plot(self.RR_plot,clock,zData_BP_FT,'z-axis band-pass after FT','black')
     
     def plot(self, graph, x, y, curve_name, color):
@@ -1123,7 +1179,6 @@ class MainWindow(QMainWindow):
                     self.conn_label.setStyleSheet("background-color: rgb(0, 255, 0);\n" "border: 1px solid black")
                     break
 
-                    
             if(CONN_STATUS==False):
                 self.conn_btn.setText("Device not found")
                 self.conn_btn.repaint()
@@ -1167,14 +1222,15 @@ class MainWindow(QMainWindow):
         if checked:
             self.serial_worker.send('a')
             self.updateBtn.setText("Stop")
-            self.modeSelect.setDisabled(True)
-            self.FSR_Select.setDisabled(True)
+            #self.modeSelect.setDisabled(True)
+            #self.FSR_Select.setDisabled(True)
             TRANSMITTING = True
             self.timer.timeout.connect(lambda: self.serial_worker.readData())
             self.timer.start()
             self.graphTimer.timeout.connect(lambda: self.drawGeneralGraph())
             self.graphTimer.start() 
             self.calibrate.setDisabled(False)
+            self.modeSelect.setDisabled(False)
 
         else:
             self.serial_worker.send('s')
@@ -1184,17 +1240,40 @@ class MainWindow(QMainWindow):
             self.timer.stop()
             self.graphTimer.stop()
             self.modeSelect.setDisabled(False)
-            self.FSR_Select.setDisabled(False)
+            #self.FSR_Select.setDisabled(False)
             self.calibrate.setDisabled(True)
 
     def startCalibration(self):
         global calibration
 
         calibration = True
-        #SerialWorker.calibration(self)
-        
-      
 
+    def selectionchange(self,i):
+        global flag_graph
+        flag_graph = i
+        a = ['both','HR only', 'RR only'] 
+        # 0 --> HR
+        # 1 --> RR
+        # 2 --> both
+        print("Plotting: ", a[flag_graph])
+        ### FLAG GRAPH per plottare solo ciò che interessa --- disattivo cio che non voglio
+        if (flag_graph == 0): #only HR
+            self.RR_plot.setBackground('bbccdd')
+            self.HR_plot.setBackground('bbccdd')
+            #zData_lowpass = np.full(axisSize,10,dtype=np.float16)
+            #self.dataLinez_lowpass = self.plot(self.graphWidget,clock,zData_lowpass,'z-axis low-pass filtered','r')
+        elif (flag_graph == 1): #only RR
+            self.RR_plot.setBackground('r')
+            self.HR_plot.setBackground('bbccdd')
+            #zData_lowpass = np.full(axisSize,5,dtype=np.float16)
+            #self.dataLinez_lowpass = self.plot(self.HR_plot,clock,zData_lowpass,'z-axis low-pass filtered','g')
+        elif (flag_graph == 2):
+            self.HR_plot.setBackground('y')
+            self.RR_plot.setBackground('bbccdd')
+        #    zData_bandpass = np.full(axisSize,5,dtype=np.float16)
+        #    self.dataLinez_bandpass = self.plot(self.RR_plot,clock,zData_bandpass,'z-axis band-pass filtered','b')
+
+    
 #############
 #  RUN APP  #
 #############
