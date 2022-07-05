@@ -839,7 +839,7 @@ class MainWindow(QMainWindow):
                 if(CONN_STATUS==True):
                     self.conn_btn.setText(
                     "Disconnect from port {}".format(self.port_text))
-                    self.statusTimer.timeout.connect(self.portConnectionStatus)
+                    self.statusTimer.timeout.connect(self.checkStatus)
                     self.statusTimer.start()
                     self.conn_label.setText("Device connected")
                     self.conn_label.setStyleSheet("background-color: rgb(0, 255, 0);\n" "border: 1px solid black")
@@ -873,20 +873,16 @@ class MainWindow(QMainWindow):
         """
         logging.info("Port {} closed.".format(port_name))
 
-    def portConnectionStatus(self):
-        self.serial_worker.signals.status.connect(self.check_serialport_status)
 
-
-
-    def check_serialport_status(self, status):
+    def checkStatus(self):
         """!
         @brief Handle the status of the serial port connection.
         Available status:
             - 0  --> Error during opening of serial port
             - 1  --> Serial port opened correctly
         """
-        print('prova')
-        if status == 0:
+
+        if SerialWorker.port.isOpen() == False:
             self.conn_btn.setChecked(False)
             self.dlg3 = QMessageBox(self)
             self.dlg3.setWindowTitle("WARNING")
