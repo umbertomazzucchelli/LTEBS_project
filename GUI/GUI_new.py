@@ -83,6 +83,8 @@ count_max=0
 RR_value=0.0
 flag_time = False
 time_difference=0
+start = 0
+stop = 0
 #start_time=-1
 #delta_time=0.5   #deve essere circa 2 secondi
 
@@ -230,71 +232,82 @@ class SerialWorker(QRunnable):
         global STATUS
         global accData, xData, yData, zData, xData_g, yData_g, zData_g, j, zData_lowpass, zData_bandpass, zData_array
         global zData_BP_FT, sum_data, zData_array_LP,k, start_threshold, zData_smoothed, zData_array_smoothed, RR_value, flag_time
-        global SAMPLE_RATE,LOW_CUT,HIGH_CUT
+        global SAMPLE_RATE,LOW_CUT,HIGH_CUT, start, stop, CONN_STATUS
         global order, cutoff, p
       
         #self.serial_worker = SerialWorker(PORT)
-        
-        dataArray = self.port.read(194)
-        dataArray = struct.unpack('194B',dataArray)
-        dataArray = np.asarray(dataArray,dtype=np.uint8)
-        lastIndex = len(dataArray)-1
-        if(dataArray[0]==10 and dataArray[lastIndex]==11):
-            accData = dataArray[1:193]
-            for i in range(axisSize):
-                '''
-                xData[i] =  (accData[i*6] | (accData[i*6+1]<<8))>>6
-                yData[i] =  (accData[i*6+2] | (accData[i*6+3]<<8))>>6
-                zData[i] =  (accData[i*6+4] | (accData[i*6+5]<<8))>>6
-                '''
-                xData[i] =  (((accData[i*6+1] & 0xFF)<<8) | (accData[i*6] & 0xFF))>>6
-                yData[i] =  (((accData[i*6+3] & 0xFF)<<8) | (accData[i*6+2] & 0xFF))>>6
-                zData[i] =  (((accData[i*6+5] & 0xFF)<<8) | (accData[i*6+4] & 0xFF))>>6
+        try:
+            dataArray = self.port.read(194)
+            dataArray = struct.unpack('194B',dataArray)
+            dataArray = np.asarray(dataArray,dtype=np.uint8)
+            lastIndex = len(dataArray)-1
+            if(dataArray[0]==10 and dataArray[lastIndex]==11):
+                accData = dataArray[1:193]
+                for i in range(axisSize):
+                    '''
+                    xData[i] =  (accData[i*6] | (accData[i*6+1]<<8))>>6
+                    yData[i] =  (accData[i*6+2] | (accData[i*6+3]<<8))>>6
+                    zData[i] =  (accData[i*6+4] | (accData[i*6+5]<<8))>>6
+                    '''
+                    xData[i] =  (((accData[i*6+1] & 0xFF)<<8) | (accData[i*6] & 0xFF))>>6
+                    yData[i] =  (((accData[i*6+3] & 0xFF)<<8) | (accData[i*6+2] & 0xFF))>>6
+                    zData[i] =  (((accData[i*6+5] & 0xFF)<<8) | (accData[i*6+4] & 0xFF))>>6
 
-                if(xData[i]>511 & xData[i]<1024):
-                    xData_g[i] = xData[i]*(-0.0039060665362)+3.99990606654
-                else:
-                    xData_g[i] = xData[i]*(-0.0039137254902) - 0.0000862745098039
-                if(yData[i]>511 & yData[i]<1024):
-                    yData_g[i] = yData[i]*(-0.0039060665362)+3.99990606654
-                else:
-                    yData_g[i] = yData[i]*(-0.0039137254902) - 0.0000862745098039
-                if(zData[i]>511 & zData[i]<1024):
-                    zData_g[i] = zData[i]*(-0.0039060665362)+3.99990606654
-                else:
-                    zData_g[i] = zData[i]*(-0.0039137254902) - 0.0000862745098039
-                
-                #sum_data[i]=zData_g[i]+yData_g[i]      #vediamo se usare solo z o la somma dei due
+                    if(xData[i]>511 & xData[i]<1024):
+                        xData_g[i] = xData[i]*(-0.0039060665362)+3.99990606654
+                    else:
+                        xData_g[i] = xData[i]*(-0.0039137254902) - 0.0000862745098039
+                    if(yData[i]>511 & yData[i]<1024):
+                        yData_g[i] = yData[i]*(-0.0039060665362)+3.99990606654
+                    else:
+                        yData_g[i] = yData[i]*(-0.0039137254902) - 0.0000862745098039
+                    if(zData[i]>511 & zData[i]<1024):
+                        zData_g[i] = zData[i]*(-0.0039060665362)+3.99990606654
+                    else:
+                        zData_g[i] = zData[i]*(-0.0039137254902) - 0.0000862745098039
 
-            if (calibration_flag):
-                j+=1    #chiamarlo count_sec
-                zData_array = np.append(zData_array, zData_g)
-                if (flag_time):
-                    start = time.time()
-                    flag_time = False
-                
-                if (j==20):     #vogliamo 10 secondi
+                    #sum_data[i]=zData_g[i]+yData_g[i]      #vediamo se usare solo z o la somma dei due
 
-                    self.new_zero=self.calibration()   #azzero j in calibration
-                    self.new_zero_z=self.new_zero[2]        #new_zero[ZAXIS] , ZAXIS = 2
-                    zData_array=zData_array-self.new_zero_z 
-                    # Calcoliamo i dati low pass dopo aver creato un array di tot secondi e dopo aver calibrato a zero
-                    zData_lowpass = self.butter_lowpass_filter(zData_array, cutoff, SAMPLE_RATE, order)
-            
-                    zData_bandpass = self.butter_bandpass_design(zData_lowpass, LOW_CUT, HIGH_CUT,
-                                                                        SAMPLE_RATE)   
-                    #Calcolo la threshold ogni tot secondi
-                    self.threshold=self.calibration_threshold(zData_bandpass)
+                if (calibration_flag):
+                    j+=1    #chiamarlo count_sec
+                    zData_array = np.append(zData_array, zData_g)
+                    if (flag_time):
+                        start = time.time()
+                        flag_time = False
 
-                    self.delta1=40
-                    self.n_peaks_bp = self.find_peaks(zData_bandpass, self.threshold, self.delta1)
-                    print('numero picchi bp',self.n_peaks_bp)
-                    stop = time.time()
-                    self.time_difference = stop - start
-                    RR_value = (self.n_peaks_bp * 60) / self.time_difference
-                    stop = 0
-                    start = 0
-                    flag_time = True
+                    if (j==20):     #vogliamo 10 secondi
+
+                        self.new_zero=self.calibration()   #azzero j in calibration
+                        self.new_zero_z=self.new_zero[2]        #new_zero[ZAXIS] , ZAXIS = 2
+                        zData_array=zData_array-self.new_zero_z 
+                        # Calcoliamo i dati low pass dopo aver creato un array di tot secondi e dopo aver calibrato a zero
+                        zData_lowpass = self.butter_lowpass_filter(zData_array, cutoff, SAMPLE_RATE, order)
+                        zData_array=[]    
+                        zData_bandpass = self.butter_bandpass_design(zData_lowpass, LOW_CUT, HIGH_CUT,
+                                                                            SAMPLE_RATE)   
+                        #Calcolo la threshold ogni tot secondi
+                        self.threshold=self.calibration_threshold(zData_bandpass)
+
+                        self.delta1=40
+                        self.n_peaks_bp = self.find_peaks(zData_bandpass, self.threshold, self.delta1)
+                        print('numero picchi bp',self.n_peaks_bp)
+                        stop = time.time()
+                        self.time_difference = stop - start
+                        RR_value = (self.n_peaks_bp * 60) / self.time_difference
+                        stop = 0
+                        start = 0
+                        flag_time = True
+        except struct.error:
+            #MainWindow.conn_btn.setChecked(False)
+            self.dlg3 = QMessageBox()
+            self.dlg3.setWindowTitle("WARNING")
+            self.dlg3.setText("Connection lost, reconnect the device before proceeding")
+            self.dlg3.setStandardButtons(QMessageBox.Ok)
+            self.dlg3.setIcon(QMessageBox.Critical)
+            button=self.dlg3.exec_()
+            if(button==QMessageBox.Ok):
+                self.dlg3.accept()
+            MainWindow.on_toggle(False)
             
     ### moving average ###
 
@@ -427,7 +440,7 @@ class SerialWorker(QRunnable):
         newZero[2] = zAvg
 
     
-        zData_array=[]    #lo azzero quando clicco calibrazione
+        
         #start_threshold=1
         #calibration = False            #DA RISISTEMARE SE NON SI VUOLE CALIBRAZIONE AUTOMATICA A 0 OGNI 10 SECONDI
         return newZero  
@@ -883,7 +896,7 @@ class MainWindow(QMainWindow):
         """
         
 
-        if self.serial_worker.port.isOpen() == False:
+        if self.serial_worker.port.is_open == False:
             self.conn_btn.setChecked(False)
             self.dlg3 = QMessageBox(self)
             self.dlg3.setWindowTitle("WARNING")
