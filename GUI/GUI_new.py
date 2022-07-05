@@ -881,8 +881,9 @@ class MainWindow(QMainWindow):
             - 0  --> Error during opening of serial port
             - 1  --> Serial port opened correctly
         """
+        
 
-        if SerialWorker.port.isOpen() == False:
+        if self.serial_worker.port.isOpen() == False:
             self.conn_btn.setChecked(False)
             self.dlg3 = QMessageBox(self)
             self.dlg3.setWindowTitle("WARNING")
