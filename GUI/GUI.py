@@ -284,21 +284,21 @@ class SerialWorker(QRunnable):
             if (p == 50): # 30 seconds
                 p = 0
     
-                #zData_lowpass = self.butter_lowpass_filter(zData_array, cutoff, SAMPLE_RATE, order)
+                zData_lowpass = self.butter_lowpass_filter(zData_array, cutoff, SAMPLE_RATE, order)
 #
-                #zData_ty,zData_tx= self.fast_fourier_transformation(zData_lowpass,SAMPLE_RATE)
-                ##fmax=self.calcolamax(zData_ty,zData_tx) #trovo fmax per filtro
-                #fmax = max(zData_ty)
+                zData_ty,zData_tx= self.fast_fourier_transformation(zData_lowpass,SAMPLE_RATE)
+                fmax=self.calcolamax(zData_ty,zData_tx) #trovo fmax per filtro
+                fmax = max(zData_ty)
                 ##print(fmax)
-                #k = 0
-                #f_low=(fmax-f_bw)/(0.5*SAMPLE_RATE)
-                #f_high=(fmax+f_bw)/(0.5*SAMPLE_RATE)
-                #if (f_low <= 0):
-                #    f_low = 0.0001
+                k = 0
+                f_low=(fmax-f_bw)/(0.5*SAMPLE_RATE)
+                f_high=(fmax+f_bw)/(0.5*SAMPLE_RATE)
+                if (f_low <= 0):
+                    f_low = 0.0001
 #
                 # We apply again a bandpass filter over the characteristic frequency
-                #zData_BP_FT = self.butter_bandpass_design(zData_lowpass, f_low, f_high,
-                #                                              SAMPLE_RATE)
+                zData_BP_FT = self.butter_bandpass_design(zData_lowpass, f_low, f_high,
+                                                              SAMPLE_RATE)
             
                 zData_bandpass = self.butter_bandpass_design(zData_lowpass, LOW_CUT, HIGH_CUT,
                                                                   SAMPLE_RATE)   
@@ -322,10 +322,10 @@ class SerialWorker(QRunnable):
                 
                 print('numero picchi bp',self.n_peaks_bp)
 
-                #self.threshold=self.calibration_threshold(zData_BP_FT)
-                #self.n_peaks_bp_new = self.find_peaks(zData_BP_FT, self.threshold, self.delta)
-                #
-                #print('numero picchi bp new',self.n_peaks_bp_new)
+                self.threshold=self.calibration_threshold(zData_BP_FT)
+                self.n_peaks_bp_new = self.find_peaks(zData_BP_FT, self.threshold, self.delta)
+                
+                print('numero picchi bp new',self.n_peaks_bp_new)
 
                 self.threshold=self.calibration_threshold(np.abs(zData_smoothed1))
                 self.n_peaks_sm1 = self.find_peaks(np.abs(zData_smoothed1), self.threshold, self.delta)
@@ -337,10 +337,10 @@ class SerialWorker(QRunnable):
             
                 print('numero picchi window',self.n_peaks_w)
 
-               #plt.figure(2)
-               #plt.plot(zData_BP_FT, label = 'zData_BP_FT')
-               #plt.plot(self.n_peaks_bp_new,zData_BP_FT[self.n_peaks_bp_new], "x")
-               #plt.title('n_peaks_bp_new')
+                plt.figure(2)
+                plt.plot(zData_BP_FT, label = 'zData_BP_FT')
+                plt.plot(self.n_peaks_bp_new,zData_BP_FT[self.n_peaks_bp_new], "x")
+                plt.title('n_peaks_bp_new')
 
                 plt.figure(3)
                 plt.plot(np.abs(zData_lowpass), label = 'zData_lowpass')
@@ -616,12 +616,12 @@ class SerialWorker(QRunnable):
         #xf = fftfreq(N, T)  # for all frequencies
         #xf = np.linspace(0.0, 1.0 / (2.0 * T), N, endpoint=False)  # for positive frequencies only
         xf=fftfreq(N,T)[:N//2]
-        #plt.semilogy(xf[1:N//2], 2.0/N * np.abs(yf[1:N//2]), '-b')
-        #plt.semilogy(xf[1:N//2], 2.0/N * np.abs(ywf[1:N//2]), '-r')
-        #plt.legend(['FFT', 'FFT w. window'])
+        plt.semilogy(xf[1:N//2], 2.0/N * np.abs(yf[1:N//2]), '-b')
+        plt.semilogy(xf[1:N//2], 2.0/N * np.abs(ywf[1:N//2]), '-r')
+        plt.legend(['FFT', 'FFT w. window'])
         
-        #plt.grid()
-        #plt.show()
+        plt.grid()
+        plt.show()
 
         return ywf, xf
 
