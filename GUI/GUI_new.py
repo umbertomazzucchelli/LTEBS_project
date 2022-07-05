@@ -281,13 +281,9 @@ class SerialWorker(QRunnable):
             p+=1
 
             if (p == 49):
-                #xData_g = self.butter_lowpass_filter(xData_g, cutoff, fs, order)
-                #yData_g = self.butter_lowpass_filter(yData_g, cutoff, fs, order)
+                
                 zData_lowpass = self.butter_lowpass_filter(zData_array, cutoff, SAMPLE_RATE, order)
-                #xData_g = self.butter_bandpass_filter(xData_g, LOW_CUT, HIGH_CUT,
-                #                                                    SAMPLE_RATE)
-                #yData_g = self.butter_bandpass_filter(yData_g, LOW_CUT, HIGH_CUT,
-                #                                                    SAMPLE_RATE)
+            
                 zData_bandpass = self.butter_bandpass_design(zData_lowpass, LOW_CUT, HIGH_CUT,
                                                                   SAMPLE_RATE)   
     
@@ -312,17 +308,12 @@ class SerialWorker(QRunnable):
             if (start_threshold==1): #j inizia ad aumentare solo dopo che ho calibrato
                 j=j+1
             k=k+1
-            #xData_g = self.butter_lowpass_filter(xData_g, cutoff, fs, order)
-            #yData_g = self.butter_lowpass_filter(yData_g, cutoff, fs, order)
+            
             zData_lowpass = self.butter_lowpass_filter(zData_g, cutoff, SAMPLE_RATE, order)
-            #xData_g = self.butter_bandpass_filter(xData_g, LOW_CUT, HIGH_CUT,
-            #                                                    SAMPLE_RATE)
-            #yData_g = self.butter_bandpass_filter(yData_g, LOW_CUT, HIGH_CUT,
-            #                                                    SAMPLE_RATE)
+            
             zData_bandpass = self.butter_bandpass_design(zData_lowpass, LOW_CUT, HIGH_CUT,
                                                               SAMPLE_RATE)   
 
-            #zData_smoothed = self.smooth_signal(zData_lowpass, SAMPLE_RATE, window_length=5, polyorder=3)
             zData_smoothed = signal.savgol_filter(zData_lowpass, window_length=5, polyorder=3)
 
             self.new_zero=self.calibration()   
@@ -374,7 +365,6 @@ class SerialWorker(QRunnable):
                 '''
 
     ### moving average ###
-    
 
     def moving_average(self, window_length, data):
         
@@ -387,18 +377,6 @@ class SerialWorker(QRunnable):
     
         return smoothed
     
-
-    ### interpolation ###
-
-    def interpolation(self, data):
-
-        x = np.linspace(0, len(data), endpoint=True)
-        y = np.cos(x**2)
-        f = interpolate.interp1d(x, y, kind = 'cubic')
-        ynew = f(len(data))
- 
-        return ynew
-
 
     ### acceleration Ai + PCA###
     '''
@@ -484,8 +462,6 @@ class SerialWorker(QRunnable):
         peaks = len(i_peaks)
         return peaks 
 
-    
-
     ### heart rate computation ###
     '''
     # bandpass 30,35 Hz with 4th butterworth
@@ -544,6 +520,7 @@ class SerialWorker(QRunnable):
 
         return y
     '''
+
     def butter_lowpass(self, cutoff, fs, order):#=5):
         return butter(order, cutoff, fs=fs, btype='low', analog=False)
 
@@ -588,24 +565,6 @@ class SerialWorker(QRunnable):
                 index_max=i
         f_max=xf[index_max]
         return f_max
-
-    '''
-    def smooth_signal(data, sample_rate, window_length=None, polyorder=3):
-        
-        smooths given signal using savitzky-golay filter
-        Function that smooths data using savitzky-golay filter using default settings.
-        Functionality requested by Eirik Svendsen. Added since 1.2.4
-        Parameters
-        
-        if window_length == None:
-            window_length = sample_rate // 10
-
-        if window_length % 2 == 0 or window_length == 0: window_length += 1
-
-        smoothed = signal.savgol_filter(data, window_length = window_length,
-                                 polyorder = polyorder) 
-        return smoothed    
-    '''
 
     def RRalgorithm(self, data):
         global calibration_flag, time_max, delta_time, j, max_ipo, start_time, count_max, resp_rate, index_increment
@@ -723,22 +682,6 @@ class SerialWorker(QRunnable):
             start_threshold=1
         calibration = False
         return newZero  
-
-    """
-    def RRalgortithm(self):
-        global xData_g,yData_g,zData_g
-        nSamples = 200 #a caso, dovrà essere il numero di sample in 2s
-        max = 0
-        index1 = 0
-        index2 = 0
-
-        xDataWindow = xDataWindow + xData_g
-        if(np.size(xDataWindow)==nSamples):
-            for i in len(xDataWindow):
-                if(xDataWindow[i]>max):
-                    max = xDataWindow[i]
-                    index1 = i
-    """
 
 ###############
 # MAIN WINDOW #
@@ -1026,27 +969,6 @@ class MainWindow(QMainWindow):
         #    zData_bandpass = np.full(axisSize,5,dtype=np.float16)
         #    self.dataLinez_bandpass = self.plot(self.RR_plot,clock,zData_bandpass,'z-axis band-pass filtered','b')
 
-    '''   
-    def change_graph (self):#,index
-        """
-        @brief Curve calibration
-        """
-        global FSR_index, old_calibration
-        self.dataLinex.clear()
-        self.dataLiney.clear()
-        self.dataLinez.clear()
-        #self.graphWidget.clear()
-        FSR_index = self.FSR_Select.currentIndex()  #indica l'indice del combo box selezionato, valore di default = -1
-
-        #self.draw()
-        #self.static_canvas1.draw()
-
-        # LA PARTE COMMENTATA SAREBBE PER PULIRE IL GRAFICO MA LO FA SOLO UNA VOLTA
-        #old_calibration = calibration_index
-        #calibration_index = self.FSR_Select.itemData(index)
-        #if (old_calibration != calibration_index):
-        #    self.graphWidget.clear()
-    '''    
         
     def drawGeneralGraph(self):
         """!
@@ -1112,7 +1034,6 @@ class MainWindow(QMainWindow):
             #self.zGraph.append(zData_g[i])  #  Add a new random value.
             self.dataLinez_BP_FT.setData(self.horAxis, self.zGraph_BP_FT)  # Update the data.
             
-
     def draw(self):
         """!
              @brief Draw the plots.
