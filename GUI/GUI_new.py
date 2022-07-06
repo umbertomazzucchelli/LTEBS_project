@@ -1,3 +1,4 @@
+from setuptools import find_packages
 import variables as var
 from audioop import findmax
 from multiprocessing import connection
@@ -68,7 +69,7 @@ index_increment = 0
 newZero = np.zeros(3)
 
 clock = np.zeros(axisSize)
-j = 0
+count_sec = 0
 k = 0
 p = 0
 xavg = 0
@@ -76,7 +77,7 @@ yavg = 0
 zavg = 0
 connectionWait = False
 calibration = False
-calibration_flag=-1
+calibration_flag=False
 start_threshold=0
 max_ipo=0
 count_max=0
@@ -85,6 +86,9 @@ flag_time = False
 time_difference=0
 start = 0
 stop = 0
+xData_save = []
+yData_save = []
+zData_save = []
 #start_time=-1
 #delta_time=0.5   #deve essere circa 2 secondi
 
@@ -230,9 +234,9 @@ class SerialWorker(QRunnable):
     def readData(self):
         global TRANSMITTING
         global STATUS
-        global accData, xData, yData, zData, xData_g, yData_g, zData_g, j, zData_lowpass, zData_bandpass, zData_array
-        global zData_BP_FT, sum_data, zData_array_LP,k, start_threshold, zData_smoothed, zData_array_smoothed, RR_value, flag_time
-        global SAMPLE_RATE,LOW_CUT,HIGH_CUT, start, stop, CONN_STATUS
+        global accData, xData, yData, zData, xData_g, yData_g, zData_g, count_sec, zData_lowpass, zData_bandpass, zData_array
+        global zData_BP_FT, sum_data, zData_array_LP,k, start_threshold, zData_smoothed, zData_array_smoothed, RR_value, flag_time, xData_save, yData_save, zData_save
+        global SAMPLE_RATE,LOW_CUT,HIGH_CUT, start, stop, CONN_STATUS, calibration_flag
         global order, cutoff, p
       
         #self.serial_worker = SerialWorker(PORT)
@@ -266,49 +270,100 @@ class SerialWorker(QRunnable):
                     else:
                         zData_g[i] = zData[i]*(-0.0039137254902) - 0.0000862745098039
 
+                    xData_save = np.append(xData_save, xData_g)
+                    yData_save = np.append(yData_save, yData_g)
+                    zData_save = np.append(zData_save, zData_g)
+
                     #sum_data[i]=zData_g[i]+yData_g[i]      #vediamo se usare solo z o la somma dei due
 
-                if (calibration_flag):
-                    j+=1    #chiamarlo count_sec
-                    zData_array = np.append(zData_array, zData_g)
-                    if (flag_time):
-                        start = time.time()
-                        flag_time = False
+                # chiamare funzione self.resp_rate_computation(calibration flag, zData_g) che ritorna RR_value
 
-                    if (j==20):     #vogliamo 10 secondi
+            RR_Value = self.RR_computation(zData_g, calibration_flag)
+            print('resp rate: ', RR_Value)
+            print('time delta: ', self.time_difference)
+            stop = 0
+            start = 0
+            flag_time = True
 
-                        self.new_zero=self.calibration()   #azzero j in calibration
-                        self.new_zero_z=self.new_zero[2]        #new_zero[ZAXIS] , ZAXIS = 2
-                        zData_array=zData_array-self.new_zero_z 
-                        # Calcoliamo i dati low pass dopo aver creato un array di tot secondi e dopo aver calibrato a zero
-                        zData_lowpass = self.butter_lowpass_filter(zData_array, cutoff, SAMPLE_RATE, order)
-                        zData_array=[]    
-                        zData_bandpass = self.butter_bandpass_design(zData_lowpass, LOW_CUT, HIGH_CUT,
-                                                                            SAMPLE_RATE)   
-                        #Calcolo la threshold ogni tot secondi
-                        self.threshold=self.calibration_threshold(zData_bandpass)
+            #if (calibration_flag):
+            #    count_sec+=1    #chiamarlo count_sec
+            #    zData_array = np.append(zData_array, zData_g)
+            #    if (flag_time):
+            #        start = time.time()
+            #        flag_time = False
+#
+            #    if (count_sec==20):     #vogliamo 10 secondi
+            #    
+            #        count_sec = 0
+            #        self.new_zero=self.calibration()  
+            #        self.new_zero_z=self.new_zero[2]        #new_zero[ZAXIS] , ZAXIS = 2
+            #        zData_array=zData_array-self.new_zero_z 
+            #        # Calcoliamo i dati low pass dopo aver creato un array di tot secondi e dopo aver calibrato a zero
+            #        zData_lowpass = self.butter_lowpass_filter(zData_array, cutoff, SAMPLE_RATE, order)
+            #        zData_array=[]    
+            #        zData_bandpass = self.butter_bandpass_design(zData_lowpass, LOW_CUT, HIGH_CUT,
+            #                                                            SAMPLE_RATE)   
+            #        #Calcolo la threshold ogni tot secondi
+            #        self.threshold=self.calibration_threshold(zData_bandpass)
+#
+            #        self.delta1=40
+            #        self.n_peaks_bp = self.find_peaks(zData_bandpass, self.threshold, self.delta1)
+            #        print('numero picchi bp',self.n_peaks_bp)
+            #        stop = time.time()
+            #        self.time_difference = stop - start
+            #        RR_value = (self.n_peaks_bp * 60) / self.time_difference
+            #        print('resp rate: ', RR_value)
+            #        print('time delta: ', self.time_difference)
+            #        stop = 0
+            #        start = 0
+            #        flag_time = True
 
-                        self.delta1=40
-                        self.n_peaks_bp = self.find_peaks(zData_bandpass, self.threshold, self.delta1)
-                        print('numero picchi bp',self.n_peaks_bp)
-                        stop = time.time()
-                        self.time_difference = stop - start
-                        RR_value = (self.n_peaks_bp * 60) / self.time_difference
-                        stop = 0
-                        start = 0
-                        flag_time = True
         except struct.error:
             #MainWindow.conn_btn.setChecked(False)
             self.dlg3 = QMessageBox()
             self.dlg3.setWindowTitle("WARNING")
-            self.dlg3.setText("Connection lost, reconnect the device before proceeding")
+            self.dlg3.setText("Connection lost, click OK and restart the application")
             self.dlg3.setStandardButtons(QMessageBox.Ok)
             self.dlg3.setIcon(QMessageBox.Critical)
             button=self.dlg3.exec_()
             if(button==QMessageBox.Ok):
                 self.dlg3.accept()
+                sys.exit(app.exec_())
             MainWindow.on_toggle(False)
-            
+    
+    def RR_computation(self, data, flag):
+        global zData_array
+
+        if (flag):
+                count_sec+=1    #chiamarlo count_sec
+                zData_array = np.append(zData_array, data)
+                if (flag_time):
+                    start = time.time()
+                    flag_time = False
+
+                if (count_sec==20):     #vogliamo 10 secondi
+                
+                    count_sec = 0
+                    self.new_zero=self.calibration()  
+                    self.new_zero_z=self.new_zero[2]        #new_zero[ZAXIS] , ZAXIS = 2
+                    zData_array=zData_array-self.new_zero_z 
+                    # Calcoliamo i dati low pass dopo aver creato un array di tot secondi e dopo aver calibrato a zero
+                    zData_lowpass = self.butter_lowpass_filter(zData_array, cutoff, SAMPLE_RATE, order)
+                    zData_array=[]    
+                    zData_bandpass = self.butter_bandpass_design(zData_lowpass, LOW_CUT, HIGH_CUT,
+                                                                        SAMPLE_RATE)   
+                    #Calcolo la threshold ogni tot secondi
+                    self.threshold=self.calibration_threshold(zData_bandpass)
+
+                    self.delta1 = 40
+                    self.n_peaks_bp = self.find_peaks(zData_bandpass, self.threshold, self.delta1)
+                    print('numero picchi bp',self.n_peaks_bp)
+                    stop = time.time()
+                    self.time_difference = stop - start
+                    RR_value = (self.n_peaks_bp * 60) / self.time_difference
+
+                    return RR_value
+                                
     ### moving average ###
 
     def moving_average(self, window_length, data):
@@ -332,6 +387,7 @@ class SerialWorker(QRunnable):
         i_peaks, _ = find_peaks(data, height = threshold, distance = delta)
         plt.plot(data)
         plt.plot(i_peaks,data[i_peaks], "x")
+        plt.axhline(y = self.threshold, color = 'r', linestyle = '-')
         plt.show()
         # returns the indeces of the peaks --> use them to find the respiration peaks
         peaks = len(i_peaks)
@@ -346,7 +402,7 @@ class SerialWorker(QRunnable):
         :param order: Order of the filter-design
         :return: b, a : ndarray, ndarray - Numerator (b) and denominator (a) polynomials of the IIR filter. Only returned if output='ba'.
         """
-        nyq = 0.5 * sample_rate
+        #nyq = 0.5 * sample_rate
         #low = low_cut / nyq
         #high = high_cut / nyq
         sos = signal.butter(order, [low_cut, high_cut], btype='band', output ='sos',fs=sample_rate)
@@ -361,7 +417,7 @@ class SerialWorker(QRunnable):
         #y = lfilter(b, a, data)
         y = signal.filtfilt(b, a, data, padlen=len(data)-1) #uso filtfilt anzichè lfilter per rimanere in fase
         return y
-
+    '''
     def fast_fourier_transformation(self, signal_array, sample_rate):
         """
         Apply's the Fast Furier Transformation. This transforms the signal into an power spectrum in frequency domain.
@@ -387,36 +443,35 @@ class SerialWorker(QRunnable):
         #plt.show()
 
         return ywf, xf
+    '''
 
     def calibration_threshold(self, val):
         """
         -------- CALIBRATION ---------
+        If the button is pressed, the zero the 10 seconds array and calculate the threshold in the RR_computation()
         The patient has to breath normally for 10 seconds 
         and the maximum value reached in this calibration window is used for the
         definition of a threshold.
         """
         global calibration_flag #azzerata dentro calibration
-        self.max_calibration=0
+        max_calibration = 0 ### OCCHIO CHE QUA IL MAX POTREBBE NON PARTIRE DA 0 SE I DATI SONO NEGATIVI
+        min_calibration = 0
         threshold=0.0
 
-        #self.second=time.time()
-        
-        if(calibration_flag==0):    
-            for i in range(len(val)):
-                #si può accendere il LED qui durante calibrazione
-                if (val[i]>self.max_calibration):
-                    self.max_calibration=val[i]
-                #Defining a calibration threshold on the 50% of the maximum   
+        if(calibration_flag):    
+            max_calibration = 0.5*max(val)
+            min_calibration = abs(2*min(val))
             calibration_flag=1
-            threshold=self.max_calibration*0.5
+            threshold= min(min_calibration, max_calibration)
+            #threshold = sum(val)/len(val)
             
         return threshold
 
     def calibration(self):
-        global calibration,xData_g,yData_g,zData_g,calibration_flag,newZero, start_threshold, j, zData_array_LP, zData_array
-        calibration_flag=0
-    
-        j=0
+        global calibration,xData_g,yData_g,zData_g,calibration_flag,newZero, start_threshold, zData_array_LP, zData_array
+
+        calibration_flag = 0
+
         xSum = 0.0
         ySum = 0.0
         zSum = 0.0
@@ -434,13 +489,10 @@ class SerialWorker(QRunnable):
         newZero[0] = xSum
         newZero[1] = ySum
         
-        for i in range(len(zData_array)):
-            zSum = zSum + zData_array[i]
+        zSum = sum(zData_array)
         zAvg = zSum/len(zData_array)
         newZero[2] = zAvg
 
-    
-        
         #start_threshold=1
         #calibration = False            #DA RISISTEMARE SE NON SI VUOLE CALIBRAZIONE AUTOMATICA A 0 OGNI 10 SECONDI
         return newZero  
@@ -482,6 +534,7 @@ class MainWindow(QMainWindow):
         @brief Set up the graphical interface structure.
         """
         global RR_value
+
         # Create the plot widget
         self.graphWidget = PlotWidget()
         
@@ -576,7 +629,7 @@ class MainWindow(QMainWindow):
         self.HR_label.setAlignment(QtCore.Qt.AlignCenter)
 
         self.RR_label = QLabel()
-        text = 'Instant respiratory rate value: {}'
+        text = 'Instant respiratory rate value: {} rpm'
         a = text.format(RR_value)
         self.RR_label.setText(a)
         font = QtGui.QFont()
@@ -691,11 +744,11 @@ class MainWindow(QMainWindow):
     def save_data(self):
         print("exporting to csv...")
 
-        global zData_g, xData_g, yData_g
+        global zData_save, xData_save, yData_save
         df = pd.DataFrame({
-            'x axis': xData_g,
-            'y axis': yData_g,
-            'z axis': zData_g,
+            'x axis': xData_save,
+            'y axis': yData_save,
+            'z axis': zData_save, 
         })
         df.to_csv('HR_Rate.csv', float_format = '%.2f', index = False)
 
@@ -707,7 +760,7 @@ class MainWindow(QMainWindow):
         # 0 --> HR
         # 1 --> RR
         # 2 --> both
-        print("Plotting: ", a[flag_graph])
+        #print("Plotting: ", a[flag_graph])
         ### FLAG GRAPH per plottare solo ciò che interessa --- disattivo cio che non voglio
         if (flag_graph == 0): #only HR
             self.RR_plot.setBackground('bbccdd')
@@ -789,6 +842,13 @@ class MainWindow(QMainWindow):
             self.zGraph_BP_FT.append(zData_BP_FT[i])
             #self.zGraph.append(zData_g[i])  #  Add a new random value.
             self.dataLinez_BP_FT.setData(self.horAxis, self.zGraph_BP_FT)  # Update the data.
+
+    def updateRR(self):
+        global RR_value
+
+        text = 'Instant respiratory rate value: {} rpm'
+        a = text.format(RR_value)
+        self.RR_label.setText(a)
             
     def draw(self):
         """!
@@ -804,7 +864,7 @@ class MainWindow(QMainWindow):
         #self.dataLinez_lowpass = self.plot(self.HR_plot,clock,zData_lowpass,'z-axis low-pass filtered','r')
         self.dataLinez_smoothed = self.plot(self.HR_plot,clock,zData_smoothed,'z-axis smoothed','b')
         self.dataLinez_bandpass = self.plot(self.HR_plot,clock,zData_bandpass,'z-axis band-pass filtered','g')
-        self.dataLinez_BP_FT = self.plot(self.RR_plot,clock,zData_BP_FT,'z-axis band-pass after FT','black')
+        self.dataLinez_BP_FT = self.plot(self.RR_plot,clock,zData_BP_FT,'RR Value','black')
     
     def plot(self, graph, x, y, curve_name, color):
         """!
@@ -946,35 +1006,12 @@ class MainWindow(QMainWindow):
             #self.FSR_Select.setDisabled(False)
             self.calibrate.setDisabled(True)
 
-    def startCalibration(self):
+    def startCalibration(self): 
+    # set calibration_flag = True when calibration button is pressed
         global calibration_flag
 
         calibration_flag = True
-
-    def selectionchange(self,i):
-        global flag_graph
-        flag_graph = i
-        a = ['both','HR only', 'RR only'] 
-        # 0 --> HR
-        # 1 --> RR
-        # 2 --> both
-        print("Plotting: ", a[flag_graph])
-        ### FLAG GRAPH per plottare solo ciò che interessa --- disattivo cio che non voglio
-        if (flag_graph == 0): #only HR
-            self.RR_plot.setBackground('bbccdd')
-            self.HR_plot.setBackground('bbccdd')
-            #zData_lowpass = np.full(axisSize,10,dtype=np.float16)
-            #self.dataLinez_lowpass = self.plot(self.graphWidget,clock,zData_lowpass,'z-axis low-pass filtered','r')
-        elif (flag_graph == 1): #only RR
-            self.RR_plot.setBackground('r')
-            self.HR_plot.setBackground('bbccdd')
-            #zData_lowpass = np.full(axisSize,5,dtype=np.float16)
-            #self.dataLinez_lowpass = self.plot(self.HR_plot,clock,zData_lowpass,'z-axis low-pass filtered','g')
-        elif (flag_graph == 2):
-            self.HR_plot.setBackground('y')
-            self.RR_plot.setBackground('bbccdd')
-        #    zData_bandpass = np.full(axisSize,5,dtype=np.float16)
-        #    self.dataLinez_bandpass = self.plot(self.RR_plot,clock,zData_bandpass,'z-axis band-pass filtered','b')
+        self.calibrate.setDisabled(True) # deactivate the button after first calibration (the next ones will be authomatic)
 
 #############
 #  RUN APP  #
