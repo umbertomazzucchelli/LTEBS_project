@@ -55,6 +55,7 @@ yData_g = np.full(axisSize,0,dtype=np.float16)
 zData_g = np.full(axisSize,0,dtype=np.float16)
 
 zData_lowpass = np.full(axisSize,0,dtype=np.float16)
+zData_highpass = np.full(axisSize,0,dtype=np.float16)
 zData_bandpass = np.full(axisSize,0,dtype=np.float16)
 zData_BP_FT = np.full(axisSize,0,dtype=np.float16)
 zData_smoothed = np.full(axisSize,0,dtype=np.float16)
@@ -86,12 +87,13 @@ start_time=-1
 delta_time=0.5   #deve essere circa 2 secondi
 
 SAMPLE_RATE = 50
-LOW_CUT = 0.01
-HIGH_CUT = 1.0
-
-order = 8
-cutoff = 3
-
+#LOW_CUT = 0.95
+#HIGH_CUT = 3
+LOW_CUT = 10    #da paper
+HIGH_CUT = 24
+order = 5
+cutoff = 24.5
+cutoff_hp = 1 
 f_bw=0.25 #Hz for normal activities, put 0.50 Hz for sport activities
 
 '''
@@ -239,7 +241,7 @@ class SerialWorker(QRunnable):
         global accData, xData, yData, zData, xData_g, yData_g, zData_g, j, zData_lowpass, zData_bandpass, zData_array
         global zData_BP_FT, sum_data, zData_array_LP,k, start_threshold, zData_smoothed,zData_smoothed1, zData_array_smoothed, zData_interp
         global SAMPLE_RATE,LOW_CUT,HIGH_CUT
-        global order, cutoff, p
+        global order, cutoff, p, zData_highpass
       
         #self.serial_worker = SerialWorker(PORT)
         
@@ -278,14 +280,16 @@ class SerialWorker(QRunnable):
             NON SO CHE FILTRO USEREMO, MA NEL PAPER CONSIGLIA UN BAND PASS [0,1]Hz, in particolare con BUTTERWORTH e calcolando la frequenza dominante nel range
             '''  
                                             
-            zData_array = np.append(zData_array, zData_g)
+            zData_array = np.append(zData_array, sum_data)
             p+=1
 
-            if (p == 50): # 30 seconds
+            if (p == 94): # 60 seconds
                 p = 0
     
                 zData_lowpass = self.butter_lowpass_filter(zData_array, cutoff, SAMPLE_RATE, order)
-#
+                zData_highpass = self.butter_highpass_filter(zData_array, cutoff_hp, SAMPLE_RATE, order)
+            
+                '''
                 zData_ty,zData_tx= self.fast_fourier_transformation(zData_lowpass,SAMPLE_RATE)
                 fmax=self.calcolamax(zData_ty,zData_tx) #trovo fmax per filtro
                 fmax = max(zData_ty)
@@ -295,71 +299,87 @@ class SerialWorker(QRunnable):
                 f_high=(fmax+f_bw)/(0.5*SAMPLE_RATE)
                 if (f_low <= 0):
                     f_low = 0.0001
-#
+                
                 # We apply again a bandpass filter over the characteristic frequency
                 zData_BP_FT = self.butter_bandpass_design(zData_lowpass, f_low, f_high,
                                                               SAMPLE_RATE)
-            
-                zData_bandpass = self.butter_bandpass_design(zData_lowpass, LOW_CUT, HIGH_CUT,
+                '''
+                zData_bandpass = self.butter_bandpass_design(np.abs(zData_highpass), LOW_CUT, HIGH_CUT,
                                                                   SAMPLE_RATE)   
     
                 #zData_smoothed = self.smooth_signal(zData_lowpass, SAMPLE_RATE, window_length=5, polyorder=3)
-                zData_smoothed1 = signal.savgol_filter(zData_array, window_length=31, polyorder=2) #magari rimettere polyorder 3
+                zData_smoothed1 = signal.savgol_filter(np.abs(zData_highpass), window_length=25, polyorder=2) #magari rimettere polyorder 3
                 
-                self.window_length_MA = 31
-                zData_windowed = self.moving_average(self.window_length_MA, zData_array)
+                self.window_length_MA = 25
+                zData_windowed = self.moving_average(self.window_length_MA, np.abs(zData_highpass))
 
 
-                self.threshold=self.calibration_threshold(np.abs(zData_lowpass))
-                self.delta=75
-                self.n_peaks_lp1 = self.find_peaks(np.abs(zData_lowpass), self.threshold, self.delta)
+                self.threshold_lp=self.calibration_threshold(np.abs(zData_lowpass))
+                self.delta=21
+                self.n_peaks_lp1 = self.find_peaks(np.abs(zData_lowpass), self.threshold_lp, self.delta)
                 
                 print('numero picchi lp long',self.n_peaks_lp1)
 
-                self.threshold=self.calibration_threshold(zData_bandpass)
-                self.delta1=40
-                self.n_peaks_bp = self.find_peaks(zData_bandpass, self.threshold, self.delta1)
+                self.threshold_hp=self.calibration_threshold(np.abs(zData_highpass))
+                self.delta=35
+                self.n_peaks_hp = self.find_peaks(np.abs(zData_highpass), self.threshold_hp, self.delta)
+                
+                print('numero picchi hp',self.n_peaks_hp)
+
+                self.threshold_bp=self.calibration_threshold(np.abs(zData_bandpass))
+                self.delta1=23
+                self.n_peaks_bp = self.find_peaks(np.abs(zData_bandpass), self.threshold_bp, self.delta1)
                 
                 print('numero picchi bp',self.n_peaks_bp)
 
-                self.threshold=self.calibration_threshold(zData_BP_FT)
-                self.n_peaks_bp_new = self.find_peaks(zData_BP_FT, self.threshold, self.delta)
+                #self.threshold=self.calibration_threshold(zData_BP_FT)
+                #self.n_peaks_bp_new = self.find_peaks(zData_BP_FT, self.threshold, self.delta)
                 
-                print('numero picchi bp new',self.n_peaks_bp_new)
+                #print('numero picchi bp new',self.n_peaks_bp_new)
 
-                self.threshold=self.calibration_threshold(np.abs(zData_smoothed1))
-                self.n_peaks_sm1 = self.find_peaks(np.abs(zData_smoothed1), self.threshold, self.delta)
+                self.threshold_sm=self.calibration_threshold(np.abs(zData_smoothed1))
+                self.n_peaks_sm1 = self.find_peaks(np.abs(zData_smoothed1), self.threshold_sm, self.delta)
                 
                 print('numero picchi sm1',self.n_peaks_sm1)
 
-                self.threshold=self.calibration_threshold(np.abs(zData_windowed))
-                self.n_peaks_w = self.find_peaks(np.abs(zData_windowed), self.threshold, self.delta)
+                self.threshold_wi=self.calibration_threshold(np.abs(zData_windowed))
+                self.n_peaks_w = self.find_peaks(np.abs(zData_windowed), self.threshold_wi, self.delta)
             
                 print('numero picchi window',self.n_peaks_w)
-
+                '''
                 plt.figure(2)
                 plt.plot(zData_BP_FT, label = 'zData_BP_FT')
                 plt.plot(self.n_peaks_bp_new,zData_BP_FT[self.n_peaks_bp_new], "x")
                 plt.title('n_peaks_bp_new')
-
-                plt.figure(3)
+                '''
+                plt.figure(1)
                 plt.plot(np.abs(zData_lowpass), label = 'zData_lowpass')
                 plt.plot(self.n_peaks_lp1,np.abs(zData_lowpass[self.n_peaks_lp1]), "x")
+                plt.axhline(y = self.threshold_lp, color = 'r', linestyle = '-')
                 plt.title('zData_lowpass')
 
-                plt.figure(4)
-                plt.plot(zData_bandpass, label = 'zData_bandpass')
-                plt.plot(self.n_peaks_bp,zData_bandpass[self.n_peaks_bp], "x")
+                plt.figure(2)
+                plt.plot(np.abs(zData_highpass), label = 'zData_highpass')
+                plt.plot(self.n_peaks_hp,np.abs(zData_highpass[self.n_peaks_hp]), "x")
+                plt.axhline(y = self.threshold_hp, color = 'r', linestyle = '-')
+                plt.title('zData_highpass')
+
+                plt.figure(3)
+                plt.plot(np.abs(zData_bandpass), label = 'zData_bandpass')
+                plt.plot(self.n_peaks_bp,np.abs(zData_bandpass[self.n_peaks_bp]), "x")
+                plt.axhline(y = self.threshold_bp, color = 'r', linestyle = '-')
                 plt.title('zData_bandpass')
 
-                plt.figure(5)
-                plt.plot(zData_smoothed1, label = 'zData_smoothed1')
-                plt.plot(self.n_peaks_sm1,zData_smoothed1[self.n_peaks_sm1], "x")
+                plt.figure(4)
+                plt.plot(np.abs(zData_smoothed1), label = 'zData_smoothed1')
+                plt.plot(self.n_peaks_sm1,np.abs(zData_smoothed1[self.n_peaks_sm1]), "x")
+                plt.axhline(y = self.threshold_sm, color = 'r', linestyle = '-')
                 plt.title('zData_smoothed1')
 
-                plt.figure(6)
-                plt.plot(zData_windowed, label = 'zData_windowed')
-                plt.plot(self.n_peaks_w,zData_windowed[self.n_peaks_w], "x")
+                plt.figure(5)
+                plt.plot(np.abs(zData_windowed), label = 'zData_windowed')
+                plt.plot(self.n_peaks_w,np.abs(zData_windowed[self.n_peaks_w]), "x")
+                plt.axhline(y = self.threshold_wi, color = 'r', linestyle = '-')
                 plt.title('zData_windowed')
 
                 plt.show()
@@ -598,6 +618,14 @@ class SerialWorker(QRunnable):
         #y = lfilter(b, a, data)
         y = signal.filtfilt(b, a, data) #uso filtfilt anzichè lfilter per rimanere in fase
         return y
+    def butter_highpass(self, cutoff, fs, order):#=5):
+        return butter(order, cutoff, fs=fs, btype='high', analog=False)
+
+    def butter_highpass_filter(self, data, cutoff, fs, order):#=5):
+        b, a = self.butter_highpass(cutoff, fs, order=order)
+        #y = lfilter(b, a, data)
+        y = signal.filtfilt(b, a, data) #uso filtfilt anzichè lfilter per rimanere in fase
+        return y
 
     def fast_fourier_transformation(self, signal_array, sample_rate):
         """
@@ -714,21 +742,9 @@ class SerialWorker(QRunnable):
         and the maximum value reached in this calibration window is used for the
         definition of a threshold.
         """
-        global calibration_flag #azzerata dentro calibration
-        self.max_calibration=0
         threshold=0.0
-
-        #self.second=time.time()
         
-        if(calibration_flag==0):    
-            for i in range(len(val)):
-                #si può accendere il LED qui durante calibrazione
-                if (val[i]>self.max_calibration):
-                    self.max_calibration=val[i]
-                #Defining a calibration threshold on the 50% of the maximum   
-            calibration_flag=1
-            threshold=self.max_calibration*0.5
-            
+        threshold= 0.3 * max(val)
         return threshold
 
     def calibration(self):
