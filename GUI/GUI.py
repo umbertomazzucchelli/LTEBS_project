@@ -63,6 +63,7 @@ zData_smoothed1 = np.full(axisSize,0,dtype=np.float16)
 zData_interp = np.full(axisSize,0,dtype=np.float16)
 zData_array = []
 zData_array_smoothed = []
+i_peaks_w = []
 sum_data = np.full(axisSize,0,dtype=np.float16)
 zData_array_LP = []
 index_increment = 0
@@ -92,7 +93,7 @@ SAMPLE_RATE = 50
 LOW_CUT = 10    #da paper
 HIGH_CUT = 24
 order = 5
-cutoff = 24.5
+cutoff = 3
 cutoff_hp = 1 
 f_bw=0.25 #Hz for normal activities, put 0.50 Hz for sport activities
 
@@ -241,7 +242,7 @@ class SerialWorker(QRunnable):
         global accData, xData, yData, zData, xData_g, yData_g, zData_g, j, zData_lowpass, zData_bandpass, zData_array
         global zData_BP_FT, sum_data, zData_array_LP,k, start_threshold, zData_smoothed,zData_smoothed1, zData_array_smoothed, zData_interp
         global SAMPLE_RATE,LOW_CUT,HIGH_CUT
-        global order, cutoff, p, zData_highpass
+        global order, cutoff, p, zData_highpass, i_peaks_w
       
         #self.serial_worker = SerialWorker(PORT)
         
@@ -286,8 +287,9 @@ class SerialWorker(QRunnable):
             if (p == 94): # 60 seconds
                 p = 0
     
-                zData_lowpass = self.butter_lowpass_filter(zData_array, cutoff, SAMPLE_RATE, order)
+                
                 zData_highpass = self.butter_highpass_filter(zData_array, cutoff_hp, SAMPLE_RATE, order)
+                #zData_highpass = self.butter_lowpass_filter(zData_highpass, cutoff, SAMPLE_RATE, order)
             
                 '''
                 zData_ty,zData_tx= self.fast_fourier_transformation(zData_lowpass,SAMPLE_RATE)
@@ -306,29 +308,29 @@ class SerialWorker(QRunnable):
                 '''
                 zData_bandpass = self.butter_bandpass_design(np.abs(zData_highpass), LOW_CUT, HIGH_CUT,
                                                                   SAMPLE_RATE)   
-    
+                self.c=[]
                 #zData_smoothed = self.smooth_signal(zData_lowpass, SAMPLE_RATE, window_length=5, polyorder=3)
-                zData_smoothed1 = signal.savgol_filter(np.abs(zData_highpass), window_length=25, polyorder=2) #magari rimettere polyorder 3
+                zData_smoothed1 = signal.savgol_filter(np.abs(zData_highpass), window_length=25, polyorder=4) #magari rimettere polyorder 3
                 
                 self.window_length_MA = 25
                 zData_windowed = self.moving_average(self.window_length_MA, np.abs(zData_highpass))
-
+                zData_windowed = signal.savgol_filter(np.abs(zData_windowed), window_length=25, polyorder=4)
 
                 self.threshold_lp=self.calibration_threshold(np.abs(zData_lowpass))
-                self.delta=21
-                self.n_peaks_lp1 = self.find_peaks(np.abs(zData_lowpass), self.threshold_lp, self.delta)
+                self.delta=25
+                self.n_peaks_lp1, self.c = self.find_peaks(np.abs(zData_lowpass), self.threshold_lp, self.delta)
                 
                 print('numero picchi lp long',self.n_peaks_lp1)
 
                 self.threshold_hp=self.calibration_threshold(np.abs(zData_highpass))
-                self.delta=35
-                self.n_peaks_hp = self.find_peaks(np.abs(zData_highpass), self.threshold_hp, self.delta)
+                self.delta=25
+                self.n_peaks_hp, self.c = self.find_peaks(np.abs(zData_highpass), self.threshold_hp, self.delta)
                 
                 print('numero picchi hp',self.n_peaks_hp)
 
                 self.threshold_bp=self.calibration_threshold(np.abs(zData_bandpass))
-                self.delta1=23
-                self.n_peaks_bp = self.find_peaks(np.abs(zData_bandpass), self.threshold_bp, self.delta1)
+                self.delta1=25
+                self.n_peaks_bp , self.c= self.find_peaks(np.abs(zData_bandpass), self.threshold_bp, self.delta1)
                 
                 print('numero picchi bp',self.n_peaks_bp)
 
@@ -338,13 +340,19 @@ class SerialWorker(QRunnable):
                 #print('numero picchi bp new',self.n_peaks_bp_new)
 
                 self.threshold_sm=self.calibration_threshold(np.abs(zData_smoothed1))
-                self.n_peaks_sm1 = self.find_peaks(np.abs(zData_smoothed1), self.threshold_sm, self.delta)
+                self.n_peaks_sm1, self.c = self.find_peaks(np.abs(zData_smoothed1), self.threshold_sm, self.delta)
                 
                 print('numero picchi sm1',self.n_peaks_sm1)
 
                 self.threshold_wi=self.calibration_threshold(np.abs(zData_windowed))
-                self.n_peaks_w = self.find_peaks(np.abs(zData_windowed), self.threshold_wi, self.delta)
-            
+                self.n_peaks_w , i_peaks_w= self.find_peaks(np.abs(zData_windowed), self.threshold_wi, self.delta)
+                self.makesum=0.0
+                for i in range(len(i_peaks_w)-1):
+                    self.difference= (i_peaks_w[i+1]-i_peaks_w[i])*0.02
+                    self.makesum += self.difference
+                self.averege= self.makesum/len(i_peaks_w)
+                self.LAHR = 60/self.averege
+                print('LA HR',self.LAHR)
                 print('numero picchi window',self.n_peaks_w)
                 '''
                 plt.figure(2)
@@ -378,7 +386,7 @@ class SerialWorker(QRunnable):
 
                 plt.figure(5)
                 plt.plot(np.abs(zData_windowed), label = 'zData_windowed')
-                plt.plot(self.n_peaks_w,np.abs(zData_windowed[self.n_peaks_w]), "x")
+                plt.plot(i_peaks_w,np.abs(zData_windowed[i_peaks_w]), "x")
                 plt.axhline(y = self.threshold_wi, color = 'r', linestyle = '-')
                 plt.title('zData_windowed')
 
@@ -548,7 +556,7 @@ class SerialWorker(QRunnable):
         #plt.show()
         # returns the indeces of the peaks --> use them to find the respiration peaks
         peaks = len(i_peaks)
-        return peaks 
+        return peaks, i_peaks
 
     
 
@@ -744,7 +752,7 @@ class SerialWorker(QRunnable):
         """
         threshold=0.0
         
-        threshold= 0.3 * max(val)
+        threshold= 0.7 * np.mean(val[500:2500])
         return threshold
 
     def calibration(self):
