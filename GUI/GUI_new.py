@@ -56,14 +56,12 @@ xData_g = np.full(axisSize,0,dtype=np.float16)
 yData_g = np.full(axisSize,0,dtype=np.float16)
 zData_g = np.full(axisSize,0,dtype=np.float16)
 
-zData_lowpass_HR = np.full(axisSize,0,dtype=np.float16)
-zData_bandpass_HR = np.full(axisSize,0,dtype=np.float16)
-zData_smoothed_HR = np.full(axisSize,0,dtype=np.float16)
+zData_highpass_HR = np.full(axisSize,0,dtype=np.float16)
+zData_windowed_HR = np.full(axisSize,0,dtype=np.float16)
 zData_lowpass_RR = np.full(axisSize,0,dtype=np.float16)
 zData_bandpass_RR = np.full(axisSize,0,dtype=np.float16)
-zData_smoothed_RR = np.full(axisSize,0,dtype=np.float16)
+
 zData_array = []
-zData_array_smoothed = []
 sum_data = np.full(axisSize,0,dtype=np.float16)
 zData_array_LP = []
 index_increment = 0
@@ -98,13 +96,14 @@ zData_save = []
 #delta_time=0.5   #deve essere circa 2 secondi
 
 SAMPLE_RATE = 50
-LOW_CUT = 0.01  #il range del respiro normale è tra 0.2 Hz e 0.33 Hz, sottosforzo invece è max 0.75 Hz
-HIGH_CUT = 0.9
-
+LOW_CUT_RR = 0.01  #il range del respiro normale è tra 0.2 Hz e 0.33 Hz, sottosforzo invece è max 0.75 Hz
+HIGH_CUT_RR = 0.9
+LOW_CUT_HR = 10    #da paper
+HIGH_CUT_HR = 24
 #per la HR il range è tra 1 Hz e 1.66 Hz, sottosforzo invece è max 3 Hz
 order = 8
 cutoff = 3
-
+cutoff_hp = 1 
 f_bw=0.25 #Hz for normal activities, put 0.50 Hz for sport activities
 
 #Logging config
@@ -240,9 +239,9 @@ class SerialWorker(QRunnable):
     def readData(self):
         global TRANSMITTING
         global STATUS
-        global accData, xData, yData, zData, xData_g, yData_g, zData_g, count_sec, zData_lowpass, zData_bandpass, zData_array
-        global zData_BP_FT, sum_data, zData_array_LP,k, start_threshold, zData_smoothed, zData_array_smoothed, RR_value, flag_time, xData_save, yData_save, zData_save
-        global SAMPLE_RATE,LOW_CUT,HIGH_CUT, start, stop, CONN_STATUS, calibration_flag
+        global accData, xData, yData, zData, xData_g, yData_g, zData_g, zData_array
+        global sum_data, zData_array_LP,k, start_threshold, RR_value, xData_save, yData_save, zData_save
+        global SAMPLE_RATE,LOW_CUT_RR,HIGH_CUT_RR,LOW_CUT_HR,HIGH_CUT_HR, CONN_STATUS, calibration_flag
         global order, cutoff, p
       
         #self.serial_worker = SerialWorker(PORT)
@@ -280,12 +279,14 @@ class SerialWorker(QRunnable):
                     yData_save = np.append(yData_save, yData_g)
                     zData_save = np.append(zData_save, zData_g)
 
-                    #sum_data[i]=zData_g[i]+yData_g[i]      #vediamo se usare solo z o la somma dei due
+                #sum_data[i]=zData_g[i]+yData_g[i]      #vediamo se usare solo z o la somma dei due
 
-            HR_value = self.HR_computation(zData_g, calibration_flag, 24.0, 3, 12, 24.0)
-            MainWindow.updateValue(RR_value, 'RR')
+            self.new_zero=self.calibration(zData_g) 
+            zData_g=zData_g-self.new_zero
+
+            HR_value = self.HR_computation(zData_g, calibration_flag)
+
             RR_value = self.RR_computation(zData_g, calibration_flag)
-            MainWindow.updateValue(RR_value, 'HR')
 
         except struct.error:
             #MainWindow.conn_btn.setChecked(False)
@@ -296,14 +297,15 @@ class SerialWorker(QRunnable):
             self.dlg3.setIcon(QMessageBox.Critical)
             button=self.dlg3.exec_()
             if(button==QMessageBox.Ok):
-                self.dlg3.accept()
-                MainWindow.save_data()  # save even if there are connection problems
+                #self.dlg3.accept()
+                MainWindow.save_data(self)  # save even if there are connection problems
                 sys.exit(app.exec_())
             MainWindow.on_toggle(False)
 
-    def HR_computation(self, data, calibration_flag, cutoff, order, low_cut, high_cut):
-        global zData_array, time_difference_HR, count_sec_HR, flag_time_HR, start_HR, stop_HR, SAMPLE_RATE
-        
+    def HR_computation(self, data, calibration_flag):
+        global zData_array, time_difference_HR, count_sec_HR, flag_time_HR, start_HR, stop_HR, SAMPLE_RATE, zData_highpass_HR
+        global zData_windowed_HR, cutoff_hp
+        HR_value = 0.0
         if (calibration_flag):
             count_sec_HR+=1    #chiamarlo count_sec
             zData_array = np.append(zData_array, data)
@@ -312,41 +314,42 @@ class SerialWorker(QRunnable):
                 start_HR = time.time()
                 flag_time_HR = False
 
-            if (count_sec_HR==20):     #vogliamo 10 secondi
+            if (count_sec_HR==94):     #vogliamo 10 secondi
                 self.zData_array_HR = zData_array
                 count_sec_HR = 0
-                self.new_zero=self.calibration()  
-                self.new_zero_z=self.new_zero[2]        #new_zero[ZAXIS] , ZAXIS = 2
-                self.zData_array_HR=self.zData_array_HR-self.new_zero_z 
+                self.new_zero=self.calibration(self.zData_array_HR)  
+                self.zData_array_HR=self.zData_array_HR-self.new_zero
                 # Calcoliamo i dati low pass dopo aver creato un array di tot secondi e dopo aver calibrato a zero
-                zData_lowpass_HR = self.butter_lowpass_filter(self.zData_array_HR, cutoff, SAMPLE_RATE, order)
+                zData_highpass_HR = self.butter_highpass_filter(zData_array, cutoff_hp, SAMPLE_RATE, order)
                 self.zData_array_HR=[]    
-                zData_bandpass_HR = self.butter_bandpass_design(zData_lowpass_HR, low_cut, high_cut,
-                                                                    SAMPLE_RATE)   
+                self.window_length_MA = 31
+                zData_windowed_HR = self.moving_average(self.window_length_MA, np.abs(zData_highpass_HR))  
                 #Calcolo la threshold ogni tot secondi
-                self.threshold_HR=self.calibration_threshold(zData_bandpass_HR)
+                self.threshold_wi=self.calibration_threshold(np.abs(zData_windowed_HR))
+                self.delta_HR = 31
+                self.n_peaks_HR = self.find_peaks(np.abs(zData_windowed_HR), self.threshold_wi, self.delta_HR)
+            
+                print('numero picchi window',self.n_peaks_HR)
 
-                self.delta_HR = 10
-                self.n_peaks_bp_HR = self.find_peaks(abs(zData_bandpass_HR), self.threshold_HR, self.delta_HR)
-                print('numero picchi bp HR',self.n_peaks_bp_HR)
                 stop_HR = time.time()
                 time_difference_HR = stop_HR - start_HR
-                HR_value = (self.n_peaks_bp_HR * 60) / time_difference_HR
+                HR_value = (self.n_peaks_HR * 60) / time_difference_HR
 
                 print('heart rate: ', HR_value)
                 print('time delta HR: ', time_difference_HR)
                 stop_HR = 0
                 start_HR = 0
                 flag_time_HR = True
+                #MainWindow.updateValue(HR_value, character = 'HR')
 
-                return HR_value
+        return HR_value
 
 
 
     def RR_computation(self, data, calibration_flag):
 
         global zData_array, time_difference_RR, count_sec_RR, flag_time_RR, start_RR, stop_RR
-        
+        global zData_bandpass_RR, zData_lowpass_RR
         if (calibration_flag):
             count_sec_RR+=1    #chiamarlo count_sec
             zData_array = np.append(zData_array, data)
@@ -354,16 +357,15 @@ class SerialWorker(QRunnable):
                 start_RR = time.time()
                 flag_time_RR = False
 
-            if (count_sec_RR==20):     #vogliamo 10 secondi
+            if (count_sec_RR==60):     #vogliamo 10 secondi
                 self.zData_array_RR = zData_array
                 count_sec_RR = 0
-                self.new_zero=self.calibration()  
-                self.new_zero_z=self.new_zero[2]        #new_zero[ZAXIS] , ZAXIS = 2
-                self.zData_array_RR=self.zData_array_RR-self.new_zero_z 
+                self.new_zero=self.calibration(self.zData_array_RR)  
+                self.zData_array_RR=self.zData_array_RR-self.new_zero
                 # Calcoliamo i dati low pass dopo aver creato un array di tot secondi e dopo aver calibrato a zero
                 zData_lowpass_RR = self.butter_lowpass_filter(self.zData_array_RR, cutoff, SAMPLE_RATE, order)
                 self.zData_array_RR=[]    
-                zData_bandpass_RR = self.butter_bandpass_design(zData_lowpass_RR, LOW_CUT, HIGH_CUT,
+                zData_bandpass_RR = self.butter_bandpass_design(zData_lowpass_RR, LOW_CUT_RR, HIGH_CUT_RR,
                                                                     SAMPLE_RATE)   
                 #Calcolo la threshold ogni tot secondi
                 self.threshold_RR=self.calibration_threshold(zData_bandpass_RR)
@@ -380,6 +382,7 @@ class SerialWorker(QRunnable):
                 stop_RR = 0
                 start_RR = 0
                 flag_time_RR = True
+                #MainWindow.updateValue(RR_value, character = 'RR')
 
                 return RR_value
                                 
@@ -424,41 +427,35 @@ class SerialWorker(QRunnable):
         y = signal.filtfilt(b, a, data, padlen=len(data)-1) #uso filtfilt anzichè lfilter per rimanere in fase
         return y
 
+    def butter_highpass(self, cutoff, fs, order):#=5):
+        return butter(order, cutoff, fs=fs, btype='high', analog=False)
+
+    def butter_highpass_filter(self, data, cutoff, fs, order):#=5):
+        b, a = self.butter_highpass(cutoff, fs, order=order)
+        #y = lfilter(b, a, data)
+        y = signal.filtfilt(b, a, data) #uso filtfilt anzichè lfilter per rimanere in fase
+        return y
+
     def calibration_threshold(self, val):
         """
         -------- CALIBRATION ---------
-        If the button is pressed, the zero the 10 seconds array and calculate the threshold in the RR_computation()
         The patient has to breath normally for 10 seconds 
         and the maximum value reached in this calibration window is used for the
         definition of a threshold.
         """
-        global calibration_flag #azzerata dentro calibration
-        max_calibration = 0 ### OCCHIO CHE QUA IL MAX POTREBBE NON PARTIRE DA 0 SE I DATI SONO NEGATIVI
-        min_calibration = 0
         threshold=0.0
-
-        if(calibration_flag):    
-            max_calibration = 0.5*max(val)
-            min_calibration = abs(2*min(val))
-            calibration_flag=1
-            threshold= min(min_calibration, max_calibration)
-            #threshold = sum(val)/len(val)
-            
+        
+        threshold= 0.3 * max(val)
         return threshold
 
-    def calibration(self):
+    def calibration(self, array):
         global calibration,xData_g,yData_g,zData_g,calibration_flag,newZero, start_threshold, zData_array_LP, zData_array
 
-        xSum = 0.0
-        ySum = 0.0
         zSum = 0.0
         
-        newZero[0] = xSum
-        newZero[1] = ySum
-        
-        zSum = sum(zData_array)
-        zAvg = zSum/len(zData_array)
-        newZero[2] = zAvg
+        zSum = sum(array)
+        zAvg = zSum/len(array)
+        newZero = zAvg
 
         return newZero  
 
@@ -544,12 +541,12 @@ class MainWindow(QMainWindow):
         self.horAxis = list(range(320))  #100 time points
         self.xGraph = [0]*320
         self.yGraph = [0]*320
+
         self.zGraph = [0]*320
-        self.zGraph_smoothed = [0]*320
+        self.zGraph_windowed_HR = [0]*320
         self.zGraph_lowpass = [0]*320
-        self.zGraph_bandpass = [0]*320
-        self.zGraph_BP_FT = [0]*320
-        self.zGraph_interp = [0]*320
+        self.zGraph_bandpass_RR = [0]*320
+
         self.count = 0
 
         self.draw()
@@ -735,7 +732,7 @@ class MainWindow(QMainWindow):
         """!
         @brief Draw the plots.
         """
-        global xData, yData, zData, xData_g, yData_g, zData_g, zData_lowpass, zData_bandpass, zData_BP_FT, zData_smoothed, zData_interp
+        global xData, yData, zData, xData_g, yData_g, zData_g
 
         for i in range(len(xData)):
 
@@ -757,25 +754,21 @@ class MainWindow(QMainWindow):
             self.zGraph_lowpass = self.zGraph_lowpass[1:]  # Remove the first 
             self.zGraph_lowpass.append(zData_lowpass_RR[i])
             #self.zGraph.append(zData_g[i])  #  Add a new random value.
-            self.dataLinez_lowpass.setData(self.horAxis, self.zGraph_lowpass)  # Update the data.
+            self.dataLinez_lowpass_RR.setData(self.horAxis, self.zGraph_lowpass)  # Update the data.
+            '''
+                CONTROLLA COSA C'è DA DEFINIRE DI STE ROBE
+            '''
+            # Heart Rate
+            self.zGraph_windowed_HR = self.zGraph_windowed_HR[1:]  # Remove the first 
+            self.zGraph_windowed_HR.append(zData_windowed_HR[i])
+            #self.zGraph.append(zData_g[i])  #  Add a new random value.
+            self.dataLinez_windowed_HR.setData(self.horAxis, self.zGraph_windowed_HR)  # Update the data.
 
-            # Z-axis sgavigonk FILTERED
-            self.zGraph_smoothed = self.zGraph_smoothed[1:]  # Remove the first 
-            self.zGraph_smoothed.append(zData_smoothed_HR[i])
+            # Respiratory Rate
+            self.zGraph_bandpass_RR = self.zGraph_bandpass_RR[1:]  # Remove the first 
+            self.zGraph_bandpass_RR.append(zData_bandpass_RR[i])
             #self.zGraph.append(zData_g[i])  #  Add a new random value.
-            self.dataLinez_smoothed.setData(self.horAxis, self.zGraph_smoothed)  # Update the data.
-
-            # Z-axis band pass FILTERED
-            self.zGraph_bandpass = self.zGraph_bandpass[1:]  # Remove the first 
-            self.zGraph_bandpass.append(zData_bandpass_RR[i])
-            #self.zGraph.append(zData_g[i])  #  Add a new random value.
-            self.dataLinez_bandpass.setData(self.horAxis, self.zGraph_bandpass)  # Update the data.
-            
-            # Z-axis band pass AFTER FT
-            self.zGraph_BP_FT = self.zGraph_BP_FT[1:]  # Remove the first 
-            self.zGraph_BP_FT.append(zData_bandpass_HR[i])
-            #self.zGraph.append(zData_g[i])  #  Add a new random value.
-            self.dataLinez_BP_FT.setData(self.horAxis, self.zGraph_BP_FT)  # Update the data.
+            self.dataLinez_bandpass_RR.setData(self.horAxis, self.zGraph_bandpass_RR)  # Update the data.
 
     def updateValue(self, data, character):
 
@@ -791,17 +784,15 @@ class MainWindow(QMainWindow):
         """!
              @brief Draw the plots.
         """
-        global accData, xData, yData, zData, xData_g, yData_g, zData_g, zData_lowpass, zData_bandpass, zData_BP_FT, zData_smoothed, zData_interp
+        global accData, xData, yData, zData, xData_g, yData_g, zData_g
+        global zData_bandpass_RR, zData_lowpass_RR, zData_windowed_HR
 
         #self.dataLinex = self.plot(self.graphWidget,clock,xData_g,'x-axis','r')
         #self.dataLiney = self.plot(self.graphWidget,clock,yData_g,'y-axis','g')
         self.dataLinez = self.plot(self.graphWidget,clock,zData_g,'z-axis','b')
-        self.dataLinez_lowpass = self.plot(self.graphWidget,clock,zData_lowpass_RR,'z-axis low-pass filtered','r')
-        #self.dataLinez_interp = self.plot(self.graphWidget,clock,zData_interp,'z-axis interp','black')
-        #self.dataLinez_lowpass = self.plot(self.HR_plot,clock,zData_lowpass,'z-axis low-pass filtered','r')
-        self.dataLinez_smoothed = self.plot(self.HR_plot,clock,zData_smoothed_HR,'z-axis smoothed','b')
-        self.dataLinez_bandpass = self.plot(self.HR_plot,clock,zData_bandpass_HR,'z-axis band-pass filtered','g')
-        self.dataLinez_BP_FT = self.plot(self.RR_plot,clock,zData_bandpass_RR,'RR Value','black')
+        self.dataLinez_lowpass_RR = self.plot(self.graphWidget,clock,zData_lowpass_RR,'z-axis low-pass filtered','r')
+        self.dataLinez_bandpass_RR = self.plot(self.RR_plot,clock,zData_bandpass_RR,'Respiratory wave','b')
+        self.dataLinez_windowed_HR = self.plot(self.HR_plot,clock,zData_windowed_HR,'Heart beat','b')
     
     def plot(self, graph, x, y, curve_name, color):
         """!
