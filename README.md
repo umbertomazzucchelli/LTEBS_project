@@ -6,7 +6,7 @@
 
 ## Objective
 
-In this project, the aim was to develop a simple **Respiratory/Heart Rate Monitor** based on the PSoC and a 3-axis accelerometer LIS3DH. The device implements an algorithm for respiratory and heart rate computation, and then it allows data visualization on a custom GUI. Communication between PSoC and PC has been made possible by using a HC05 Bluetooth module, in order to make the device wearable and use less cables possible.  
+In this project, the aim was to develop a simple **Respiratory/Heart Rate Monitor** based on the PSoC and a 3-axis accelerometer LIS3DH. The device implements an algorithm for respiratory and heart rate computation, and then it allows data visualization on a custom GUI. PSOC and PC communication relies on a HC-05 BT Module either to make the device wearable and to reduce the cable bulkyness.
 The PSoC communicates with the LIS3DH thanks to I2C communication, to acquire data at the best full-scale range possible, which has been set to $\pm 2G$, and with sampling frequency of 50 Hz.  
 Finally, the whole PCB is powered thanks to a $9V$ battery, which allows the device to be portable and light. 
 
@@ -46,8 +46,6 @@ This code basically sets the proper configuration for the accelerometer register
 Regarding the data acquisition, as previously mentioned the accelerometer has been set to a sampling frequency of 50 Hz, according to the Shannon's theorem and to the literature. In addition to that, the accelerometer operates in **FIFO mode**, so it accumulates all the samplings in the FIFO register (which contains up to 32 samples) and then it stops getting new data until the register has been emptied, allowing to reduce the computational load on the CPU and so the battery consumption, with respect to **bypass** mode, that sends the data in a continuous stream.  
 In order to read the FIFO register, the PSoC checks regularly the value of the *overrun bit*, that becomes 1 once the FIFO register is full and returns to 0 when it has been entirely read.  
 Once the `ovrn bit` changes to one, the register is entirely read, storing the data in the respective axis array. Then, the data is packed in one single array and sent via UART.
-
-Finally, there are two files related to EEPROM in the project: those files contain the functions that have been implemented to save and recover the current configuration in the EEPROM memory, although they haven't been used in the end, since the accelerometer is used in just one configuration, which is loaded when booted.
 
 
 *Further implementation details can be found in each file.*
