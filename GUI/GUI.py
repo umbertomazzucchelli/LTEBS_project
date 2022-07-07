@@ -1,3 +1,5 @@
+from setuptools import find_packages
+import variables as var
 from audioop import findmax
 from multiprocessing import connection
 from pydoc import source_synopsis
@@ -54,23 +56,20 @@ xData_g = np.full(axisSize,0,dtype=np.float16)
 yData_g = np.full(axisSize,0,dtype=np.float16)
 zData_g = np.full(axisSize,0,dtype=np.float16)
 
-zData_lowpass = np.full(axisSize,0,dtype=np.float16)
-zData_highpass = np.full(axisSize,0,dtype=np.float16)
-zData_bandpass = np.full(axisSize,0,dtype=np.float16)
-zData_BP_FT = np.full(axisSize,0,dtype=np.float16)
-zData_smoothed = np.full(axisSize,0,dtype=np.float16)
-zData_smoothed1 = np.full(axisSize,0,dtype=np.float16)
-zData_interp = np.full(axisSize,0,dtype=np.float16)
+zData_highpass_HR = np.full(axisSize,0,dtype=np.float16)
+zData_windowed_HR = np.full(axisSize,0,dtype=np.float16)
+zData_lowpass_RR = np.full(axisSize,0,dtype=np.float16)
+zData_bandpass_RR = np.full(axisSize,0,dtype=np.float16)
+
 zData_array = []
-zData_array_smoothed = []
-i_peaks_w = []
 sum_data = np.full(axisSize,0,dtype=np.float16)
 zData_array_LP = []
 index_increment = 0
 newZero = np.zeros(3)
 
 clock = np.zeros(axisSize)
-j = 0
+count_sec_HR = 0
+count_sec_RR = 0
 k = 0
 p = 0
 xavg = 0
@@ -78,34 +77,38 @@ yavg = 0
 zavg = 0
 connectionWait = False
 calibration = False
-calibration_flag=-1
+calibration_flag=False
 start_threshold=0
-max_ipo=0
-count_max=0
-resp_rate=0.0
-time_max=0
-start_time=-1
-delta_time=0.5   #deve essere circa 2 secondi
+RR_value=0.0
+HR_value=0.0
+flag_time_RR = False
+flag_time_HR = False
+time_difference_HR=0
+time_difference_RR=0
+#character = ''
+start_HR = 0
+start_RR = 0
+stop_HR = 0
+stop_RR = 0
+i_peaks_HR = 0
+i_peaks_RR = 0
+xData_save = []
+yData_save = []
+zData_save = []
+#start_time=-1
+#delta_time=0.5   #deve essere circa 2 secondi
 
 SAMPLE_RATE = 50
-#LOW_CUT = 0.95
-#HIGH_CUT = 3
-LOW_CUT = 10    #da paper
-HIGH_CUT = 24
+LOW_CUT_RR = 0.01  #il range del respiro normale è tra 0.2 Hz e 0.33 Hz, sottosforzo invece è max 0.75 Hz
+HIGH_CUT_RR = 0.9
+LOW_CUT_HR = 1    #da paper
+HIGH_CUT_HR = 5
+#per la HR il range è tra 1 Hz e 1.66 Hz, sottosforzo invece è max 3 Hz
 order = 5
 cutoff = 3
 cutoff_hp = 1 
 f_bw=0.25 #Hz for normal activities, put 0.50 Hz for sport activities
 
-'''
-xData = np.zeros(axisSize)
-xData = xData.astype("int16")
-yData = np.zeros(axisSize)
-yData = yData.astype("int16")
-zData = np.zeros(axisSize)
-zData = zData.astype("int16")
-dataBuffer = np.zeros(96+3)#96 data + 3 separator values
-'''
 #Logging config
 logging.basicConfig(format="%(message)s", level=logging.INFO)
 
@@ -239,353 +242,205 @@ class SerialWorker(QRunnable):
     def readData(self):
         global TRANSMITTING
         global STATUS
-        global accData, xData, yData, zData, xData_g, yData_g, zData_g, j, zData_lowpass, zData_bandpass, zData_array
-        global zData_BP_FT, sum_data, zData_array_LP,k, start_threshold, zData_smoothed,zData_smoothed1, zData_array_smoothed, zData_interp
-        global SAMPLE_RATE,LOW_CUT,HIGH_CUT
-        global order, cutoff, p, zData_highpass, i_peaks_w
+        global accData, xData, yData, zData, xData_g, yData_g, zData_g, zData_array
+        global sum_data, zData_array_LP,k, start_threshold, RR_value, xData_save, yData_save, zData_save
+        global SAMPLE_RATE,LOW_CUT_RR,HIGH_CUT_RR,LOW_CUT_HR,HIGH_CUT_HR, CONN_STATUS, calibration_flag
+        global order, cutoff, p, HR_value
       
         #self.serial_worker = SerialWorker(PORT)
-        
-        dataArray = self.port.read(194)
-        dataArray = struct.unpack('194B',dataArray)
-        dataArray = np.asarray(dataArray,dtype=np.uint8)
-        lastIndex = len(dataArray)-1
-        if(dataArray[0]==10 and dataArray[lastIndex]==11):
-            accData = dataArray[1:193]
-            for i in range(axisSize):
-                '''
-                xData[i] =  (accData[i*6] | (accData[i*6+1]<<8))>>6
-                yData[i] =  (accData[i*6+2] | (accData[i*6+3]<<8))>>6
-                zData[i] =  (accData[i*6+4] | (accData[i*6+5]<<8))>>6
-                '''
-                xData[i] =  (((accData[i*6+1] & 0xFF)<<8) | (accData[i*6] & 0xFF))>>6
-                yData[i] =  (((accData[i*6+3] & 0xFF)<<8) | (accData[i*6+2] & 0xFF))>>6
-                zData[i] =  (((accData[i*6+5] & 0xFF)<<8) | (accData[i*6+4] & 0xFF))>>6
+        try:
+            dataArray = self.port.read(194)
+            dataArray = struct.unpack('194B',dataArray)
+            dataArray = np.asarray(dataArray,dtype=np.uint8)
+            lastIndex = len(dataArray)-1
+            if(dataArray[0]==10 and dataArray[lastIndex]==11):
+                accData = dataArray[1:193]
+                for i in range(axisSize):
+                    '''
+                    xData[i] =  (accData[i*6] | (accData[i*6+1]<<8))>>6
+                    yData[i] =  (accData[i*6+2] | (accData[i*6+3]<<8))>>6
+                    zData[i] =  (accData[i*6+4] | (accData[i*6+5]<<8))>>6
+                    '''
+                    xData[i] =  (((accData[i*6+1] & 0xFF)<<8) | (accData[i*6] & 0xFF))>>6
+                    yData[i] =  (((accData[i*6+3] & 0xFF)<<8) | (accData[i*6+2] & 0xFF))>>6
+                    zData[i] =  (((accData[i*6+5] & 0xFF)<<8) | (accData[i*6+4] & 0xFF))>>6
 
-                if(xData[i]>511 & xData[i]<1024):
-                    xData_g[i] = xData[i]*(-0.0039060665362)+3.99990606654
-                else:
-                    xData_g[i] = xData[i]*(-0.0039137254902) - 0.0000862745098039
-                if(yData[i]>511 & yData[i]<1024):
-                    yData_g[i] = yData[i]*(-0.0039060665362)+3.99990606654
-                else:
-                    yData_g[i] = yData[i]*(-0.0039137254902) - 0.0000862745098039
-                if(zData[i]>511 & zData[i]<1024):
-                    zData_g[i] = zData[i]*(-0.0039060665362)+3.99990606654
-                else:
-                    zData_g[i] = zData[i]*(-0.0039137254902) - 0.0000862745098039
-                
-                sum_data[i]=zData_g[i]+yData_g[i]      #vediamo se usare solo z o la somma dei due
+                    if(xData[i]>511 & xData[i]<1024):
+                        xData_g[i] = xData[i]*(-0.0039060665362)+3.99990606654
+                    else:
+                        xData_g[i] = xData[i]*(-0.0039137254902) - 0.0000862745098039
+                    if(yData[i]>511 & yData[i]<1024):
+                        yData_g[i] = yData[i]*(-0.0039060665362)+3.99990606654
+                    else:
+                        yData_g[i] = yData[i]*(-0.0039137254902) - 0.0000862745098039
+                    if(zData[i]>511 & zData[i]<1024):
+                        zData_g[i] = zData[i]*(-0.0039060665362)+3.99990606654
+                    else:
+                        zData_g[i] = zData[i]*(-0.0039137254902) - 0.0000862745098039
 
-            '''                
-            NON SO CHE FILTRO USEREMO, MA NEL PAPER CONSIGLIA UN BAND PASS [0,1]Hz, in particolare con BUTTERWORTH e calcolando la frequenza dominante nel range
-            '''  
-                                            
-            zData_array = np.append(zData_array, sum_data)
-            p+=1
+                    xData_save = np.append(xData_save, xData_g)
+                    yData_save = np.append(yData_save, yData_g)
+                    zData_save = np.append(zData_save, zData_g)
 
-            if (p == 94): # 60 seconds
-                p = 0
-    
-                
-                zData_highpass = self.butter_highpass_filter(zData_array, cutoff_hp, SAMPLE_RATE, order)
-                #zData_highpass = self.butter_lowpass_filter(zData_highpass, cutoff, SAMPLE_RATE, order)
-            
-                '''
-                zData_ty,zData_tx= self.fast_fourier_transformation(zData_lowpass,SAMPLE_RATE)
-                fmax=self.calcolamax(zData_ty,zData_tx) #trovo fmax per filtro
-                fmax = max(zData_ty)
-                ##print(fmax)
-                k = 0
-                f_low=(fmax-f_bw)/(0.5*SAMPLE_RATE)
-                f_high=(fmax+f_bw)/(0.5*SAMPLE_RATE)
-                if (f_low <= 0):
-                    f_low = 0.0001
-                
-                # We apply again a bandpass filter over the characteristic frequency
-                zData_BP_FT = self.butter_bandpass_design(zData_lowpass, f_low, f_high,
-                                                              SAMPLE_RATE)
-                '''
-                zData_bandpass = self.butter_bandpass_design(np.abs(zData_highpass), LOW_CUT, HIGH_CUT,
-                                                                  SAMPLE_RATE)   
-                self.c=[]
-                #zData_smoothed = self.smooth_signal(zData_lowpass, SAMPLE_RATE, window_length=5, polyorder=3)
-                zData_smoothed1 = signal.savgol_filter(np.abs(zData_highpass), window_length=25, polyorder=4) #magari rimettere polyorder 3
-                
-                self.window_length_MA = 25
-                zData_windowed = self.moving_average(self.window_length_MA, np.abs(zData_highpass))
-                zData_windowed = signal.savgol_filter(np.abs(zData_windowed), window_length=25, polyorder=4)
+                    sum_data[i]=zData_g[i]+yData_g[i]      #vediamo se usare solo z o la somma dei due
 
-                self.threshold_lp=self.calibration_threshold(np.abs(zData_lowpass))
-                self.delta=25
-                self.n_peaks_lp1, self.c = self.find_peaks(np.abs(zData_lowpass), self.threshold_lp, self.delta)
-                
-                print('numero picchi lp long',self.n_peaks_lp1)
+            #self.new_zero=self.calibration(sum_data) 
+            #sum_data=sum_data-self.new_zero
 
-                self.threshold_hp=self.calibration_threshold(np.abs(zData_highpass))
-                self.delta=25
-                self.n_peaks_hp, self.c = self.find_peaks(np.abs(zData_highpass), self.threshold_hp, self.delta)
-                
-                print('numero picchi hp',self.n_peaks_hp)
+            HR_value = self.HR_computation(sum_data, calibration_flag)
 
-                self.threshold_bp=self.calibration_threshold(np.abs(zData_bandpass))
-                self.delta1=25
-                self.n_peaks_bp , self.c= self.find_peaks(np.abs(zData_bandpass), self.threshold_bp, self.delta1)
-                
-                print('numero picchi bp',self.n_peaks_bp)
+            RR_value = self.RR_computation(sum_data, calibration_flag)
 
-                #self.threshold=self.calibration_threshold(zData_BP_FT)
-                #self.n_peaks_bp_new = self.find_peaks(zData_BP_FT, self.threshold, self.delta)
-                
-                #print('numero picchi bp new',self.n_peaks_bp_new)
+        except struct.error:
+            #MainWindow.conn_btn.setChecked(False)
+            self.dlg3 = QMessageBox()
+            self.dlg3.setWindowTitle("WARNING")
+            self.dlg3.setText("Connection lost, click OK and restart the application")
+            self.dlg3.setStandardButtons(QMessageBox.Ok)
+            self.dlg3.setIcon(QMessageBox.Critical)
+            button=self.dlg3.exec_()
+            if(button==QMessageBox.Ok):
+                #self.dlg3.accept()
+                MainWindow.save_data(self)  # save even if there are connection problems
+                sys.exit(app.exec_())
+            MainWindow.on_toggle(False)
 
-                self.threshold_sm=self.calibration_threshold(np.abs(zData_smoothed1))
-                self.n_peaks_sm1, self.c = self.find_peaks(np.abs(zData_smoothed1), self.threshold_sm, self.delta)
+    def HR_computation(self, data, calibration_flag):
+        global zData_array, time_difference_HR, count_sec_HR, flag_time_HR, start_HR, stop_HR, SAMPLE_RATE, zData_highpass_HR
+        global zData_windowed_HR, cutoff_hp, i_peaks_HR
+        #global character, HR value
+        HR_value = 0.0
+        if (calibration_flag):
+            count_sec_HR+=1    #chiamarlo count_sec
+            zData_array = np.append(zData_array, data)
+            '''
+            if (flag_time_HR):
+                #start_HR = time.time()
+                flag_time_HR = False
+            '''
+            if (count_sec_HR==40):     #vogliamo 10 secondi
+                #self.zData_array_HR = zData_array
+                count_sec_HR = 0
+                #self.new_zero=self.calibration(self.zData_array_HR)  
+                #self.zData_array_HR=self.zData_array_HR-self.new_zero
+                # Calcoliamo i dati low pass dopo aver creato un array di tot secondi e dopo aver calibrato a zero
+                zData_highpass_HR = self.butter_bandpass_design(np.abs(zData_array), LOW_CUT_HR, HIGH_CUT_HR,
+                                                                  SAMPLE_RATE)
+                #self.zData_array_HR=[]    
+                zData_windowed_HR = signal.savgol_filter(np.abs(zData_highpass_HR), window_length=15, polyorder=3)
+                self.window_length_MA = 15
+                zData_windowed_HR = self.moving_average(self.window_length_MA, np.abs(zData_windowed_HR))  
                 
-                print('numero picchi sm1',self.n_peaks_sm1)
-
-                self.threshold_wi=self.calibration_threshold(np.abs(zData_windowed))
-                self.n_peaks_w , i_peaks_w= self.find_peaks(np.abs(zData_windowed), self.threshold_wi, self.delta)
+                #Calcolo la threshold ogni tot secondi
+                self.threshold_wi=self.calibration_threshold(np.abs(zData_windowed_HR))
+                self.delta_HR = 25
+                self.n_peaks_HR, i_peaks_HR  = self.find_peaks(np.abs(zData_windowed_HR), self.threshold_wi, self.delta_HR)
                 self.makesum=0.0
-                for i in range(len(i_peaks_w)-1):
-                    self.difference= (i_peaks_w[i+1]-i_peaks_w[i])*0.02
+                for i in range(len(i_peaks_HR)-1):
+                    self.difference= (i_peaks_HR[i+1]-i_peaks_HR[i])*0.02
                     self.makesum += self.difference
-                self.averege= self.makesum/len(i_peaks_w)
-                self.LAHR = 60/self.averege
-                print('LA HR',self.LAHR)
-                print('numero picchi window',self.n_peaks_w)
-                '''
-                plt.figure(2)
-                plt.plot(zData_BP_FT, label = 'zData_BP_FT')
-                plt.plot(self.n_peaks_bp_new,zData_BP_FT[self.n_peaks_bp_new], "x")
-                plt.title('n_peaks_bp_new')
-                '''
+                self.average= self.makesum/len(i_peaks_HR)
+                HR_value = 60/self.average
+
+                print('numero picchi window',self.n_peaks_HR)
+
+                #stop_HR = time.time()
+                #time_difference_HR = stop_HR - start_HR
+                #HR_value = (self.n_peaks_HR * 60) / time_difference_HR
+
+                print('heart rate: ', HR_value)
                 plt.figure(1)
-                plt.plot(np.abs(zData_lowpass), label = 'zData_lowpass')
-                plt.plot(self.n_peaks_lp1,np.abs(zData_lowpass[self.n_peaks_lp1]), "x")
-                plt.axhline(y = self.threshold_lp, color = 'r', linestyle = '-')
-                plt.title('zData_lowpass')
-
-                plt.figure(2)
-                plt.plot(np.abs(zData_highpass), label = 'zData_highpass')
-                plt.plot(self.n_peaks_hp,np.abs(zData_highpass[self.n_peaks_hp]), "x")
-                plt.axhline(y = self.threshold_hp, color = 'r', linestyle = '-')
-                plt.title('zData_highpass')
-
-                plt.figure(3)
-                plt.plot(np.abs(zData_bandpass), label = 'zData_bandpass')
-                plt.plot(self.n_peaks_bp,np.abs(zData_bandpass[self.n_peaks_bp]), "x")
-                plt.axhline(y = self.threshold_bp, color = 'r', linestyle = '-')
-                plt.title('zData_bandpass')
-
-                plt.figure(4)
-                plt.plot(np.abs(zData_smoothed1), label = 'zData_smoothed1')
-                plt.plot(self.n_peaks_sm1,np.abs(zData_smoothed1[self.n_peaks_sm1]), "x")
-                plt.axhline(y = self.threshold_sm, color = 'r', linestyle = '-')
-                plt.title('zData_smoothed1')
-
-                plt.figure(5)
-                plt.plot(np.abs(zData_windowed), label = 'zData_windowed')
-                plt.plot(i_peaks_w,np.abs(zData_windowed[i_peaks_w]), "x")
+                plt.plot(np.abs(zData_windowed_HR), label = 'zData_windowed')
+                plt.plot(i_peaks_HR,np.abs(zData_windowed_HR[i_peaks_HR]), "x")
                 plt.axhline(y = self.threshold_wi, color = 'r', linestyle = '-')
                 plt.title('zData_windowed')
 
                 plt.show()
+                #print('time delta HR: ', time_difference_HR)
+                #stop_HR = 0
+                #start_HR = 0
+                #flag_time_HR = True
+                #character = 'HR'
+                MainWindow.updateValue(self, HR_value, character = 'HR')
 
+        return HR_value
+
+
+
+    def RR_computation(self, data, calibration_flag):
+
+        global zData_array, time_difference_RR, count_sec_RR, flag_time_RR, start_RR, stop_RR
+        global zData_bandpass_RR, zData_lowpass_RR, i_peaks_RR
+        #global character, RR value
+        if (calibration_flag):
+            count_sec_RR+=1    #chiamarlo count_sec
+            zData_array = np.append(zData_array, data)
             '''
-            if (start_threshold==1): #j inizia ad aumentare solo dopo che ho calibrato
-                j=j+1
-            k=k+1
-            #xData_g = self.butter_lowpass_filter(xData_g, cutoff, fs, order)
-            #yData_g = self.butter_lowpass_filter(yData_g, cutoff, fs, order)
-            zData_lowpass = self.butter_lowpass_filter(zData_g, cutoff, SAMPLE_RATE, order)
-            #xData_g = self.butter_bandpass_filter(xData_g, LOW_CUT, HIGH_CUT,
-            #                                                    SAMPLE_RATE)
-            #yData_g = self.butter_bandpass_filter(yData_g, LOW_CUT, HIGH_CUT,
-            #                                                    SAMPLE_RATE)
-            zData_bandpass = self.butter_bandpass_design(zData_lowpass, LOW_CUT, HIGH_CUT,
-                                                              SAMPLE_RATE)   
-
-            #zData_smoothed = self.smooth_signal(zData_lowpass, SAMPLE_RATE, window_length=5, polyorder=3)
-            zData_smoothed = signal.savgol_filter(zData_lowpass, window_length=5, polyorder=3)
-
-            self.new_zero=self.calibration()   
-            self.new_zero_y=self.new_zero[1]
-            zData_smoothed=zData_smoothed-self.new_zero_y     #FORSE QUESTA CALIBRAZIONE FA FATTA DURARE PIù DI 32 DATI      
-
-            self.new_zero=self.calibration()   
-            self.new_zero_z=self.new_zero[2]
-            zData_lowpass=zData_lowpass-self.new_zero_z     #FORSE QUESTA CALIBRAZIONE FA FATTA DURARE PIù DI 32 DATI      
-            
-            for i in range(len(zData_lowpass)):
-                zData_array_LP = np.append(zData_array_LP, zData_lowpass[i])
-
-            for i in range(len(zData_smoothed)):
-                zData_array_smoothed = np.append(zData_array_smoothed, zData_smoothed[i])
-            
-            #self.RRalgorithm(zData_array_smoothed)
+            if (flag_time_RR):
+                #start_RR = time.time()
+                flag_time_RR = False
             '''
-            '''            
-            if (k==20): # 6 sec
-                zData_array_smoothed = np.array(zData_array_smoothed)
-                print(type(zData_array_smoothed))
-                self.threshold=self.calibration_threshold(zData_array_LP)
-                self.delta=75
-                self.n_peaks_lp = self.find_peaks(zData_array_LP, self.threshold, self.delta)
-                k=0
-                print('numero picchi lp',self.n_peaks_lp)
+            if (count_sec_RR==40):     #vogliamo 10 secondi
+                #self.zData_array_RR = zData_array
+                count_sec_RR = 0
+                #self.new_zero=self.calibration(self.zData_array_RR)  
+                #self.zData_array_RR=self.zData_array_RR-self.new_zero
+                # Calcoliamo i dati low pass dopo aver creato un array di tot secondi e dopo aver calibrato a zero
+                zData_lowpass_RR = self.butter_lowpass_filter(zData_array, cutoff, SAMPLE_RATE, order)
+                #self.zData_array_RR=[]    
+                zData_bandpass_RR = self.butter_bandpass_design(np.abs(zData_lowpass_RR), LOW_CUT_RR, HIGH_CUT_RR,
+                                                                    SAMPLE_RATE)   
+                #Calcolo la threshold ogni tot secondi
+                self.threshold_RR=self.calibration_threshold(np.abs(zData_bandpass_RR))
 
-                self.threshold=self.calibration_threshold(zData_array_smoothed)
-                self.n_peaks_sm = self.find_peaks(zData_array_smoothed, self.threshold, self.delta)
-                k=0
-                print('numero picchi sm',self.n_peaks_sm)
-                zData_array_smoothed = []
-                
-                zData_ty,zData_tx= self.fast_fourier_transformation(zData_array_LP,SAMPLE_RATE)
-                #fmax=self.calcolamax(zData_ty,zData_tx) #trovo fmax per filtro
-                fmax = max(zData_ty)
-                #print(fmax)
-                k = 0
-                f_low=fmax-f_bw
-                f_high=fmax+f_bw
-                if (f_low <= 0):
-                    f_low = 0.0001
+                self.delta_RR = 60
+                self.n_peaks_bp_RR, i_peaks_RR = self.find_peaks(np.abs(zData_bandpass_RR), self.threshold_RR, self.delta_RR)
+                self.makesum=0.0
+                for i in range(len(i_peaks_RR)-1):
+                    self.difference= (i_peaks_RR[i+1]-i_peaks_RR[i])*0.02
+                    self.makesum += self.difference
+                self.average= self.makesum/len(i_peaks_RR)
+                RR_value = 60/self.average
+                print('numero picchi bp RR',self.n_peaks_bp_RR)
+                #stop_RR = time.time()
+                #time_difference_RR = stop_RR - start_RR
+                #RR_value = (self.n_peaks_bp_RR * 60) / time_difference_RR
 
-                # We apply again a bandpass filter over the characteristic frequency
-                zData_BP_FT = self.butter_bandpass_design(zData_lowpass, f_low, f_high,
-                                                              SAMPLE_RATE)  
-                #for i in range(len(zData_BP_FT)):
-                #    zData_array.append(zData_BP_FT[i])
-                '''
+                print('resp rate: ', RR_value)
+                plt.figure(2)
+                plt.plot(np.abs(zData_bandpass_RR), label = 'zData bandpass RR')
+                plt.plot(i_peaks_RR,np.abs(zData_bandpass_RR[i_peaks_RR]), "x")
+                plt.axhline(y = self.threshold_RR, color = 'r', linestyle = '-')
+                plt.title('zData_bandpass RR')
 
+                plt.show()
+                #print('time delta RR: ', time_difference_RR)
+                #stop_RR = 0
+                #start_RR = 0
+                flag_time_RR = True
+                #character = 'RR'
+                MainWindow.updateValue(self,RR_value, character = 'RR')
+
+                return RR_value
+                                
     ### moving average ###
-    
-
     def moving_average(self, window_length, data):
         
-        ### with rolling function ###
-        #series = pd.Series(data)
-        #series = data.to_frame()
-        #Mov_avg = series.rolling(window = window_length, center = True).mean()
-        #smoothed = Mov_avg.to_numpy # optional: (dtype = 'float32') # dipende cosa ci serve
         smoothed = np.convolve(data, np.ones(window_length)) / window_length
     
         return smoothed
     
-
-
-    ### acceleration Ai + PCA###
-    '''
-    deltaAi[i] = ([xData[i+1]-xDAta[i])**2 + (yData[i+1]-yData[i])**2 + (zData[i+1]-zData[i])**2
-    # sopra da ripetere per 1 minuto
-    A_body = sum(deltaAi) #in one minute --> this is the EE
-    # low EE --> 0.2-0.4Hz
-    ...
-    ### PCA ###
-    # sigma = matrix of 3 coordinates accelerations:
-    sigma = [xData][yData][zData]
-
-    # eigenvectors and eigenvalues using PCA --> lambda
-    # subtract the mean of each variable (x, y, z):
-    sigma = [xData - xavg][yData - yavg][zData - zavg]
-
-    # covariance matrix
-    cov_sigma = np.cov(sigma, rowvar = False)
-
-    # eigenvalues and eigenvectors
-    eigen_values , eigen_vectors = np.linalg.eigh(cov_sigma)
-
-    # sorting
-    # sort the eigenvalues in descending order
-    sorted_index = np.argsort(eigen_values)[::-1]
-
-    sorted_eigenvalue = eigen_values[sorted_index] # we need the 3 eigenvalues
-    
-    # similarly sort the eigenvectors 
-    sorted_eigenvectors = eigen_vectors[:,sorted_index]
-
-    # once we have the 3 eigenvalues we can calculate the weights:
-    eta[i] = (sorted_eigenvalue[i])/(sum(eigenvalues)) # i = 1,2,3
-
-    # respiratory time sequence, x0:
-    x0 = eta[1]*xData + eta[2]*yData + eta[3]*zData
-
-    ### SPECTRUM ANALYSIS OVER 1 MIN ###
-    # power spectrm over 1 min x0 --> highest peak is resp rate
-
-    sampling_rate = 50.0
-    data = x0 
-    fourier_transform = np.fft.rfft(data)
-    abs_fourier_transform = np.abs(fourier_transform) # absolute value of fourier transform
-    power_spectrum = np.square(abs_fourier_transform) # square of fourier transform --> power spectrum
-    frequency = np.linspace(0, sampling_rate/2, len(power_spectrum))
-    plt.plot(frequency, power_spectrum)
-
-    # then find the max of the frequency and estimate the respiration rate
-
-    max = argrelmax(power_spectrum, np.greater) # returns indeces of local maxima of the power spectrum
-    max = max(power_spectrum) # returns the absolute maxima of the power spectrum
-    '''
-
-    ### digital filtering ###
-    '''
-    def filtering(self, order, cut_freq, type, fsample, data):
-        # cut_freq can be either a scalar or an array type (if band pass filter)
-        sos = butter(N = order, Wn = cut_freq, btype = type, output='sos', fs = fsample)
-        # sos contains the num and den of coefficient for the IIR filter
-        # y is the filtered signal
-        y = sosfiltfilt(sos, data)
-
-        # https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.filtfilt.html#scipy-signal-filtfilt
-        # https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.sosfiltfilt.html#scipy-signal-sosfiltfilt
-        # https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.sosfilt.html#scipy-signal-sosfilt+
-
-        return y        
-    '''
-    
     ### peak finding ###
-    
-    # https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.find_peaks.html#scipy.signal.find_peaks
-    # calculate the relativa maxima of the 1D array with find_peaks
-
     def find_peaks(self, data, threshold, delta):
         
         i_peaks, _ = find_peaks(data, height = threshold, distance = delta)
         #plt.plot(data)
         #plt.plot(i_peaks,data[i_peaks], "x")
+        #plt.axhline(y = threshold, color = 'r', linestyle = '-')
         #plt.show()
         # returns the indeces of the peaks --> use them to find the respiration peaks
         peaks = len(i_peaks)
-        return peaks, i_peaks
-
-    
-
-    ### heart rate computation ###
-    '''
-    # bandpass 30,35 Hz with 4th butterworth
-    HP_filtered_signal = self.filtering(4, [20, 35], 'bandpass', zData_g)
-    
-    # envelope detection with HILBERT TRANSFORM:
-    import matplotlib.pyplot as plt
-    from scipy.signal import hilbert, chirp
-    envelope = np.abs(hilbert(HP_filtered_signal))
-
-    # search for envelope local maxima in disjoint windows of duration 0.8s = 40 samples
-    # - false peaks might be detected
-    peaks = self.find_peaks(envelope, threshold = 0, 0.8s)
-    maxima = envelope[peaks]
-
-    # compute the dominant freq in the range 0.16, 2 Hz
-
-    # Selecting the first maximum which satisfies the following condition:
-    # abs(2xm(i+1)−m(i)−m(i+2))   < c1&abs(2xm(i+2)−m(i+1)−m(i+3))  <  c2&abs((m(i+1)−m(i))−to)  <
-
-    # Propagate information from the first maximum to find other peaks by an adaptive threshold:
-    # t∗=floor(1/3x(m(i)−m(i−3)))
-
-    # Finally, refine the peak time positions on the [20,80] Hz band-pass filtered envelope.
-
-    '''
+        return peaks , i_peaks
 
     def butter_bandpass_design(self, signal_array, low_cut, high_cut, sample_rate, order=4):
         """
@@ -596,36 +451,19 @@ class SerialWorker(QRunnable):
         :param order: Order of the filter-design
         :return: b, a : ndarray, ndarray - Numerator (b) and denominator (a) polynomials of the IIR filter. Only returned if output='ba'.
         """
-        nyq = 0.5 * sample_rate
-        #low = low_cut / nyq
-        #high = high_cut / nyq
         sos = signal.butter(order, [low_cut, high_cut], btype='band', output ='sos',fs=sample_rate)
         y = signal.sosfiltfilt(sos, signal_array)
         return y
-    '''
-    def butter_bandpass_filter(self, signal_array, low_cut, high_cut, sample_rate, order=4):
-        """
-        Apply's the filter design on the signal_array.
-        :param signal_array: signal, which should get filtered - as ndarray
-        :param low_cut: Lower cut off frequency in Hz
-        :param high_cut: Higher cut off frequency in Hz
-        :param sample_rate: Sample rate of the signal in Hz
-        :param order: Order of the filter-design
-        :return: ndarray - The filtered output, an array of type numpy.float64 with the same shape as signal_array.
-        """
-        
-        y = signal.sosfiltfilt(sos, signal_array)
 
-        return y
-    '''
     def butter_lowpass(self, cutoff, fs, order):#=5):
         return butter(order, cutoff, fs=fs, btype='low', analog=False)
 
     def butter_lowpass_filter(self, data, cutoff, fs, order):#=5):
         b, a = self.butter_lowpass(cutoff, fs, order=order)
         #y = lfilter(b, a, data)
-        y = signal.filtfilt(b, a, data) #uso filtfilt anzichè lfilter per rimanere in fase
+        y = signal.filtfilt(b, a, data, padlen=len(data)-1) #uso filtfilt anzichè lfilter per rimanere in fase
         return y
+
     def butter_highpass(self, cutoff, fs, order):#=5):
         return butter(order, cutoff, fs=fs, btype='high', analog=False)
 
@@ -634,114 +472,6 @@ class SerialWorker(QRunnable):
         #y = lfilter(b, a, data)
         y = signal.filtfilt(b, a, data) #uso filtfilt anzichè lfilter per rimanere in fase
         return y
-
-    def fast_fourier_transformation(self, signal_array, sample_rate):
-        """
-        Apply's the Fast Furier Transformation. This transforms the signal into an power spectrum in frequency domain.
-        :param signal_array: signal as ndarray
-        :param sample_rate: Sample rate of the signal in Hz
-        :return: yf : complex ndarray - Results of the FFT
-                 xf : ndarray - frequency parts in an equally interval
-        """
-        N = int(len(signal_array))  # number of sample points
-        #N=320
-        T = 1 / sample_rate  # sample spacing
-        yf = fft(signal_array)
-        w=blackman(N)
-        ywf= fft(signal_array*w)
-        #xf = fftfreq(N, T)  # for all frequencies
-        #xf = np.linspace(0.0, 1.0 / (2.0 * T), N, endpoint=False)  # for positive frequencies only
-        xf=fftfreq(N,T)[:N//2]
-        plt.semilogy(xf[1:N//2], 2.0/N * np.abs(yf[1:N//2]), '-b')
-        plt.semilogy(xf[1:N//2], 2.0/N * np.abs(ywf[1:N//2]), '-r')
-        plt.legend(['FFT', 'FFT w. window'])
-        
-        plt.grid()
-        plt.show()
-
-        return ywf, xf
-
-    def calcolamax(self, yf, xf):
-        yf_max=0
-        index_max=0
-        for i in range(len(xf)):
-            if (yf[i] > yf_max):
-                yf_max=yf[i]
-                index_max=i
-        f_max=xf[index_max]
-        return f_max
-
-    '''
-    def smooth_signal(data, sample_rate, window_length=None, polyorder=3):
-        
-        smooths given signal using savitzky-golay filter
-        Function that smooths data using savitzky-golay filter using default settings.
-        Functionality requested by Eirik Svendsen. Added since 1.2.4
-        Parameters
-        
-        if window_length == None:
-            window_length = sample_rate // 10
-
-        if window_length % 2 == 0 or window_length == 0: window_length += 1
-
-        smoothed = signal.savgol_filter(data, window_length = window_length,
-                                 polyorder = polyorder) 
-        return smoothed    
-    '''
-
-    def RRalgorithm(self, data):
-        global calibration_flag, time_max, delta_time, j, max_ipo, start_time, count_max, resp_rate, index_increment
-        
-        '''
-        ------ PEAK DETECTION ---------
-        The algorithm to detect the peak is based on the simultaneous usage
-        of a time threshold (to prevent 'false respiration') and a numerical
-        threshold (determined during the calibration phase)
-        '''
-        if (j==15): #così ho un array dato da 9.6 secondi di registrazione
-            threshold=self.calibration_threshold(data)  #in this way I can calculate a new threshold every tot sec
-            print('thr', threshold)
-
-        #Calibration has finished. Research for maxima begins
-        if (calibration_flag==1):
-            for i in range(index_increment,len(data)-2):
-                
-                if(data[i+2]<data[i+1] and data[i+1]>data[i] and data[i+1]>threshold): 
-
-                    
-                    max_ipo=data[i+1]
-                    print('indice:',i+1)
-                    flag_max_ipo_found=1
-                    print('max_ipo',max_ipo)
-                        
-                    if (flag_max_ipo_found):
-                        stop_time=time.time()
-                        print('stop time', stop_time)
-                        flag_max_ipo_found=0
-                        time_max=stop_time - start_time
-                        print('time max', time_max)
-
-                        if (time_max >= delta_time):
-                            max_real=max_ipo
-                            stop_time=0
-                            start_time=0
-                            start_time=time.time()  #mi riparte quando ho trovato un massimo vero
-                            print('start time ', start_time)
-                            print('max-real',max_real)
-                    
-                            count_max+=1
-                            print('count_max', count_max)
-                            if (count_max>=2):  #we need to detect 2 absolute maxima before starting to provide a respiratory frequency
-                                #resp_rate= 60/(time_max*0.02)  
-                                resp_rate= 60/(time_max)    #gio dice che non ci va la frequenza di campionamento
-                                print('Resp rate:',resp_rate)
-                        #time_max=0
-                        #count_max=0
-                        #flag_max_found=0    
-            index_increment=len(data)      
-            print('index_increment',index_increment)     
-            #j=0
-            
 
     def calibration_threshold(self, val):
         """
@@ -752,63 +482,19 @@ class SerialWorker(QRunnable):
         """
         threshold=0.0
         
-        threshold= 0.7 * np.mean(val[500:2500])
+        threshold= 0.8 * np.mean(val[500:2500])
         return threshold
 
-    def calibration(self):
-        global calibration,xData_g,yData_g,zData_g,calibration_flag,newZero, start_threshold, j, zData_array_LP, zData_array_smoothed
-        calibration_flag=0
+    def calibration(self, array):
+        global calibration,xData_g,yData_g,zData_g,calibration_flag,newZero, start_threshold, zData_array_LP, zData_array
+
+        zSum = 0.0
         
-        if(calibration):
-            j=0
-            xSum = 0.0
-            ySum = 0.0
-            zSum = 0.0
-            '''
-            for i in range(len(xData_g)):  #SAREBBERO DA FARE SUI DATI FILTRATI
-                xSum = xSum + xData_g[i]
-            xAvg = xSum/len(xData_g)
-            newZero[0] = xAvg
+        zSum = sum(array)
+        zAvg = zSum/len(array)
+        newZero = zAvg
 
-            for i in range(len(yData_g)):
-                ySum = ySum + yData_g[i]
-            yAvg = ySum/len(yData_g)
-            newZero[1] = yAvg
-            '''
-            newZero[0] = xSum
-
-            for i in range(len(zData_array_smoothed)):
-                ySum = ySum + zData_array_smoothed[i]
-            yAvg = ySum/len(zData_array_smoothed)
-            newZero[1] = yAvg
-            
-            #newZero[1] = ySum
-            for i in range(len(zData_array_LP)):
-                zSum = zSum + zData_array_LP[i]
-            zAvg = zSum/len(zData_array_LP)
-            newZero[2] = zAvg
-
-            zData_array_smoothed=[] #lo azzero quando clicco calibrazione
-            zData_array_LP=[]    #lo azzero quando clicco calibrazione
-            start_threshold=1
-        calibration = False
         return newZero  
-
-    """
-    def RRalgortithm(self):
-        global xData_g,yData_g,zData_g
-        nSamples = 200 #a caso, dovrà essere il numero di sample in 2s
-        max = 0
-        index1 = 0
-        index2 = 0
-
-        xDataWindow = xDataWindow + xData_g
-        if(np.size(xDataWindow)==nSamples):
-            for i in len(xDataWindow):
-                if(xDataWindow[i]>max):
-                    max = xDataWindow[i]
-                    index1 = i
-    """
 
 ###############
 # MAIN WINDOW #
@@ -846,6 +532,8 @@ class MainWindow(QMainWindow):
         """!
         @brief Set up the graphical interface structure.
         """
+        global RR_value, HR_value
+
         # Create the plot widget
         self.graphWidget = PlotWidget()
         
@@ -886,17 +574,16 @@ class MainWindow(QMainWindow):
         self.RR_plot.addLegend()
         self.RR_plot.setMouseEnabled(x=False, y=False)
         
-    
         # Display 100 time points
         self.horAxis = list(range(320))  #100 time points
         self.xGraph = [0]*320
         self.yGraph = [0]*320
+
         self.zGraph = [0]*320
-        self.zGraph_smoothed = [0]*320
+        self.zGraph_windowed_HR = [0]*320
         self.zGraph_lowpass = [0]*320
-        self.zGraph_bandpass = [0]*320
-        self.zGraph_BP_FT = [0]*320
-        self.zGraph_interp = [0]*320
+        self.zGraph_bandpass_RR = [0]*320
+
         self.count = 0
 
         self.draw()
@@ -927,7 +614,6 @@ class MainWindow(QMainWindow):
         #file_menu.addAction(home_action)
 
         self.HR_label = QLabel()
-        HR_value = 100 # this value is update with the algorithm
         text = 'Instant heart rate value: {} bpm'
         a = text.format(HR_value)
         self.HR_label.setText(a)
@@ -940,8 +626,7 @@ class MainWindow(QMainWindow):
         self.HR_label.setAlignment(QtCore.Qt.AlignCenter)
 
         self.RR_label = QLabel()
-        RR_value = resp_rate
-        text = 'Instant respiratory rate value: {}'
+        text = 'Instant respiratory rate value: {} rpm'
         a = text.format(RR_value)
         self.RR_label.setText(a)
         font = QtGui.QFont()
@@ -1006,15 +691,6 @@ class MainWindow(QMainWindow):
         modeSelection.addWidget(self.calibrate)
         modeSelection.addWidget(self.updateBtn)
         verticalLayout.addLayout(modeSelection)
-        
-        '''
-        self.FSR_Select = QComboBox()
-        self.FSR_Select.setEditable(False)
-        self.FSR_Select.addItem("FS: ±2 g")
-        self.FSR_Select.addItem("FS: ±4 g")
-        #self.FSR_Select.activated.connect(self.calibration(1)) #con .activated "Used when an item is selected by the user."
-        self.FSR_Select.currentIndexChanged.connect(self.change_graph)  #quando l'item nella lista viene cambiato mi porta a change_graph
-        '''
 
         self.save_btn = QPushButton(
             text = ("Save status")
@@ -1035,20 +711,11 @@ class MainWindow(QMainWindow):
         self.timer = QtCore.QTimer()
         self.timer.setInterval(500)
 
+        self.statusTimer = QtCore.QTimer()
+        self.statusTimer.setInterval(2000)
+
         self.graphTimer= QtCore.QTimer()
         self.graphTimer.setInterval(1000)
-
-        '''
-        #mostra dialog di errore se il psoc è stato disconnesso per sbaglio
-        self.dlg3 = QMessageBox(self)
-        self.dlg3.setWindowTitle("WARNING")
-        self.dlg3.setText("Connection lost, reconnect the device before proceeding")
-        self.dlg3.setStandardButtons(QMessageBox.Ok)
-        self.dlg3.setIcon(QMessageBox.Critical)
-        button=self.dlg3.exec_()
-        if(button==QMessageBox.Ok):
-            self.dlg3.accept()
-        '''
 
         widget = QWidget()
         widget.setLayout(verticalLayout)
@@ -1062,11 +729,11 @@ class MainWindow(QMainWindow):
     def save_data(self):
         print("exporting to csv...")
 
-        global zData_g, xData_g, yData_g
+        global zData_save, xData_save, yData_save
         df = pd.DataFrame({
-            'x axis': xData_g,
-            'y axis': yData_g,
-            'z axis': zData_g,
+            'x axis': xData_save,
+            'y axis': yData_save,
+            'z axis': zData_save, 
         })
         df.to_csv('HR_Rate.csv', float_format = '%.2f', index = False)
 
@@ -1078,7 +745,7 @@ class MainWindow(QMainWindow):
         # 0 --> HR
         # 1 --> RR
         # 2 --> both
-        print("Plotting: ", a[flag_graph])
+        #print("Plotting: ", a[flag_graph])
         ### FLAG GRAPH per plottare solo ciò che interessa --- disattivo cio che non voglio
         if (flag_graph == 0): #only HR
             self.RR_plot.setBackground('bbccdd')
@@ -1096,33 +763,12 @@ class MainWindow(QMainWindow):
         #    zData_bandpass = np.full(axisSize,5,dtype=np.float16)
         #    self.dataLinez_bandpass = self.plot(self.RR_plot,clock,zData_bandpass,'z-axis band-pass filtered','b')
 
-    '''   
-    def change_graph (self):#,index
-        """
-        @brief Curve calibration
-        """
-        global FSR_index, old_calibration
-        self.dataLinex.clear()
-        self.dataLiney.clear()
-        self.dataLinez.clear()
-        #self.graphWidget.clear()
-        FSR_index = self.FSR_Select.currentIndex()  #indica l'indice del combo box selezionato, valore di default = -1
-
-        #self.draw()
-        #self.static_canvas1.draw()
-
-        # LA PARTE COMMENTATA SAREBBE PER PULIRE IL GRAFICO MA LO FA SOLO UNA VOLTA
-        #old_calibration = calibration_index
-        #calibration_index = self.FSR_Select.itemData(index)
-        #if (old_calibration != calibration_index):
-        #    self.graphWidget.clear()
-    '''    
         
     def drawGeneralGraph(self):
         """!
         @brief Draw the plots.
         """
-        global xData, yData, zData, xData_g, yData_g, zData_g, zData_lowpass, zData_bandpass, zData_BP_FT, zData_smoothed, zData_interp
+        global xData, yData, zData, xData_g, yData_g, zData_g
 
         for i in range(len(xData)):
 
@@ -1133,71 +779,60 @@ class MainWindow(QMainWindow):
             else:
                 self.horAxis = self.horAxis[1:]
                 self.horAxis.append(self.horAxis[-1] + 1)  # Add a new value 1 higher than the last.
-            '''
-            # X-axis
-            self.xGraph = self.xGraph[1:]  # Remove the first
-            self.xGraph.append(xData_g[i])  #  Add a new random value. 
-            #self.xGraph.append(xData_g[i])  #  Add a new random value.
-            self.dataLinex.setData(self.horAxis, self.xGraph)  # Update the data.
-            # Y-axis
-            self.yGraph = self.yGraph[1:]  # Remove the first 
-            self.yGraph.append(yData_g[i])
-            #self.yGraph.append(yData_g[i])  #  Add a new random value.
-            self.dataLiney.setData(self.horAxis, self.yGraph)  # Update the data.
-            '''
+            
             # Z-axis
             self.zGraph = self.zGraph[1:]  # Remove the first 
             self.zGraph.append(zData_g[i])
             #self.zGraph.append(zData_g[i])  #  Add a new random value.
             self.dataLinez.setData(self.horAxis, self.zGraph)  # Update the data.
-            '''
-            # Z-axis interp
-            self.zGraph_interp = self.zGraph_interp[1:]  # Remove the first 
-            self.zGraph_interp.append(zData_interp[i])
-            #self.zGraph.append(zData_g[i])  #  Add a new random value.
-            self.dataLinez_interp.setData(self.horAxis, self.zGraph_interp)  # Update the data.
-            '''
 
             # Z-axis low pass FILTERED
             self.zGraph_lowpass = self.zGraph_lowpass[1:]  # Remove the first 
-            self.zGraph_lowpass.append(zData_lowpass[i])
+            self.zGraph_lowpass.append(zData_lowpass_RR[i])
             #self.zGraph.append(zData_g[i])  #  Add a new random value.
-            self.dataLinez_lowpass.setData(self.horAxis, self.zGraph_lowpass)  # Update the data.
+            self.dataLinez_lowpass_RR.setData(self.horAxis, self.zGraph_lowpass)  # Update the data.
+            '''
+                CONTROLLA COSA C'è DA DEFINIRE DI STE ROBE
+            '''
+            # Heart Rate
+            self.zGraph_windowed_HR = self.zGraph_windowed_HR[1:]  # Remove the first 
+            self.zGraph_windowed_HR.append(zData_windowed_HR[i])
+            #self.zGraph.append(zData_g[i])  #  Add a new random value.
+            self.dataLinez_windowed_HR.setData(self.horAxis, np.abs(self.zGraph_windowed_HR))  # Update the data.
 
-            # Z-axis sgavigonk FILTERED
-            self.zGraph_smoothed = self.zGraph_smoothed[1:]  # Remove the first 
-            self.zGraph_smoothed.append(zData_smoothed[i])
+            # Respiratory Rate
+            self.zGraph_bandpass_RR = self.zGraph_bandpass_RR[1:]  # Remove the first 
+            self.zGraph_bandpass_RR.append(zData_bandpass_RR[i])
             #self.zGraph.append(zData_g[i])  #  Add a new random value.
-            self.dataLinez_smoothed.setData(self.horAxis, self.zGraph_smoothed)  # Update the data.
+            self.dataLinez_bandpass_RR.setData(self.horAxis, np.abs(self.zGraph_bandpass_RR))  # Update the data.
 
-            # Z-axis band pass FILTERED
-            self.zGraph_bandpass = self.zGraph_bandpass[1:]  # Remove the first 
-            self.zGraph_bandpass.append(zData_bandpass[i])
-            #self.zGraph.append(zData_g[i])  #  Add a new random value.
-            self.dataLinez_bandpass.setData(self.horAxis, self.zGraph_bandpass)  # Update the data.
+    def updateValue(self, data, character):
+
+        #global HR_value, RR_value, character
+
+        text = 'Instant {} value: {}'
+        R_text = text.format(character, data)
+
+        if (character == 'RR'):
+            print(R_text + 'rpm')
+            self.RR_label.setText(R_text+'rpm')
+        elif (character == 'HR'):
+            print(R_text + 'bpm')
+            self.HR_label.setText(R_text+'bpm')
             
-            # Z-axis band pass AFTER FT
-            self.zGraph_BP_FT = self.zGraph_BP_FT[1:]  # Remove the first 
-            self.zGraph_BP_FT.append(zData_BP_FT[i])
-            #self.zGraph.append(zData_g[i])  #  Add a new random value.
-            self.dataLinez_BP_FT.setData(self.horAxis, self.zGraph_BP_FT)  # Update the data.
-            
-
     def draw(self):
         """!
              @brief Draw the plots.
         """
-        global accData, xData, yData, zData, xData_g, yData_g, zData_g, zData_lowpass, zData_bandpass, zData_BP_FT, zData_smoothed, zData_interp
+        global accData, xData, yData, zData, xData_g, yData_g, zData_g
+        global zData_bandpass_RR, zData_lowpass_RR, zData_windowed_HR
 
         #self.dataLinex = self.plot(self.graphWidget,clock,xData_g,'x-axis','r')
         #self.dataLiney = self.plot(self.graphWidget,clock,yData_g,'y-axis','g')
         self.dataLinez = self.plot(self.graphWidget,clock,zData_g,'z-axis','b')
-        self.dataLinez_lowpass = self.plot(self.graphWidget,clock,zData_lowpass,'z-axis low-pass filtered','r')
-        #self.dataLinez_interp = self.plot(self.graphWidget,clock,zData_interp,'z-axis interp','black')
-        #self.dataLinez_lowpass = self.plot(self.HR_plot,clock,zData_lowpass,'z-axis low-pass filtered','r')
-        self.dataLinez_smoothed = self.plot(self.HR_plot,clock,zData_smoothed,'z-axis smoothed','b')
-        self.dataLinez_bandpass = self.plot(self.HR_plot,clock,zData_bandpass,'z-axis band-pass filtered','g')
-        self.dataLinez_BP_FT = self.plot(self.RR_plot,clock,zData_BP_FT,'z-axis band-pass after FT','black')
+        self.dataLinez_lowpass_RR = self.plot(self.graphWidget,clock,zData_lowpass_RR,'z-axis low-pass filtered','r')
+        self.dataLinez_bandpass_RR = self.plot(self.RR_plot,clock,np.abs(zData_bandpass_RR),'Respiratory wave','b')
+        self.dataLinez_windowed_HR = self.plot(self.HR_plot,clock,np.abs(zData_windowed_HR),'Heart beat','b')
     
     def plot(self, graph, x, y, curve_name, color):
         """!
@@ -1245,6 +880,8 @@ class MainWindow(QMainWindow):
                 if(CONN_STATUS==True):
                     self.conn_btn.setText(
                     "Disconnect from port {}".format(self.port_text))
+                    self.statusTimer.timeout.connect(self.checkStatus)
+                    self.statusTimer.start()
                     self.conn_label.setText("Device connected")
                     self.conn_label.setStyleSheet("background-color: rgb(0, 255, 0);\n" "border: 1px solid black")
                     break
@@ -1269,6 +906,7 @@ class MainWindow(QMainWindow):
             #self.com_list_widget.setDisabled(False) # enable the possibility to change port
             self.conn_btn.setText("Device search")
             self.updateBtn.setDisabled(True)
+            self.statusTimer.stop()
             
     def connected_device(self, port_name):
         """!
@@ -1277,13 +915,30 @@ class MainWindow(QMainWindow):
         logging.info("Port {} closed.".format(port_name))
 
 
+    def checkStatus(self):
+        """!
+        @brief Handle the status of the serial port connection.
+        Available status:
+            - 0  --> Error during opening of serial port
+            - 1  --> Serial port opened correctly
+        """
+        if self.serial_worker.port.is_open == False:
+            self.conn_btn.setChecked(False)
+            self.dlg3 = QMessageBox(self)
+            self.dlg3.setWindowTitle("WARNING")
+            self.dlg3.setText("Connection lost, reconnect the device before proceeding")
+            self.dlg3.setStandardButtons(QMessageBox.Ok)
+            self.dlg3.setIcon(QMessageBox.Critical)
+            button=self.dlg3.exec_()
+            if(button==QMessageBox.Ok):
+                self.dlg3.accept()
+        
     def ExitHandler(self):
         """!
         @brief Kill every possible running thread upon exiting application.
         """
         self.serial_worker.is_killed = True
         self.serial_worker.killed()
-
 
     def dataUpdate(self,checked):
         global PORT
@@ -1299,6 +954,7 @@ class MainWindow(QMainWindow):
             self.timer.start()
             self.graphTimer.timeout.connect(lambda: self.drawGeneralGraph())
             self.graphTimer.start() 
+            
             self.calibrate.setDisabled(False)
             self.modeSelect.setDisabled(False)
 
@@ -1309,41 +965,18 @@ class MainWindow(QMainWindow):
             TRANSMITTING = False
             self.timer.stop()
             self.graphTimer.stop()
+            
             self.modeSelect.setDisabled(False)
             #self.FSR_Select.setDisabled(False)
             self.calibrate.setDisabled(True)
 
-    def startCalibration(self):
-        global calibration
+    def startCalibration(self): 
+    # set calibration_flag = True when calibration button is pressed
+        global calibration_flag
 
-        calibration = True
+        calibration_flag = True
+        self.calibrate.setDisabled(True) # deactivate the button after first calibration (the next ones will be authomatic)
 
-    def selectionchange(self,i):
-        global flag_graph
-        flag_graph = i
-        a = ['both','HR only', 'RR only'] 
-        # 0 --> HR
-        # 1 --> RR
-        # 2 --> both
-        print("Plotting: ", a[flag_graph])
-        ### FLAG GRAPH per plottare solo ciò che interessa --- disattivo cio che non voglio
-        if (flag_graph == 0): #only HR
-            self.RR_plot.setBackground('bbccdd')
-            self.HR_plot.setBackground('bbccdd')
-            #zData_lowpass = np.full(axisSize,10,dtype=np.float16)
-            #self.dataLinez_lowpass = self.plot(self.graphWidget,clock,zData_lowpass,'z-axis low-pass filtered','r')
-        elif (flag_graph == 1): #only RR
-            self.RR_plot.setBackground('r')
-            self.HR_plot.setBackground('bbccdd')
-            #zData_lowpass = np.full(axisSize,5,dtype=np.float16)
-            #self.dataLinez_lowpass = self.plot(self.HR_plot,clock,zData_lowpass,'z-axis low-pass filtered','g')
-        elif (flag_graph == 2):
-            self.HR_plot.setBackground('y')
-            self.RR_plot.setBackground('bbccdd')
-        #    zData_bandpass = np.full(axisSize,5,dtype=np.float16)
-        #    self.dataLinez_bandpass = self.plot(self.RR_plot,clock,zData_bandpass,'z-axis band-pass filtered','b')
-
-    
 #############
 #  RUN APP  #
 #############
