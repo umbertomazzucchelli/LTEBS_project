@@ -35,6 +35,7 @@ dataSize = 98
 baudRate = 115200 #9600 for USB, 115200 for BT
 accData = []
 axisSize = dataSize//3
+SECONDI = 16
 xData = np.full(axisSize,0,dtype=np.int16)
 yData = np.full(axisSize,0,dtype=np.int16)
 zData = np.full(axisSize,0,dtype=np.int16)
@@ -57,14 +58,22 @@ zData_lowpass = np.full(axisSize,0,dtype=np.float16)
 
 zData_array_HR = []
 zData_array_RR = []
+HR_array = []
+RR_array= []
 
 flag_graph = 0
+flag_graph_RR = 0
+flag_graph_HR = 0
 count_sec_HR = 0
 count_sec_RR = 0
 connectionWait = False
 calibration_flag=False
 RR_value=0.0
 HR_value=0.0
+RR_old=0.0
+HR_old=0.0
+count_RR = 0
+count_HR = 0
 i_peaks_HR = 0
 i_peaks_RR = 0
 flag_RR = False
@@ -217,9 +226,9 @@ class SerialWorker(QRunnable):
         """
         global TRANSMITTING, STATUS
         global accData, xData, yData, zData, xData_g, yData_g, zData_g, sum_data,  zData_lowpass
-        global zData_array_HR, zData_array_RR, RR_value, xData_save, yData_save, zData_save
+        global zData_array_HR, zData_array_RR, xData_save, yData_save, zData_save
         global SAMPLE_RATE, LOW_CUT_RR, HIGH_CUT_RR, LOW_CUT_HR, HIGH_CUT_HR, CONN_STATUS, calibration_flag
-        global order, cutoff_RR, HR_value
+        global order, cutoff_RR
         global flag_RR, flag_HR
       
         try:
@@ -290,15 +299,15 @@ class SerialWorker(QRunnable):
         """
         global zData_array_HR, count_sec_HR, SAMPLE_RATE, zData_bandpass_HR
         global zData_windowed_HR, cutoff_hp, i_peaks_HR
-        global character, HR_value, flag_HR
-        HR_value = 0.0
+        global HR_value, flag_HR, flag_graph_HR, HR_old, SECONDI, count_HR
 
         # We proceed with the computation of the Heart Rate only after the calibration is finished
         if (calibration_flag):
             count_sec_HR+=1   
+            count_HR+=1
             zData_array_HR = np.append(zData_array_HR, data)
            
-            if (count_sec_HR==16):     # The HR is updated after about 10 s
+            if (count_sec_HR==SECONDI):     # The HR is updated after about 10 s
             
                 zData_bandpass_HR = self.butter_bandpass_design(np.abs(zData_array_HR), LOW_CUT_HR, HIGH_CUT_HR,
                                                                   SAMPLE_RATE)
@@ -322,6 +331,7 @@ class SerialWorker(QRunnable):
                     self.makesum += self.difference
                 #self.average= self.makesum/self.n_peaks_HR
                 #HR_value = 60/self.average
+                HR_old=HR_value
                 HR_value= (self.n_peaks_HR * 60)/ (count_sec_HR*32*0.02)
                 count_sec_HR = 0
                 # In case there is a too high HR, we set an alarm window warning about possible fibrillation
@@ -338,7 +348,7 @@ class SerialWorker(QRunnable):
 
                 plt.show()
                 '''
-
+                flag_graph_HR = True
                 flag_HR = True
 
         return HR_value
@@ -356,14 +366,15 @@ class SerialWorker(QRunnable):
         """
 
         global count_sec_RR, zData_smoothed_RR, zData_lowpass_RR, i_peaks_RR, zData_array_RR
-        global RR_value, cutoff_RR, flag_RR, THRESHOLD
+        global RR_value, cutoff_RR, flag_RR, RR_old, flag_graph_RR, THRESHOLD, SECONDI, count_RR
 
         # We proceed with the computation of the Heart Rate only after the calibration is finished
         if (calibration_flag):
             count_sec_RR+=1    
+            count_RR+=1
             zData_array_RR = np.append(zData_array_RR, data)
             
-            if (count_sec_RR==16):     # The HR is updated after about 10 s
+            if (count_sec_RR==SECONDI):     # The HR is updated after about 10 s
                 
                 zData_lowpass_RR = self.butter_lowpass_filter(zData_array_RR, cutoff_RR, SAMPLE_RATE, order)
                 zData_array_RR=[]    
@@ -398,13 +409,13 @@ class SerialWorker(QRunnable):
                         self.makesum += self.difference
                     #self.average= self.makesum/self.n_peaks_bp_RR
                     #RR_value = 60/self.average
+                    RR_old = RR_value
                     RR_value= (self.n_peaks_bp_RR* 60)/ (count_sec_RR*32*0.02)
                     count_sec_RR = 0
 
                     # In case there is a too low RR, we set an alarm window warning about possible apnea
                     if (RR_value < 5.0):
                         self.apnea()
-
 
                     '''
                     # Plot showing the data after the filtering steps
@@ -416,7 +427,7 @@ class SerialWorker(QRunnable):
 
                     plt.show()
                     '''
-
+                flag_graph_RR = True
                 flag_RR = True
 
                 return RR_value
@@ -578,7 +589,7 @@ class MainWindow(QMainWindow):
         self.HR_plot.setBackground('bbccdd')   #color in exa
         self.HR_plot.setTitle("Heart rate",color="b", size="12pt",italic=True)
         styles = {'color':'k', 'font-size':'15px'}
-        self.HR_plot.setLabel('left', 'Acc data [m/s^2]', **styles)
+        self.HR_plot.setLabel('left', 'Heart Rate [bpm]', **styles)
         self.HR_plot.setLabel('bottom', 'Time [ms]', **styles)
         self.HR_plot.addLegend()
         self.HR_plot.setMouseEnabled(x=False, y=False)
@@ -589,7 +600,7 @@ class MainWindow(QMainWindow):
         self.RR_plot.setBackground('bbccdd')   #color in exa
         self.RR_plot.setTitle("Respiratory rate",color="b", size="12pt",italic=True)
         styles = {'color':'k', 'font-size':'15px'}
-        self.RR_plot.setLabel('left', 'Acc data [m/s^2]', **styles)
+        self.RR_plot.setLabel('left', 'Respiratory rate [bpm]', **styles)
         self.RR_plot.setLabel('bottom', 'Time [ms]', **styles)
         self.RR_plot.addLegend()
         self.RR_plot.setMouseEnabled(x=False, y=False)
@@ -599,9 +610,7 @@ class MainWindow(QMainWindow):
         self.xGraph = [0]*320
         self.yGraph = [0]*320
         self.zGraph = [0]*320
-        self.zGraph_windowed_HR = [0]*320
         self.zGraph_lowpass = [0]*320
-        self.zGraph_smoothed_RR = [0]*320
 
         self.count = 0
 
@@ -781,7 +790,8 @@ class MainWindow(QMainWindow):
         """!
         @brief Draw the plots.
         """
-        global xData_g, yData_g, zData_g, flag_graph, zData_lowpass
+        global xData_g, yData_g, zData_g, flag_graph, zData_lowpass, flag_graph_RR, flag_graph_HR, HR_old, RR_old, HR_value, RR_value
+        global SECONDI, axisSize, RR_array, HR_array, axisSize
 
         for i in range(len(xData)):
 
@@ -802,17 +812,25 @@ class MainWindow(QMainWindow):
             self.zGraph_lowpass.append(zData_lowpass[i])
             self.dataLinez_lowpass.setData(self.horAxis, self.zGraph_lowpass)  # Update the data.
 
-            if (flag_graph ==0 or flag_graph == 1):
+            if ((flag_graph == 0 or flag_graph == 1) and flag_graph_HR):
                 # Heart Rate
-                self.zGraph_windowed_HR = self.zGraph_windowed_HR[1:]  # Remove the first 
-                self.zGraph_windowed_HR.append(zData_windowed_HR[i])
-                self.dataLinez_windowed_HR.setData(self.horAxis, np.abs(self.zGraph_windowed_HR))  # Update the data.
+                flag_graph_HR = False
+                #self.zGraph_windowed_HR = self.zGraph_windowed_HR[1:]  # Remove the first 
+                #self.zGraph_windowed_HR.append(zData_windowed_HR[i])
+                HR = np.linspace(HR_old, HR_value, SECONDI*axisSize)
+                HR_array = np.append(HR_array, HR)
+                count_HR_array = np.linspace(1, count_HR*axisSize, count_HR*axisSize)
+                self.dataLinez_HR.setData(count_HR_array, HR_array)  # Update the data.
 
-            if (flag_graph ==0 or flag_graph == 2):
+            if ((flag_graph ==0 or flag_graph == 2) and flag_graph_RR):
                 # Respiratory Rate
-                self.zGraph_smoothed_RR = self.zGraph_smoothed_RR[1:]  # Remove the first 
-                self.zGraph_smoothed_RR.append(zData_smoothed_RR[i])
-                self.dataLinez_smoothed_RR.setData(self.horAxis, np.abs(self.zGraph_smoothed_RR))  # Update the data.
+                flag_graph_RR = False
+                #self.zGraph_smoothed_RR = self.zGraph_smoothed_RR[1:]  # Remove the first 
+                #self.zGraph_smoothed_RR.append(zData_smoothed_RR[i])
+                RR = np.linspace(RR_old, RR_value, SECONDI*axisSize)
+                RR_array = np.append(RR_array, RR)
+                count_RR_array = np.linspace(1, count_RR*axisSize, count_RR*axisSize)
+                self.dataLinez_RR.setData(count_RR_array, RR_array)  # Update the data.
             
     def updateValue(self):
         """!
@@ -842,14 +860,18 @@ class MainWindow(QMainWindow):
         """!
              @brief Draw the plots.
         """
-        global xData_g, yData_g, zData_g, zData_smoothed_RR, zData_lowpass_RR, zData_windowed_HR
+        global xData_g, yData_g, zData_g, zData_smoothed_RR, zData_lowpass_RR, zData_windowed_HR, RR_array, HR_array, axisSize
 
         #self.dataLinex = self.plot(self.graphWidget,clock,xData_g,'x-axis','r')
         #self.dataLiney = self.plot(self.graphWidget,clock,yData_g,'y-axis','g')
         self.dataLinez = self.plot(self.graphWidget,clock,zData_g,'Z-axis','b')
         self.dataLinez_lowpass = self.plot(self.graphWidget,clock,zData_lowpass,'Z-axis Low-Pass Filtered','r')
-        self.dataLinez_smoothed_RR = self.plot(self.RR_plot,clock,np.abs(zData_smoothed_RR),'Respiratory wave','b')
-        self.dataLinez_windowed_HR = self.plot(self.HR_plot,clock,np.abs(zData_windowed_HR),'Heart beat','b')
+        count_RR_array = np.linspace(1, count_RR*axisSize, count_RR*axisSize)
+        RR = np.linspace(RR_old, RR_value, count_RR*axisSize)
+        self.dataLinez_RR = self.plot(self.RR_plot,count_RR_array, RR,'Respiratory wave','b')
+        count_HR_array = np.linspace(1, count_HR*axisSize, count_HR*axisSize)
+        HR = np.linspace(HR_old, HR_value, count_HR*axisSize)
+        self.dataLinez_HR = self.plot(self.HR_plot,count_HR_array, HR,'Heart beat','b')
     
     def plot(self, graph, x, y, curve_name, color):
         """!
