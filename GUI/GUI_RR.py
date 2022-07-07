@@ -349,7 +349,7 @@ class SerialWorker(QRunnable):
                 for i in range(len(i_peaks_w)-1):
                     self.difference= (i_peaks_w[i+1]-i_peaks_w[i])*0.02
                     self.makesum += self.difference
-                self.averege= self.makesum/len(i_peaks_w)
+                self.averege= self.makesum/self.n_peaks_w
                 self.LAHR = 60/self.averege
                 print('LA RR',self.LAHR)
                 print('numero picchi window',self.n_peaks_w)
