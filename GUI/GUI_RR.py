@@ -60,6 +60,7 @@ zData_bandpass = np.full(axisSize,0,dtype=np.float16)
 zData_BP_FT = np.full(axisSize,0,dtype=np.float16)
 zData_smoothed = np.full(axisSize,0,dtype=np.float16)
 zData_smoothed1 = np.full(axisSize,0,dtype=np.float16)
+zData_windowed = np.full(axisSize,0,dtype=np.float16)
 zData_interp = np.full(axisSize,0,dtype=np.float16)
 zData_array = []
 zData_array_smoothed = []
@@ -93,7 +94,7 @@ SAMPLE_RATE = 50
 LOW_CUT = 0.01    #da paper
 HIGH_CUT = 0.9
 order = 8
-cutoff = 3
+cutoff = 7
 cutoff_hp = 1 
 f_bw=0.25 #Hz for normal activities, put 0.50 Hz for sport activities
 
@@ -311,12 +312,12 @@ class SerialWorker(QRunnable):
                                                                      
                 self.c=[]
                 #zData_smoothed = self.smooth_signal(zData_lowpass, SAMPLE_RATE, window_length=5, polyorder=3)
-                zData_smoothed1 = signal.savgol_filter(zData_bandpass, window_length=31, polyorder=3) #magari rimettere polyorder 3
+                zData_smoothed1 = signal.savgol_filter(zData_lowpass, window_length=31, polyorder=3) #magari rimettere polyorder 3
                 #self.window_length_MA = 25
                 #zData_smoothed1 = self.moving_average(self.window_length_MA, zData_smoothed1)
 
                 self.window_length_MA = 31
-                zData_windowed = self.moving_average(self.window_length_MA, zData_bandpass)
+                zData_windowed = self.moving_average(self.window_length_MA, zData_lowpass)
                 #zData_windowed = signal.savgol_filter(zData_windowed, window_length=21, polyorder=3)
 
                 self.threshold_lp=self.calibration_threshold(zData_lowpass)
@@ -744,7 +745,7 @@ class SerialWorker(QRunnable):
         """
         threshold=0.0
         
-        threshold= 0.8 * np.mean(val[500:2500])
+        threshold= np.mean(val[1000:2000])
         return threshold
 
     def calibration(self):

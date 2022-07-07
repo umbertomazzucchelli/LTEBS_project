@@ -61,7 +61,8 @@ zData_windowed_HR = np.full(axisSize,0,dtype=np.float16)
 zData_lowpass_RR = np.full(axisSize,0,dtype=np.float16)
 zData_bandpass_RR = np.full(axisSize,0,dtype=np.float16)
 
-zData_array = []
+zData_array_HR = []
+zData_array_RR = []
 sum_data = np.full(axisSize,0,dtype=np.float16)
 zData_array_LP = []
 index_increment = 0
@@ -85,7 +86,7 @@ flag_time_RR = False
 flag_time_HR = False
 time_difference_HR=0
 time_difference_RR=0
-#character = ''
+character = ''
 start_HR = 0
 start_RR = 0
 stop_HR = 0
@@ -95,6 +96,7 @@ i_peaks_RR = 0
 xData_save = []
 yData_save = []
 zData_save = []
+flag_RR = False
 #start_time=-1
 #delta_time=0.5   #deve essere circa 2 secondi
 
@@ -105,7 +107,7 @@ LOW_CUT_HR = 1    #da paper
 HIGH_CUT_HR = 5
 #per la HR il range è tra 1 Hz e 1.66 Hz, sottosforzo invece è max 3 Hz
 order = 5
-cutoff = 3
+cutoff_RR = 5
 cutoff_hp = 1 
 f_bw=0.25 #Hz for normal activities, put 0.50 Hz for sport activities
 
@@ -242,10 +244,11 @@ class SerialWorker(QRunnable):
     def readData(self):
         global TRANSMITTING
         global STATUS
-        global accData, xData, yData, zData, xData_g, yData_g, zData_g, zData_array
+        global accData, xData, yData, zData, xData_g, yData_g, zData_g, zData_array_HR, zData_array_RR
         global sum_data, zData_array_LP,k, start_threshold, RR_value, xData_save, yData_save, zData_save
         global SAMPLE_RATE,LOW_CUT_RR,HIGH_CUT_RR,LOW_CUT_HR,HIGH_CUT_HR, CONN_STATUS, calibration_flag
-        global order, cutoff, p, HR_value
+        global order, cutoff_RR, p, HR_value
+        global flag_RR
       
         #self.serial_worker = SerialWorker(PORT)
         try:
@@ -283,13 +286,14 @@ class SerialWorker(QRunnable):
                     zData_save = np.append(zData_save, zData_g)
 
                     sum_data[i]=zData_g[i]+yData_g[i]      #vediamo se usare solo z o la somma dei due
+                    
 
             #self.new_zero=self.calibration(sum_data) 
             #sum_data=sum_data-self.new_zero
 
             HR_value = self.HR_computation(sum_data, calibration_flag)
 
-            RR_value = self.RR_computation(sum_data, calibration_flag)
+            RR_value = self.RR_computation(zData_g, calibration_flag)
 
         except struct.error:
             #MainWindow.conn_btn.setChecked(False)
@@ -306,27 +310,27 @@ class SerialWorker(QRunnable):
             MainWindow.on_toggle(False)
 
     def HR_computation(self, data, calibration_flag):
-        global zData_array, time_difference_HR, count_sec_HR, flag_time_HR, start_HR, stop_HR, SAMPLE_RATE, zData_highpass_HR
+        global zData_array_HR, time_difference_HR, count_sec_HR, flag_time_HR, start_HR, stop_HR, SAMPLE_RATE, zData_highpass_HR
         global zData_windowed_HR, cutoff_hp, i_peaks_HR
-        #global character, HR value
+        global character, HR_value
         HR_value = 0.0
         if (calibration_flag):
             count_sec_HR+=1    #chiamarlo count_sec
-            zData_array = np.append(zData_array, data)
+            zData_array_HR = np.append(zData_array_HR, data)
             '''
             if (flag_time_HR):
                 #start_HR = time.time()
                 flag_time_HR = False
             '''
-            if (count_sec_HR==40):     #vogliamo 10 secondi
+            if (count_sec_HR==10):     #vogliamo 10 secondi
                 #self.zData_array_HR = zData_array
                 count_sec_HR = 0
                 #self.new_zero=self.calibration(self.zData_array_HR)  
                 #self.zData_array_HR=self.zData_array_HR-self.new_zero
                 # Calcoliamo i dati low pass dopo aver creato un array di tot secondi e dopo aver calibrato a zero
-                zData_highpass_HR = self.butter_bandpass_design(np.abs(zData_array), LOW_CUT_HR, HIGH_CUT_HR,
+                zData_highpass_HR = self.butter_bandpass_design(np.abs(zData_array_HR), LOW_CUT_HR, HIGH_CUT_HR,
                                                                   SAMPLE_RATE)
-                #self.zData_array_HR=[]    
+                zData_array_HR=[]    
                 zData_windowed_HR = signal.savgol_filter(np.abs(zData_highpass_HR), window_length=15, polyorder=3)
                 self.window_length_MA = 15
                 zData_windowed_HR = self.moving_average(self.window_length_MA, np.abs(zData_windowed_HR))  
@@ -360,41 +364,46 @@ class SerialWorker(QRunnable):
                 #stop_HR = 0
                 #start_HR = 0
                 #flag_time_HR = True
-                #character = 'HR'
-                MainWindow.updateValue(self, HR_value, character = 'HR')
+                character = 'HR'
 
         return HR_value
-
 
 
     def RR_computation(self, data, calibration_flag):
 
         global zData_array, time_difference_RR, count_sec_RR, flag_time_RR, start_RR, stop_RR
-        global zData_bandpass_RR, zData_lowpass_RR, i_peaks_RR
-        #global character, RR value
+        global zData_bandpass_RR, zData_lowpass_RR, i_peaks_RR, zData_array_RR
+        global character, RR_value, cutoff_RR
+        global flag_RR
         if (calibration_flag):
             count_sec_RR+=1    #chiamarlo count_sec
-            zData_array = np.append(zData_array, data)
+            zData_array_RR = np.append(zData_array_RR, data)
             '''
             if (flag_time_RR):
                 #start_RR = time.time()
                 flag_time_RR = False
             '''
-            if (count_sec_RR==40):     #vogliamo 10 secondi
+            if (count_sec_RR==10):     #vogliamo 10 secondi
                 #self.zData_array_RR = zData_array
                 count_sec_RR = 0
                 #self.new_zero=self.calibration(self.zData_array_RR)  
                 #self.zData_array_RR=self.zData_array_RR-self.new_zero
                 # Calcoliamo i dati low pass dopo aver creato un array di tot secondi e dopo aver calibrato a zero
-                zData_lowpass_RR = self.butter_lowpass_filter(zData_array, cutoff, SAMPLE_RATE, order)
-                #self.zData_array_RR=[]    
-                zData_bandpass_RR = self.butter_bandpass_design(np.abs(zData_lowpass_RR), LOW_CUT_RR, HIGH_CUT_RR,
-                                                                    SAMPLE_RATE)   
+                zData_lowpass_RR = self.butter_lowpass_filter(zData_array_RR, cutoff_RR, SAMPLE_RATE, order)
+                zData_array_RR=[]    
+                #zData_bandpass_RR = self.butter_bandpass_design(np.abs(zData_lowpass_RR), LOW_CUT_RR, HIGH_CUT_RR,
+                #                                                    SAMPLE_RATE)   
                 #Calcolo la threshold ogni tot secondi
-                self.threshold_RR=self.calibration_threshold(np.abs(zData_bandpass_RR))
+                #self.threshold_RR=self.calibration_threshold(np.abs(zData_bandpass_RR))
+                
+                zData_bandpass_RR = signal.savgol_filter(zData_lowpass_RR, window_length=31, polyorder=3)   
+                
+                #Calcolo la threshold ogni tot secondi
+                self.threshold_RR=self.calibration_threshold(zData_bandpass_RR)
+        
+                self.delta_RR = 50
+                self.n_peaks_bp_RR, i_peaks_RR = self.find_peaks(zData_bandpass_RR, self.threshold_RR, self.delta_RR)
 
-                self.delta_RR = 60
-                self.n_peaks_bp_RR, i_peaks_RR = self.find_peaks(np.abs(zData_bandpass_RR), self.threshold_RR, self.delta_RR)
                 self.makesum=0.0
                 for i in range(len(i_peaks_RR)-1):
                     self.difference= (i_peaks_RR[i+1]-i_peaks_RR[i])*0.02
@@ -408,8 +417,8 @@ class SerialWorker(QRunnable):
 
                 print('resp rate: ', RR_value)
                 plt.figure(2)
-                plt.plot(np.abs(zData_bandpass_RR), label = 'zData bandpass RR')
-                plt.plot(i_peaks_RR,np.abs(zData_bandpass_RR[i_peaks_RR]), "x")
+                plt.plot(zData_bandpass_RR, label = 'zData bandpass RR')
+                plt.plot(i_peaks_RR,zData_bandpass_RR[i_peaks_RR], "x")
                 plt.axhline(y = self.threshold_RR, color = 'r', linestyle = '-')
                 plt.title('zData_bandpass RR')
 
@@ -418,8 +427,8 @@ class SerialWorker(QRunnable):
                 #stop_RR = 0
                 #start_RR = 0
                 flag_time_RR = True
-                #character = 'RR'
-                MainWindow.updateValue(self,RR_value, character = 'RR')
+                character = 'RR'
+                flag_RR = True
 
                 return RR_value
                                 
@@ -461,7 +470,7 @@ class SerialWorker(QRunnable):
     def butter_lowpass_filter(self, data, cutoff, fs, order):#=5):
         b, a = self.butter_lowpass(cutoff, fs, order=order)
         #y = lfilter(b, a, data)
-        y = signal.filtfilt(b, a, data, padlen=len(data)-1) #uso filtfilt anzichè lfilter per rimanere in fase
+        y = signal.filtfilt(b, a, data) #uso filtfilt anzichè lfilter per rimanere in fase
         return y
 
     def butter_highpass(self, cutoff, fs, order):#=5):
@@ -482,7 +491,7 @@ class SerialWorker(QRunnable):
         """
         threshold=0.0
         
-        threshold= 0.8 * np.mean(val[500:2500])
+        threshold= 0.8 * np.mean(val)
         return threshold
 
     def calibration(self, array):
@@ -590,6 +599,8 @@ class MainWindow(QMainWindow):
     
         # Plot data: x, y values
         self.drawGeneralGraph()
+
+        self.updateValue()
         
         # Toolbar
         toolbar = QToolBar("My main toolbar")   #my toolbar
@@ -806,19 +817,27 @@ class MainWindow(QMainWindow):
             #self.zGraph.append(zData_g[i])  #  Add a new random value.
             self.dataLinez_bandpass_RR.setData(self.horAxis, np.abs(self.zGraph_bandpass_RR))  # Update the data.
 
-    def updateValue(self, data, character):
+    def updateValue(self):
 
-        #global HR_value, RR_value, character
+        global HR_value, RR_value, character, flag_RR
 
         text = 'Instant {} value: {}'
-        R_text = text.format(character, data)
+        print('qua fuori if')
 
-        if (character == 'RR'):
-            print(R_text + 'rpm')
-            self.RR_label.setText(R_text+'rpm')
-        elif (character == 'HR'):
-            print(R_text + 'bpm')
-            self.HR_label.setText(R_text+'bpm')
+        if (flag_RR == True):
+
+            print('qua dentro if')
+
+            if (character == 'RR'):
+                R_text = text.format(character, RR_value)
+                print(R_text + 'rpm')
+                self.RR_label.setText(R_text+'rpm')
+            elif (character == 'HR'):
+                R_text = text.format(character, HR_value)
+                print(R_text + 'bpm')
+                self.HR_label.setText(R_text+'bpm')
+
+            flag_RR = False
             
     def draw(self):
         """!
@@ -951,6 +970,7 @@ class MainWindow(QMainWindow):
             #self.FSR_Select.setDisabled(True)
             TRANSMITTING = True
             self.timer.timeout.connect(lambda: self.serial_worker.readData())
+            self.timer.timeout.connect(lambda: self.updateValue())
             self.timer.start()
             self.graphTimer.timeout.connect(lambda: self.drawGeneralGraph())
             self.graphTimer.start() 
