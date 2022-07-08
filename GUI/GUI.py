@@ -242,7 +242,7 @@ class SerialWorker(QRunnable):
 
                 # HR calculation
                 var.HR_old=var.HR_value
-                var.HR_value= (self.n_peaks_HR * 60)/ (var.count_sec_HR*32*0.02)
+                var.HR_value= (self.n_peaks_HR * 60)/ (var.count_sec_HR*var.axisSize*(1/var.SAMPLE_RATE))
                 var.HR_save = np.append(var.HR_save, var.HR_value)  # array in which we save the data to be exported
                 var.count_sec_HR = 0
 
@@ -285,7 +285,7 @@ class SerialWorker(QRunnable):
             
                 # RR calculation
                 var.RR_old = var.RR_value
-                var.RR_value= (self.n_peaks_bp_RR* 60)/ (var.count_sec_RR*32*0.02)
+                var.RR_value= (self.n_peaks_bp_RR* 60)/ (var.count_sec_RR*var.axisSize*(1/var.SAMPLE_RATE))
                 var.RR_save = np.append(var.RR_save, var.RR_value)  # array in which we save the data to be exported
                 var.count_sec_RR = 0
 
