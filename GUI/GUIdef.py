@@ -465,7 +465,7 @@ class MainWindow(QMainWindow):
         super(MainWindow, self).__init__()
 
         # Title and geometry
-        self.resize(1280,720)
+        self.setFixedSize(1280,720)
         self.setWindowTitle("iAcc")
         self.center()
         self.show()
@@ -502,6 +502,7 @@ class MainWindow(QMainWindow):
             # Add legend
         self.graphWidget.addLegend()
         self.graphWidget.setMouseEnabled(x=False, y=False)
+        self.graphWidget.setFixedHeight(320)
 
         # Create the Heart rate plot widget
         self.HR_plot = PlotWidget() 
@@ -524,6 +525,7 @@ class MainWindow(QMainWindow):
         self.RR_plot.setLabel('bottom', 'Time [ms]', **styles)
         self.RR_plot.addLegend()
         self.RR_plot.setMouseEnabled(x=False, y=False)
+        
         
         # Display 100 time points
         self.horAxis = list(range(320))  #100 time points
@@ -573,6 +575,7 @@ class MainWindow(QMainWindow):
         self.HR_label.setFont(font)
         self.HR_label.setStyleSheet("border: 1px solid black")
         self.HR_label.setAlignment(QtCore.Qt.AlignCenter)
+        self.HR_label.setMinimumWidth(622)
 
         # Label used to display RR values
         self.RR_label = QLabel()
@@ -587,6 +590,7 @@ class MainWindow(QMainWindow):
         self.RR_label.setFont(font)
         self.RR_label.setStyleSheet("border: 1px solid black")
         self.RR_label.setAlignment(QtCore.Qt.AlignCenter)
+        self.RR_label.setMinimumWidth(622)
 
         verticalLayout = QVBoxLayout()
         heart_resp = QHBoxLayout()
@@ -633,6 +637,10 @@ class MainWindow(QMainWindow):
             checkable= True, 
             toggled = self.dataUpdate
         )
+
+        self.updateBtn.setDisabled(True)
+        self.modeSelect.setDisabled(True)
+        self.calibrate.setDisabled(True)
 
         self.updateBtn.setIcon(QtGui.QIcon('application-monitor.png'))
         self.updateBtn.setIconSize(QtCore.QSize(25,25))
@@ -697,18 +705,28 @@ class MainWindow(QMainWindow):
         # 2 --> both
         """
         var.flag_graph = i
-        a = ['both','HR only', 'RR only'] 
+
         if (var.flag_graph == 0): # Both RR and HR
             self.RR_plot.setBackground('bbccdd')
             self.HR_plot.setBackground('bbccdd')
+            self.HR_plot.show()
+            self.HR_label.show()
+            self.RR_plot.show()
+            self.RR_label.show()
         
         elif (var.flag_graph == 1): #only HR
-            self.RR_plot.setBackground('b')
-            self.HR_plot.setBackground('bbccdd')
+            self.RR_plot.hide()
+            self.RR_label.hide()
+            self.HR_plot.show()
+            self.HR_label.show()
+
     
         elif (var.flag_graph == 2): #only RR
-            self.HR_plot.setBackground('b')
-            self.RR_plot.setBackground('bbccdd')
+            self.HR_plot.hide()
+            self.HR_label.hide()
+            self.RR_plot.show()
+            self.RR_label.show()
+
         
     def drawGeneralGraph(self):
         """!
@@ -781,7 +799,6 @@ class MainWindow(QMainWindow):
         """!
              @brief Draw the plots.
         """
-
         #self.dataLinex = self.plot(self.graphWidget,var.clock,var.xData_g,'x-axis','r')
         #self.dataLiney = self.plot(self.graphWidget,var.clock,var.var.yData_g,'y-axis','g')
         self.dataLinez = self.plot(self.graphWidget,var.clock,var.zData_g,'Z-axis','b')
@@ -800,10 +817,6 @@ class MainWindow(QMainWindow):
         pen = pg.mkPen(color=color,width=2)
         line = graph.plot(x, y, name=curve_name, pen=pen)
         return line
-
-    ##################
-    # SERIAL SIGNALS #
-    ##################
 
     @pyqtSlot(bool)
     def on_toggle(self, checked):
@@ -861,6 +874,8 @@ class MainWindow(QMainWindow):
             #self.com_list_widget.setDisabled(False) # enable the possibility to change port
             self.conn_btn.setText("Device search")
             self.updateBtn.setDisabled(True)
+            self.modeSelect.setDisabled(True)
+            self.calibrate.setDisabled(True)
             self.statusTimer.stop()
             
     def connected_device(self, port_name):

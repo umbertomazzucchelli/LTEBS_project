@@ -49,3 +49,18 @@ Once the `ovrn bit` changes to one, the register is entirely read, storing the d
 
 
 *Further implementation details can be found in each file.*
+
+## Complete hardware list
+
+- 1 PSoC CY8CKIT-059 
+- 1 LIS3DH accelerometer
+- 1 HC05 Bluetooth module
+- 1 9V battery
+- 1 9V to 5V voltage regulator 
+- 6 cables for the accelerometer-PSoC communication
+
+## How to wear the device
+
+<img src="Images/wearable.jpg" width="20%">
+
+The 3D files for the case and the support can be found in the Design folder.
