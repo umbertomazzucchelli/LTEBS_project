@@ -48,6 +48,10 @@ The computation of the Respiratory Rate requires different filtering of the sign
 First, recorded data go through a butter lowpass filter of the 5th orded with cutoff frequency of 3Hz. This filtered signal is then smoothed by a Savitzky-Golay filter with a window of 31 samples and 3rd order. The threshold is calculated in the same way as in the HR computation, but the peaks are searched every 50 samples. 
 The Respiratory Rate is calculated in the same way as the Heart Rate.
 
+### iAcc.exe Software
+
+The file iAcc.exe is an executable software which provides the functionalities of the implemented GUI. 
+
 ### Images
 
 Images used for this `readme` file.
