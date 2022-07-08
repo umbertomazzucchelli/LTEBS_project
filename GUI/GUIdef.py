@@ -465,7 +465,10 @@ class MainWindow(QMainWindow):
         super(MainWindow, self).__init__()
 
         # Title and geometry
+        self.resize(1280,720)
         self.setWindowTitle("iAcc")
+        self.center()
+        self.show()
 
         # Create thread handler
         self.threadpool = QThreadPool()
@@ -665,6 +668,12 @@ class MainWindow(QMainWindow):
 
         modeSelection.setContentsMargins(5,5,5,5)
         modeSelection.setSpacing(5)
+
+    def center(self):
+        qr = self.frameGeometry()
+        cp = QDesktopWidget().availableGeometry().center()
+        qr.moveCenter(cp)
+        self.move(qr.topLeft())
 
     def save_data(self):
         """!
