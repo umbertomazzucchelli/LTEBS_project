@@ -14,7 +14,7 @@ In the following image, the device is shown:
 
 <img src="Images/Setup.jpg" width="75%">
 
-## Repo structure
+## Repository structure
 
 ### Design files
 
