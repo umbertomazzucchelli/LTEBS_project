@@ -26,70 +26,6 @@ import serial.tools.list_ports
 
 import pandas as pd
 
-# Global variables
-CONN_STATUS = False
-STATUS=True
-PORT = ""
-TRANSMITTING = False
-dataSize = 98
-baudRate = 115200 #9600 for USB, 115200 for BT
-accData = []
-axisSize = dataSize//3
-SECONDI = 16
-xData = np.full(axisSize,0,dtype=np.int16)
-yData = np.full(axisSize,0,dtype=np.int16)
-zData = np.full(axisSize,0,dtype=np.int16)
-
-xData_g = np.full(axisSize,0,dtype=np.float16)
-yData_g = np.full(axisSize,0,dtype=np.float16)
-zData_g = np.full(axisSize,0,dtype=np.float16)
-sum_data = np.full(axisSize,0,dtype=np.float16)
-
-clock = np.zeros(axisSize)
-xData_save = []
-yData_save = []
-zData_save = []
-
-zData_bandpass_HR = np.full(axisSize,0,dtype=np.float16)
-zData_windowed_HR = np.full(axisSize,0,dtype=np.float16)
-zData_lowpass_RR = np.full(axisSize,0,dtype=np.float16)
-zData_smoothed_RR = np.full(axisSize,0,dtype=np.float16)
-zData_lowpass = np.full(axisSize,0,dtype=np.float16)
-
-zData_array_HR = []
-zData_array_RR = []
-HR_array = []
-RR_array= []
-
-flag_graph = 0
-flag_graph_RR = 0
-flag_graph_HR = 0
-count_sec_HR = 0
-count_sec_RR = 0
-connectionWait = False
-calibration_flag=False
-RR_value=0.0
-HR_value=0.0
-RR_old=0.0
-HR_old=0.0
-count_RR = 0
-count_HR = 0
-i_peaks_HR = 0
-i_peaks_RR = 0
-flag_RR = False
-flag_HR = False
-
-SAMPLE_RATE = 50
-# the respiration range is comprised between 0.2 Hz and 0.33 Hz, during physical activity instead it can be maximum 0.75 Hz
-LOW_CUT_RR = 0.01  
-HIGH_CUT_RR = 0.9
-# the heart rate instead varies between 1 Hz and 1.66 Hz, during physical activity it can reach up to 3 Hz
-LOW_CUT_HR = 1    
-HIGH_CUT_HR = 5
-THRESHOLD = 0.0001
-order = 5
-cutoff_RR = 3
-cutoff_hp = 1 
 
 #Logging config
 logging.basicConfig(format="%(message)s", level=logging.INFO)
@@ -122,13 +58,12 @@ class SerialWorker(QRunnable):
         """!
         @brief Init worker.
         """
-        global baudRate
         self.is_killed = False
         super().__init__()
         #init port, params and signals
         self.port = serial.Serial()
         self.port_name = serial_port_name
-        self.baudrate = baudRate #hard coded but can be a global variable, or an input param
+        self.baudrate = var.baudRate #hard coded but can be a global variable, or an input param
         self.signals = SerialWorkerSignals()
 
     @pyqtSlot()
@@ -136,11 +71,8 @@ class SerialWorker(QRunnable):
         """!
         @brief Estabilish connection with desired serial port.
         """
-        global CONN_STATUS
-        global TRANSMITTING
-        global PORT, connectionWait
 
-        if not CONN_STATUS:
+        if not var.CONN_STATUS:
             try:
                 self.port = serial.Serial(port=self.port_name, baudrate=self.baudrate,
                                         write_timeout=0, timeout=2)                
@@ -149,17 +81,17 @@ class SerialWorker(QRunnable):
                     time.sleep(1)
 
                     if(self.read()=="HR/RR sensor"):
-                        CONN_STATUS = True
+                        var.CONN_STATUS = True
                         self.signals.status.emit(self.port_name, 1)
-                        PORT = self.port_name
+                        var.PORT = self.port_name
                         time.sleep(1) #just for compatibility reasons 
-                    connectionWait = False   
+                    var.connectionWait = False   
                            
             except serial.SerialException:
                 logging.info("Error with port {}.".format(self.port_name))
                 self.signals.status.emit(self.port_name, 0)
                 time.sleep(0.01)
-                connectionWait=False
+                var.connectionWait=False
 
     @pyqtSlot()
     def send(self, char):
@@ -207,13 +139,12 @@ class SerialWorker(QRunnable):
         """!
         @brief Close the serial port before closing the app.
         """
-        global CONN_STATUS
 
-        if self.is_killed and CONN_STATUS:
+        if self.is_killed and var.CONN_STATUS:
             self.send('s')
             self.port.close()
             time.sleep(0.01)
-            CONN_STATUS = False
+            var.CONN_STATUS = False
             self.signals.device_port.emit(self.port_name)
             
         logging.info("Killing the process")
@@ -224,12 +155,6 @@ class SerialWorker(QRunnable):
         @brief Function used to read the data and to implement the HR and RR algorithms. 
                Moreover we implemented a warning signal for the user in case of losing the connection. 
         """
-        global TRANSMITTING, STATUS
-        global accData, xData, yData, zData, xData_g, yData_g, zData_g, sum_data,  zData_lowpass
-        global zData_array_HR, zData_array_RR, xData_save, yData_save, zData_save
-        global SAMPLE_RATE, LOW_CUT_RR, HIGH_CUT_RR, LOW_CUT_HR, HIGH_CUT_HR, CONN_STATUS, calibration_flag
-        global order, cutoff_RR
-        global flag_RR, flag_HR
       
         try:
             dataArray = self.port.read(194)
@@ -238,38 +163,38 @@ class SerialWorker(QRunnable):
             lastIndex = len(dataArray)-1
             if(dataArray[0]==10 and dataArray[lastIndex]==11):
                 accData = dataArray[1:193]
-                for i in range(axisSize):
+                for i in range(var.axisSize):
                 
-                    xData[i] =  (((accData[i*6+1] & 0xFF)<<8) | (accData[i*6] & 0xFF))>>6
-                    yData[i] =  (((accData[i*6+3] & 0xFF)<<8) | (accData[i*6+2] & 0xFF))>>6
-                    zData[i] =  (((accData[i*6+5] & 0xFF)<<8) | (accData[i*6+4] & 0xFF))>>6
+                    var.xData[i] =  (((accData[i*6+1] & 0xFF)<<8) | (accData[i*6] & 0xFF))>>6
+                    var.yData[i] =  (((accData[i*6+3] & 0xFF)<<8) | (accData[i*6+2] & 0xFF))>>6
+                    var.zData[i] =  (((accData[i*6+5] & 0xFF)<<8) | (accData[i*6+4] & 0xFF))>>6
 
-                    if(xData[i]>511 & xData[i]<1024):
-                        xData_g[i] = xData[i]*(-0.0039060665362)+3.99990606654
+                    if(var.xData[i]>511 & var.xData[i]<1024):
+                        var.xData_g[i] = var.xData[i]*(-0.0039060665362)+3.99990606654
                     else:
-                        xData_g[i] = xData[i]*(-0.0039137254902) - 0.0000862745098039
-                    if(yData[i]>511 & yData[i]<1024):
-                        yData_g[i] = yData[i]*(-0.0039060665362)+3.99990606654
+                        var.xData_g[i] = var.xData[i]*(-0.0039137254902) - 0.0000862745098039
+                    if(var.yData[i]>511 & var.yData[i]<1024):
+                        var.yData_g[i] = var.yData[i]*(-0.0039060665362)+3.99990606654
                     else:
-                        yData_g[i] = yData[i]*(-0.0039137254902) - 0.0000862745098039
-                    if(zData[i]>511 & zData[i]<1024):
-                        zData_g[i] = zData[i]*(-0.0039060665362)+3.99990606654
+                        var.yData_g[i] = var.yData[i]*(-0.0039137254902) - 0.0000862745098039
+                    if(var.zData[i]>511 & var.zData[i]<1024):
+                        var.zData_g[i] = var.zData[i]*(-0.0039060665362)+3.99990606654
                     else:
-                        zData_g[i] = zData[i]*(-0.0039137254902) - 0.0000862745098039
+                        var.zData_g[i] = var.zData[i]*(-0.0039137254902) - 0.0000862745098039
 
-                    xData_save = np.append(xData_save, xData_g)
-                    yData_save = np.append(yData_save, yData_g)
-                    zData_save = np.append(zData_save, zData_g)
+                    var.xData_save = np.append(var.xData_save, var.xData_g)
+                    var.yData_save = np.append(var.yData_save, var.yData_g)
+                    var.zData_save = np.append(var.zData_save, var.zData_g)
 
                     # Sum_data is used to calculate the HR rate in order to be more robust against movements
-                    sum_data[i]=zData_g[i]+yData_g[i]      
+                    var.sum_data[i]=var.zData_g[i]+var.yData_g[i]      
             
             # In order to plot a real time graph which is filtered
-            zData_lowpass = self.butter_lowpass_filter(zData_g, cutoff_RR, SAMPLE_RATE, order)   
+            var.zData_lowpass = self.butter_lowpass_filter(var.zData_g, var.cutoff_RR, var.SAMPLE_RATE, var.order)   
 
             # Algorithms for HR and RR computation
-            HR_value = self.HR_computation(sum_data, calibration_flag)
-            RR_value = self.RR_computation(zData_g, calibration_flag)
+            var.HR_value = self.HR_computation(var.sum_data, var.calibration_flag)
+            var.RR_value = self.RR_computation(var.zData_g, var.calibration_flag)
 
         except struct.error:
             
@@ -296,61 +221,59 @@ class SerialWorker(QRunnable):
         Then we proceed calculating the Heart Rate based on a threshold and on a time window in order to be
         more robust against noise and more precise in the computation. 
         """
-        global zData_array_HR, count_sec_HR, SAMPLE_RATE, zData_bandpass_HR
-        global zData_windowed_HR, cutoff_hp, i_peaks_HR
-        global HR_value, flag_HR, flag_graph_HR, HR_old, SECONDI, count_HR
 
         # We proceed with the computation of the Heart Rate only after the calibration is finished
         if (calibration_flag):
-            count_sec_HR+=1   
-            count_HR+=1
-            zData_array_HR = np.append(zData_array_HR, data)
+            var.count_sec_HR+=1   
+            var.count_HR+=1
+            var.zData_array_HR = np.append(var.zData_array_HR, data)
            
-            if (count_sec_HR==SECONDI):     # The HR is updated after about 10 s
+            if (var.count_sec_HR==var.SECONDI):     # The HR is updated after about 10 s
             
-                zData_bandpass_HR = self.butter_bandpass_design(np.abs(zData_array_HR), LOW_CUT_HR, HIGH_CUT_HR,
-                                                                  SAMPLE_RATE)
-                zData_array_HR=[]    
-                zData_windowed_HR = signal.savgol_filter(np.abs(zData_bandpass_HR), window_length=15, polyorder=3)
+                zData_bandpass_HR = np.full(var.axisSize,0,dtype=np.float16)
+                zData_bandpass_HR = self.butter_bandpass_design(np.abs(var.zData_array_HR), var.LOW_CUT_HR, var.HIGH_CUT_HR,
+                                                                  var.SAMPLE_RATE)
+                var.zData_array_HR=[]    
+                var.zData_windowed_HR = signal.savgol_filter(np.abs(zData_bandpass_HR), window_length=15, polyorder=3)
                 self.window_length_MA = 15
-                zData_windowed_HR = self.moving_average(self.window_length_MA, np.abs(zData_windowed_HR))  
+                var.zData_windowed_HR = self.moving_average(self.window_length_MA, np.abs(var.zData_windowed_HR))  
                 
                 # Threshold computation
-                self.threshold_wi=self.calibration_threshold(np.abs(zData_windowed_HR))
+                self.threshold_wi=self.calibration_threshold(np.abs(var.zData_windowed_HR))
                 self.delta_HR = 25
 
                 # Number of peaks detected in the defined time window
-                self.n_peaks_HR, i_peaks_HR  = self.find_peaks(np.abs(zData_windowed_HR), self.threshold_wi, 
+                self.n_peaks_HR, var.i_peaks_HR  = self.find_peaks(np.abs(var.zData_windowed_HR), self.threshold_wi, 
                                                                                             self.delta_HR)
                 self.makesum=0.0
 
                 # HR calculation
-                for i in range(len(i_peaks_HR)-1):
-                    self.difference= (i_peaks_HR[i+1]-i_peaks_HR[i])*0.02
+                for i in range(len(var.i_peaks_HR)-1):
+                    self.difference= (var.i_peaks_HR[i+1]-var.i_peaks_HR[i])*0.02
                     self.makesum += self.difference
                 #self.average= self.makesum/self.n_peaks_HR
-                #HR_value = 60/self.average
-                HR_old=HR_value
-                HR_value= (self.n_peaks_HR * 60)/ (count_sec_HR*32*0.02)
-                count_sec_HR = 0
+                #var.HR_value = 60/self.average
+                var.HR_old=var.HR_value
+                var.HR_value= (self.n_peaks_HR * 60)/ (var.count_sec_HR*32*0.02)
+                var.count_sec_HR = 0
                 # In case there is a too high HR, we set an alarm window warning about possible fibrillation
-                if (HR_value > 180):
+                if (var.HR_value > 180):
                     self.fibrillazione()
 
                 '''
                 # Plot showing the data after the filtering steps
                 plt.figure(1)
-                plt.plot(np.abs(zData_windowed_HR), label = 'zData_windowed')
-                plt.plot(i_peaks_HR,np.abs(zData_windowed_HR[i_peaks_HR]), "x")
+                plt.plot(np.abs(var.zData_windowed_HR), label = 'zData_windowed')
+                plt.plot(var.i_peaks_HR,np.abs(var.zData_windowed_HR[var.i_peaks_HR]), "x")
                 plt.axhline(y = self.threshold_wi, color = 'r', linestyle = '-')
                 plt.title('zData_windowed')
 
                 plt.show()
                 '''
-                flag_graph_HR = True
-                flag_HR = True
+                var.flag_graph_HR = True
+                var.flag_HR = True
 
-        return HR_value
+        return var.HR_value
 
     def RR_computation(self, data, calibration_flag):
         """!
@@ -364,72 +287,69 @@ class SerialWorker(QRunnable):
         more robust against noise and more precise in the computation. 
         """
 
-        global count_sec_RR, zData_smoothed_RR, zData_lowpass_RR, i_peaks_RR, zData_array_RR
-        global RR_value, cutoff_RR, flag_RR, RR_old, flag_graph_RR, THRESHOLD, SECONDI, count_RR
-
         # We proceed with the computation of the Heart Rate only after the calibration is finished
         if (calibration_flag):
-            count_sec_RR+=1    
-            count_RR+=1
-            zData_array_RR = np.append(zData_array_RR, data)
+            var.count_sec_RR+=1    
+            var.count_RR+=1
+            var.zData_array_RR = np.append(var.zData_array_RR, data)
             
-            if (count_sec_RR==SECONDI):     # The HR is updated after about 10 s
+            if (var.count_sec_RR==var.SECONDI):     # The HR is updated after about 10 s
                 
-                zData_lowpass_RR = self.butter_lowpass_filter(zData_array_RR, cutoff_RR, SAMPLE_RATE, order)
-                zData_array_RR=[]    
-                zData_smoothed_RR = signal.savgol_filter(zData_lowpass_RR, window_length=31, polyorder=3)   
+                var.zData_lowpass_RR = self.butter_lowpass_filter(var.zData_array_RR, var.cutoff_RR, var.SAMPLE_RATE, var.order)
+                var.zData_array_RR=[]    
+                var.zData_smoothed_RR = signal.savgol_filter(var.zData_lowpass_RR, window_length=31, polyorder=3)   
                 
                 # Threshold computation
-                self.threshold_RR=self.calibration_threshold(zData_smoothed_RR)
+                self.threshold_RR=self.calibration_threshold(var.zData_smoothed_RR)
                 self.delta_RR = 50
 
                 # Number of peaks detected in the defined time window
-                self.n_peaks_bp_RR, i_peaks_RR = self.find_peaks(zData_smoothed_RR, self.threshold_RR, self.delta_RR)
-                self.i_min_RR= signal.argrelmin(zData_smoothed_RR)
+                self.n_peaks_bp_RR, var.i_peaks_RR = self.find_peaks(var.zData_smoothed_RR, self.threshold_RR, self.delta_RR)
+                self.i_min_RR= signal.argrelmin(var.zData_smoothed_RR)
 
-                min = zData_smoothed_RR[self.i_min_RR]
-                max = zData_smoothed_RR[i_peaks_RR]
+                min = var.zData_smoothed_RR[self.i_min_RR]
+                max = var.zData_smoothed_RR[var.i_peaks_RR]
                 sum_min = sum(min)
                 sum_max = sum(max)
                 avg_min = sum_min/len(min)
                 avg_max = sum_max/len(max)
-                THRESHOLD_OLD=THRESHOLD
-                THRESHOLD = avg_max - avg_min
+                THRESHOLD_OLD=var.THRESHOLD
+                var.THRESHOLD = avg_max - avg_min
                 
-                if (THRESHOLD < THRESHOLD_OLD /2):
-                    RR_value = 0.0
+                if (var.THRESHOLD < THRESHOLD_OLD /2):
+                    var.RR_value = 0.0
                 else: 
                 
                     self.makesum=0.0
 
                     # RR calculation
-                    for i in range(len(i_peaks_RR)-1):
-                        self.difference= (i_peaks_RR[i+1]-i_peaks_RR[i])*0.02
+                    for i in range(len(var.i_peaks_RR)-1):
+                        self.difference= (var.i_peaks_RR[i+1]-var.i_peaks_RR[i])*0.02
                         self.makesum += self.difference
                     #self.average= self.makesum/self.n_peaks_bp_RR
-                    #RR_value = 60/self.average
-                    RR_old = RR_value
-                    RR_value= (self.n_peaks_bp_RR* 60)/ (count_sec_RR*32*0.02)
-                    count_sec_RR = 0
+                    #var.RR_value = 60/self.average
+                    var.RR_old = var.RR_value
+                    var.RR_value= (self.n_peaks_bp_RR* 60)/ (var.count_sec_RR*32*0.02)
+                    var.count_sec_RR = 0
 
                     # In case there is a too low RR, we set an alarm window warning about possible apnea
-                    if (RR_value < 5.0):
+                    if (var.RR_value < 5.0):
                         self.apnea()
 
                     '''
                     # Plot showing the data after the filtering steps
                     plt.figure(2)
-                    plt.plot(zData_smoothed_RR, label = 'zData smoothed RR')
-                    plt.plot(i_peaks_RR,zData_smoothed_RR[i_peaks_RR], "x")
+                    plt.plot(var.zData_smoothed_RR, label = 'zData smoothed RR')
+                    plt.plot(var.i_peaks_RR,var.zData_smoothed_RR[var.i_peaks_RR], "x")
                     plt.axhline(y = self.threshold_RR, color = 'r', linestyle = '-')
                     plt.title('zData_smoothed RR')
 
                     plt.show()
                     '''
-                flag_graph_RR = True
-                flag_RR = True
+                var.flag_graph_RR = True
+                var.flag_RR = True
 
-                return RR_value
+                return var.RR_value
 
     def apnea (self):
         """!
@@ -535,7 +455,6 @@ class SerialWorker(QRunnable):
 ###############
 class MainWindow(QMainWindow):
 
-    global clock
     def __init__(self):
         """!
         @brief Init MainWindow.
@@ -546,12 +465,15 @@ class MainWindow(QMainWindow):
         super(MainWindow, self).__init__()
 
         # Title and geometry
+        self.setFixedSize(1280,720)
         self.setWindowTitle("iAcc")
+        self.center()
+        self.show()
 
         # Create thread handler
         self.threadpool = QThreadPool()
         
-        self.connected = CONN_STATUS
+        self.connected = var.CONN_STATUS
   
         self.initUI()
     
@@ -562,7 +484,6 @@ class MainWindow(QMainWindow):
         """!
         @brief Set up the graphical interface structure.
         """
-        global RR_value, HR_value
 
         # Create the plot widget
         self.graphWidget = PlotWidget()
@@ -581,6 +502,7 @@ class MainWindow(QMainWindow):
             # Add legend
         self.graphWidget.addLegend()
         self.graphWidget.setMouseEnabled(x=False, y=False)
+        self.graphWidget.setFixedHeight(320)
 
         # Create the Heart rate plot widget
         self.HR_plot = PlotWidget() 
@@ -603,6 +525,7 @@ class MainWindow(QMainWindow):
         self.RR_plot.setLabel('bottom', 'Time [ms]', **styles)
         self.RR_plot.addLegend()
         self.RR_plot.setMouseEnabled(x=False, y=False)
+        
         
         # Display 100 time points
         self.horAxis = list(range(320))  #100 time points
@@ -642,7 +565,7 @@ class MainWindow(QMainWindow):
         # Label used to display HR values
         self.HR_label = QLabel()
         text = 'Instant heart rate value: {} bpm'
-        a = text.format(HR_value)
+        a = text.format(var.HR_value)
         self.HR_label.setText(a)
         font = QtGui.QFont()
         font.setFamily("Arial")
@@ -652,11 +575,12 @@ class MainWindow(QMainWindow):
         self.HR_label.setFont(font)
         self.HR_label.setStyleSheet("border: 1px solid black")
         self.HR_label.setAlignment(QtCore.Qt.AlignCenter)
+        self.HR_label.setMinimumWidth(622)
 
         # Label used to display RR values
         self.RR_label = QLabel()
         text = 'Instant respiratory rate value: {} bpm'
-        a = text.format(RR_value)
+        a = text.format(var.RR_value)
         self.RR_label.setText(a)
         font = QtGui.QFont()
         font.setFamily("Arial")
@@ -666,6 +590,7 @@ class MainWindow(QMainWindow):
         self.RR_label.setFont(font)
         self.RR_label.setStyleSheet("border: 1px solid black")
         self.RR_label.setAlignment(QtCore.Qt.AlignCenter)
+        self.RR_label.setMinimumWidth(622)
 
         verticalLayout = QVBoxLayout()
         heart_resp = QHBoxLayout()
@@ -713,6 +638,10 @@ class MainWindow(QMainWindow):
             toggled = self.dataUpdate
         )
 
+        self.updateBtn.setDisabled(True)
+        self.modeSelect.setDisabled(True)
+        self.calibrate.setDisabled(True)
+
         self.updateBtn.setIcon(QtGui.QIcon('application-monitor.png'))
         self.updateBtn.setIconSize(QtCore.QSize(25,25))
 
@@ -748,17 +677,22 @@ class MainWindow(QMainWindow):
         modeSelection.setContentsMargins(5,5,5,5)
         modeSelection.setSpacing(5)
 
+    def center(self):
+        qr = self.frameGeometry()
+        cp = QDesktopWidget().availableGeometry().center()
+        qr.moveCenter(cp)
+        self.move(qr.topLeft())
+
     def save_data(self):
         """!
         @brief Function used to save and export data in a .csv file. 
         """
         print("exporting to csv...")
 
-        global zData_save, xData_save, yData_save
         df = pd.DataFrame({
-            'x axis': xData_save,
-            'y axis': yData_save,
-            'z axis': zData_save, 
+            'x axis': var.xData_save,
+            'y axis': var.yData_save,
+            'z axis': var.zData_save, 
         })
         df.to_csv('HR_Rate.csv', float_format = '%.2f', index = False)
 
@@ -770,29 +704,36 @@ class MainWindow(QMainWindow):
         # 1 --> RR
         # 2 --> both
         """
-        global flag_graph
-        flag_graph = i
-        a = ['both','HR only', 'RR only'] 
-        if (flag_graph == 0): # Both RR and HR
+        var.flag_graph = i
+
+        if (var.flag_graph == 0): # Both RR and HR
             self.RR_plot.setBackground('bbccdd')
             self.HR_plot.setBackground('bbccdd')
+            self.HR_plot.show()
+            self.HR_label.show()
+            self.RR_plot.show()
+            self.RR_label.show()
         
-        elif (flag_graph == 1): #only HR
-            self.RR_plot.setBackground('b')
-            self.HR_plot.setBackground('bbccdd')
+        elif (var.flag_graph == 1): #only HR
+            self.RR_plot.hide()
+            self.RR_label.hide()
+            self.HR_plot.show()
+            self.HR_label.show()
+
     
-        elif (flag_graph == 2): #only RR
-            self.HR_plot.setBackground('b')
-            self.RR_plot.setBackground('bbccdd')
+        elif (var.flag_graph == 2): #only RR
+            self.HR_plot.hide()
+            self.HR_label.hide()
+            self.RR_plot.show()
+            self.RR_label.show()
+
         
     def drawGeneralGraph(self):
         """!
         @brief Draw the plots.
         """
-        global xData_g, yData_g, zData_g, flag_graph, zData_lowpass, flag_graph_RR, flag_graph_HR, HR_old, RR_old, HR_value, RR_value
-        global SECONDI, axisSize, RR_array, HR_array, axisSize
 
-        for i in range(len(xData)):
+        for i in range(len(var.xData)):
 
             # Remove the first y element.
             if(self.count<321):
@@ -803,73 +744,70 @@ class MainWindow(QMainWindow):
         
             # Z-axis
             self.zGraph = self.zGraph[1:]  # Remove the first 
-            self.zGraph.append(zData_g[i])
+            self.zGraph.append(var.zData_g[i])
             self.dataLinez.setData(self.horAxis, self.zGraph)  # Update the data.
 
             # Z-axis low pass FILTERED
             self.zGraph_lowpass = self.zGraph_lowpass[1:]  # Remove the first 
-            self.zGraph_lowpass.append(zData_lowpass[i])
+            self.zGraph_lowpass.append(var.zData_lowpass[i])
             self.dataLinez_lowpass.setData(self.horAxis, self.zGraph_lowpass)  # Update the data.
 
-            if ((flag_graph == 0 or flag_graph == 1) and flag_graph_HR):
+            if ((var.flag_graph == 0 or var.flag_graph == 1) and var.flag_graph_HR):
                 # Heart Rate
-                flag_graph_HR = False
+                var.flag_graph_HR = False
                 #self.zGraph_windowed_HR = self.zGraph_windowed_HR[1:]  # Remove the first 
-                #self.zGraph_windowed_HR.append(zData_windowed_HR[i])
-                HR = np.linspace(HR_old, HR_value, SECONDI*axisSize)
-                HR_array = np.append(HR_array, HR)
-                count_HR_array = np.linspace(1, count_HR*axisSize, count_HR*axisSize)
-                self.dataLinez_HR.setData(count_HR_array, HR_array)  # Update the data.
+                #self.zGraph_windowed_HR.append(var.zData_windowed_HR[i])
+                HR = np.linspace(var.HR_old, var.HR_value, var.SECONDI*var.axisSize)
+                var.HR_array = np.append(var.HR_array, HR)
+                count_HR_array = np.linspace(1, var.count_HR*var.axisSize, var.count_HR*var.axisSize)
+                self.dataLinez_HR.setData(count_HR_array, var.HR_array)  # Update the data.
 
-            if ((flag_graph ==0 or flag_graph == 2) and flag_graph_RR):
+            if ((var.flag_graph ==0 or var.flag_graph == 2) and var.flag_graph_RR):
                 # Respiratory Rate
-                flag_graph_RR = False
+                var.flag_graph_RR = False
                 #self.zGraph_smoothed_RR = self.zGraph_smoothed_RR[1:]  # Remove the first 
-                #self.zGraph_smoothed_RR.append(zData_smoothed_RR[i])
-                RR = np.linspace(RR_old, RR_value, SECONDI*axisSize)
-                RR_array = np.append(RR_array, RR)
-                count_RR_array = np.linspace(1, count_RR*axisSize, count_RR*axisSize)
-                self.dataLinez_RR.setData(count_RR_array, RR_array)  # Update the data.
+                #self.zGraph_smoothed_RR.append(var.zData_smoothed_RR[i])
+                RR = np.linspace(var.RR_old, var.RR_value, var.SECONDI*var.axisSize)
+                var.RR_array = np.append(var.RR_array, RR)
+                count_RR_array = np.linspace(1, var.count_RR*var.axisSize, var.count_RR*var.axisSize)
+                self.dataLinez_RR.setData(count_RR_array, var.RR_array)  # Update the data.
             
     def updateValue(self):
         """!
         @brief Update the values of HR and RR on the GUI.
         """
-        global HR_value, RR_value, flag_RR, flag_HR
 
         text = 'Instant {} value: {:0.2f}'
 
-        if (flag_RR == True):
+        if (var.flag_RR == True):
 
-            RR_text = text.format('RR', RR_value)
+            RR_text = text.format('RR', var.RR_value)
             print(RR_text + 'bpm')
             self.RR_label.setText(RR_text+' bpm')
 
-            flag_RR = False
+            var.flag_RR = False
 
-        if (flag_HR == True):
+        if (var.flag_HR == True):
                 
-            HR_text = text.format('HR', HR_value)
+            HR_text = text.format('HR', var.HR_value)
             print(HR_text + 'bpm')
             self.HR_label.setText(HR_text+' bpm')
 
-            flag_HR = False
+            var.flag_HR = False
             
     def draw(self):
         """!
              @brief Draw the plots.
         """
-        global xData_g, yData_g, zData_g, zData_smoothed_RR, zData_lowpass_RR, zData_windowed_HR, RR_array, HR_array, axisSize
-
-        #self.dataLinex = self.plot(self.graphWidget,clock,xData_g,'x-axis','r')
-        #self.dataLiney = self.plot(self.graphWidget,clock,yData_g,'y-axis','g')
-        self.dataLinez = self.plot(self.graphWidget,clock,zData_g,'Z-axis','b')
-        self.dataLinez_lowpass = self.plot(self.graphWidget,clock,zData_lowpass,'Z-axis Low-Pass Filtered','r')
-        count_RR_array = np.linspace(1, count_RR*axisSize, count_RR*axisSize)
-        RR = np.linspace(RR_old, RR_value, count_RR*axisSize)
+        #self.dataLinex = self.plot(self.graphWidget,var.clock,var.xData_g,'x-axis','r')
+        #self.dataLiney = self.plot(self.graphWidget,var.clock,var.var.yData_g,'y-axis','g')
+        self.dataLinez = self.plot(self.graphWidget,var.clock,var.zData_g,'Z-axis','b')
+        self.dataLinez_lowpass = self.plot(self.graphWidget,var.clock,var.zData_lowpass,'Z-axis Low-Pass Filtered','r')
+        count_RR_array = np.linspace(1, var.count_RR*var.axisSize, var.count_RR*var.axisSize)
+        RR = np.linspace(var.RR_old, var.RR_value, var.count_RR*var.axisSize)
         self.dataLinez_RR = self.plot(self.RR_plot,count_RR_array, RR,'Respiratory wave','b')
-        count_HR_array = np.linspace(1, count_HR*axisSize, count_HR*axisSize)
-        HR = np.linspace(HR_old, HR_value, count_HR*axisSize)
+        count_HR_array = np.linspace(1, var.count_HR*var.axisSize, var.count_HR*var.axisSize)
+        HR = np.linspace(var.HR_old, var.HR_value, var.count_HR*var.axisSize)
         self.dataLinez_HR = self.plot(self.HR_plot,count_HR_array, HR,'Heart beat','b')
     
     def plot(self, graph, x, y, curve_name, color):
@@ -880,13 +818,8 @@ class MainWindow(QMainWindow):
         line = graph.plot(x, y, name=curve_name, pen=pen)
         return line
 
-    ##################
-    # SERIAL SIGNALS #
-    ##################
-
     @pyqtSlot(bool)
     def on_toggle(self, checked):
-        global CONN_STATUS,connectionWait
         """!
         @brief Allow connection and disconnection from selected serial port.
         """
@@ -905,16 +838,16 @@ class MainWindow(QMainWindow):
 
                 # Setup reading worker
                 self.serial_worker = SerialWorker(self.port_text) 
-                connectionWait = True
+                var.connectionWait = True
                 print("Active port ", self.port_text)
                 # Connect worker signals to functions
                 self.serial_worker.signals.device_port.connect(self.connected_device)
                 # Execute the worker
                 self.threadpool.start(self.serial_worker)
-                while(connectionWait==True):
+                while(var.connectionWait==True):
                     time.sleep(0.5)
 
-                if(CONN_STATUS==True):
+                if(var.CONN_STATUS==True):
                     self.conn_btn.setText(
                     "Disconnect from port {}".format(self.port_text))
                     self.statusTimer.timeout.connect(self.checkStatus)
@@ -923,7 +856,7 @@ class MainWindow(QMainWindow):
                     self.conn_label.setStyleSheet("background-color: rgb(0, 255, 0);\n" "border: 1px solid black")
                     break
 
-            if(CONN_STATUS==False):
+            if(var.CONN_STATUS==False):
                 self.conn_btn.setText("Device not found")
                 self.conn_btn.repaint()
                 time.sleep(0.5)
@@ -941,6 +874,8 @@ class MainWindow(QMainWindow):
             #self.com_list_widget.setDisabled(False) # enable the possibility to change port
             self.conn_btn.setText("Device search")
             self.updateBtn.setDisabled(True)
+            self.modeSelect.setDisabled(True)
+            self.calibrate.setDisabled(True)
             self.statusTimer.stop()
             
     def connected_device(self, port_name):
@@ -979,12 +914,10 @@ class MainWindow(QMainWindow):
         """!
         @brief Update the data.
         """
-        global PORT, TRANSMITTING
 
         if checked:
             self.serial_worker.send('a')
             self.updateBtn.setText("Stop")
-            TRANSMITTING = True
             self.timer.timeout.connect(lambda: self.serial_worker.readData())
             self.timer.timeout.connect(lambda: self.updateValue())
             self.timer.start()
@@ -996,7 +929,6 @@ class MainWindow(QMainWindow):
         else:
             self.serial_worker.send('s')
             self.updateBtn.setText("Start")
-            TRANSMITTING = False
             self.timer.stop()
             self.graphTimer.stop()
             self.modeSelect.setDisabled(False)
@@ -1006,9 +938,8 @@ class MainWindow(QMainWindow):
         """!
         @brief After the button "Calibration" is pressed. 
         """
-        global calibration_flag
 
-        calibration_flag = True
+        var.calibration_flag = True
         self.calibrate.setDisabled(True) # Deactivate the button after first calibration (the next ones will be authomatic)
 
 #############
