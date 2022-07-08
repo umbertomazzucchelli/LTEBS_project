@@ -34,6 +34,20 @@ The *device search* button enables the automatic scan of all the serial ports, l
 
 The *file* button allows to export the data in a `.csv` file. This operation will be automatically performed if the device is suddenly disconnected, so that the data is not lost. 
 
+Heart Rate and Respiratory Rate are computed on non overlapping recording windows of 30s. Raw data are filtered and analysed in two different way for the computation of the rates. 
+
+### Heart Rate computation
+
+First, the absolute value of recorded data is filtered by a butter bandpass filter of the 4th order with frequency range in [1 ,5]Hz. The resulting signal is then smoothed first by a Savitzky-Golay filter of the 3rd order with window length of 15 samples and then by a moving average. These steps provide a resulting waveform that crearly shows the heart beats while being quite robust against noise. 
+The next step provides the threshold as the 80% of the average of the data. The algorithm looks for the peaks above the calculated threshold that are at least 25 samples apart, that correspond to 0.5s approx. 
+Finally, the Heart Rate is computed as the fraction between the number of peaks in the recorded window and the length of the window in seconds. This value is updated every 30s approx.
+
+### Respiratory Rate computation
+
+THe computation of the Respiratory Rate requires different filtering of the signal. 
+First, recorded data go through a butter lowpass filter of the 5th orded with cutoff frequency of 3Hz. This filtered signal is then smoothed by a Savitzky-Golay filter with a window of 31 samples and 3rd order. The threshold is calculated in the same way as in the HR computation, but the peaks are searched every 50 samples. 
+The Respiratory Rate is calculated in the same way as the Heart Rate.
+
 ### Images
 
 Images used for this `readme` file.
