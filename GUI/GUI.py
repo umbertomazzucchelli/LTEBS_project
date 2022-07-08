@@ -222,7 +222,7 @@ class SerialWorker(QRunnable):
             
             var.zData_array_HR = np.append(var.zData_array_HR, data)
            
-            if (var.count_sec_HR==var.SECOND):     # The HR is updated after about 10 s
+            if (var.count_sec_HR==var.SECOND):     # The HR is updated after about 30 s
             
                 zData_bandpass_HR = np.full(var.axisSize,0,dtype=np.float16)
                 zData_bandpass_HR = self.butter_bandpass_design(np.abs(var.zData_array_HR), var.LOW_CUT_HR, var.HIGH_CUT_HR,
@@ -245,10 +245,6 @@ class SerialWorker(QRunnable):
                 var.HR_value= (self.n_peaks_HR * 60)/ (var.count_sec_HR*32*0.02)
                 var.HR_save = np.append(var.HR_save, var.HR_value)  # array in which we save the data to be exported
                 var.count_sec_HR = 0
-
-                # In case there is a too high HR, we set an alarm window warning about possible fibrillation
-                if (var.HR_value > 110):
-                    self.fibrillazione()
 
                 var.count_HR+=var.SECOND
                 var.flag_graph_HR = True
@@ -274,7 +270,7 @@ class SerialWorker(QRunnable):
             
             var.zData_array_RR = np.append(var.zData_array_RR, data)
             
-            if (var.count_sec_RR==var.SECOND):     # The HR is updated after about 10 s
+            if (var.count_sec_RR==var.SECOND):     # The HR is updated after about 30 s
                 
                 var.zData_lowpass_RR = self.butter_lowpass_filter(var.zData_array_RR, var.cutoff_RR, var.SAMPLE_RATE, var.order)
                 var.zData_array_RR=[]    
@@ -298,35 +294,7 @@ class SerialWorker(QRunnable):
                 var.flag_graph_RR = True
                 var.flag_RR = True
 
-                return var.RR_value
-
-    def apnea (self):
-        """!
-        @brief Warning message for the user in case of apnea.  
-        """
-        self.dlg3 = QMessageBox()
-        self.dlg3.setWindowTitle("WARNING")
-        self.dlg3.setText("Apnea alert!\nRespiration rate below 5 resp/min")
-        self.dlg3.setStandardButtons(QMessageBox.Ok)
-        self.dlg3.setIcon(QMessageBox.Critical)
-        button=self.dlg3.exec_()
-        if(button==QMessageBox.Ok):
-            self.dlg3.accept()
-        MainWindow.on_toggle(False)
-    
-    def fibrillazione (self):
-        """!
-        @brief Warning message for the user in case of fibrillation.  
-        """
-        self.dlg3 = QMessageBox()
-        self.dlg3.setWindowTitle("WARNING")
-        self.dlg3.setText("Fibrillation alert!\nHeart rate above 180 beats/min")
-        self.dlg3.setStandardButtons(QMessageBox.Ok)
-        self.dlg3.setIcon(QMessageBox.Critical)
-        button=self.dlg3.exec_()
-        if(button==QMessageBox.Ok):
-            self.dlg3.accept()
-        MainWindow.on_toggle(False)
+        return var.RR_value
 
     def moving_average(self, window_length, data):
         """!
@@ -414,7 +382,7 @@ class MainWindow(QMainWindow):
         super(MainWindow, self).__init__()
 
         # Title and geometry
-        self.setFixedSize(1280,720)
+        self.setFixedSize(1480,930)
         self.setWindowTitle("iAcc")
         self.center()
         self.show()
@@ -523,7 +491,7 @@ class MainWindow(QMainWindow):
         self.HR_label.setFont(font)
         self.HR_label.setStyleSheet("border: 1px solid black")
         self.HR_label.setAlignment(QtCore.Qt.AlignCenter)
-        self.HR_label.setMinimumWidth(622)
+        self.HR_label.setMinimumWidth(720)
 
         # Label used to display RR values
         self.RR_label = QLabel()
@@ -538,7 +506,7 @@ class MainWindow(QMainWindow):
         self.RR_label.setFont(font)
         self.RR_label.setStyleSheet("border: 1px solid black")
         self.RR_label.setAlignment(QtCore.Qt.AlignCenter)
-        self.RR_label.setMinimumWidth(622)
+        self.RR_label.setMinimumWidth(720)
 
         verticalLayout = QVBoxLayout()
         heart_resp = QHBoxLayout()
@@ -710,6 +678,7 @@ class MainWindow(QMainWindow):
             if ((var.flag_graph ==0 or var.flag_graph == 2) and var.flag_graph_RR):
                 # Respiratory Rate
                 var.flag_graph_RR = False
+
                 RR = np.linspace(var.RR_old, var.RR_value, var.SECOND*var.axisSize)
                 var.RR_array = np.append(var.RR_array, RR)
                 count_RR_array = np.linspace(1, var.count_RR*var.axisSize, var.count_RR*var.axisSize)
