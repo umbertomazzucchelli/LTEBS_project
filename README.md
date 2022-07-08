@@ -8,13 +8,13 @@
 
 In this project, the aim was to develop a simple **Respiratory/Heart Rate Monitor** based on the PSoC and a 3-axis accelerometer LIS3DH. The device implements an algorithm for respiratory and heart rate computation, and then it allows data visualization on a custom GUI. PSOC and PC communication relies on a HC-05 BT Module either to make the device wearable and to reduce the cable bulkyness.
 The PSoC communicates with the LIS3DH thanks to I2C communication, to acquire data at the best full-scale range possible, which has been set to $\pm 2G$, and with sampling frequency of 50 Hz.  
-Finally, the whole PCB is powered thanks to a $9V$ battery, which allows the device to be portable and light. 
+Finally, the whole PCB is powered thanks to a 9V battery, which allows the device to be portable and light. 
 
 In the following image, the device is shown: 
 
 <img src="Images/Setup.jpg" width="75%">
 
-## Repo structure
+## Repository structure
 
 ### Design files
 
